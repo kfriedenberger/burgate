@@ -48,35 +48,34 @@
 - id: f781b2a0a6c245c98daccfa1641879d1
   alias: House Alarm - On Alarm Trigger, Turn on Siren
   description: ''
-  trigger:
-  - platform: state
-    entity_id: alarm_control_panel.alarmo
+  triggers:
+  - entity_id: alarm_control_panel.alarmo
     to: triggered
-  action:
-  - service: script.notify_residents_critical
-    data:
+    trigger: state
+  actions:
+  - data:
       message: House Alarm Triggered
       title: House Alarm
     alias: Notify all residents of Alarm Event
+    action: script.notify_residents_critical
   - alias: Announce alarm triggered
-    service: script.announce_to_google_speaker
     data:
       speaker: kitchen
       message: House Alarm Triggered, Police Notified!
+    action: script.announce_to_google_speaker
   - delay:
       hours: 0
       minutes: 0
       seconds: 5
       milliseconds: 0
-  - service: script.house_alarm_turn_on
-    data: {}
+  - data: {}
     alias: Turn on House Siren
+    action: script.house_alarm_turn_on
 - id: efbb8954de8045aaaa0aa814bde515ae
   alias: House Alarm - On zone open, Trigger Alarm
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - binary_sensor.will_window_1_contact
     - binary_sensor.will_window_2_contact
     - binary_sensor.will_window_3_contact
@@ -92,7 +91,8 @@
     - binary_sensor.front_contact
     - binary_sensor.mudroom_door_contact
     to: 'on'
-  condition:
+    trigger: state
+  conditions:
   - condition: or
     conditions:
     - condition: state
@@ -101,9 +101,9 @@
     - condition: state
       entity_id: alarm_control_panel.alarmo
       state: armed_away
-  action:
-  - service: alarm_control_panel.alarm_trigger
-    entity_id: alarm_control_panel.alarmo
+  actions:
+  - entity_id: alarm_control_panel.alarmo
+    action: alarm_control_panel.alarm_trigger
 - id: '1679257926710'
   alias: Zone State Change - Kitchen Announcement
   description: ''
@@ -222,12 +222,12 @@
 - id: '1682521302872'
   alias: Primary Bedroom - Set Karri bed firmness to sleepnumber
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - binary_sensor.sleepnumber_master_karri_is_in_bed
     to: 'on'
-  condition:
+    trigger: state
+  conditions:
   - condition: not
     conditions:
     - condition: state
@@ -245,22 +245,22 @@
     - mon
     - sun
     enabled: true
-  action:
-  - service: number.set_value
-    data:
+  actions:
+  - data:
       value: '{{ states(''input_number.sleepnumber_karri'')|int }}'
     target:
       entity_id: number.sleepnumber_master_karri_firmness
+    action: number.set_value
   mode: single
 - id: '1682521468552'
   alias: Primary Bedroom - Set Kirk bed firmness to sleepnumber
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - binary_sensor.sleepnumber_master_kirk_is_in_bed
     to: 'on'
-  condition:
+    trigger: state
+  conditions:
   - condition: not
     conditions:
     - condition: state
@@ -277,22 +277,22 @@
     - thu
     - fri
     - sat
-  action:
-  - service: number.set_value
-    data:
+  actions:
+  - data:
       value: '{{ states(''input_number.sleepnumber_kirk'')|int }}'
     target:
       entity_id: number.sleepnumber_master_kirk_firmness
+    action: number.set_value
   mode: single
 - id: '1682521550219'
   alias: Primary Bedroom - Turn off sleep mode when vacant timer ends
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - timer.master_bed_vacant_timer
     to: idle
-  condition:
+    trigger: state
+  conditions:
   - condition: and
     conditions:
     - condition: state
@@ -320,11 +320,11 @@
       - wed
       - fri
       - sat
-  action:
-  - service: input_boolean.turn_off
-    target:
+  actions:
+  - target:
       entity_id: input_boolean.sleep_mode
     data: {}
+    action: input_boolean.turn_off
   mode: single
 - id: '1682521597134'
   alias: Primary Bedroom - Start bed vacant timer
@@ -647,22 +647,22 @@
 - id: '1702221567198'
   alias: Primary Bedroom - React to Sleep Mode Change
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - input_boolean.sleep_mode
-  condition: []
-  action:
+    trigger: state
+  conditions: []
+  actions:
   - if:
     - condition: state
       entity_id: input_boolean.sleep_mode
       state: 'on'
     then:
-    - service: script.primary_bedroom_sleep
-      data: {}
+    - data: {}
+      action: script.primary_bedroom_sleep
     else:
-    - service: script.primary_bedroom_wake_up
-      data: {}
+    - data: {}
+      action: script.primary_bedroom_wake_up
   mode: single
 - id: '1706454234452'
   alias: Doorbell - When pressed, notify residents
@@ -1601,36 +1601,36 @@
 - id: '1717443482942'
   alias: Leak - Send furnace leak notification
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - binary_sensor.leak_furnace_water_leak
     to: 'on'
-  condition: []
-  action:
-  - service: script.notify_residents_critical
-    metadata: {}
+    trigger: state
+  conditions: []
+  actions:
+  - metadata: {}
     data:
       message: Water has been detected under the furnace in the attic! This shouldn't
         happen...
       title: Furnace Leak
+    action: script.notify_residents_critical
   mode: single
 - id: '1717443621541'
   alias: Leak - Send water heater notification
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - binary_sensor.leak_water_heater_water_leak
     to: 'on'
-  condition: []
-  action:
-  - service: script.notify_residents_critical
-    metadata: {}
+    trigger: state
+  conditions: []
+  actions:
+  - metadata: {}
     data:
       message: Water has been detected under the water heater in the garage! This
         shouldn't happen...
       title: Water Heater
+    action: script.notify_residents_critical
   mode: single
 - id: '1717522097054'
   alias: Trash Can - On Monday night, notify to take out
@@ -1761,26 +1761,26 @@
 - id: '1718294328135'
   alias: Dog Food - Give Snack
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - input_button.otis_snack
     to:
-  condition: []
-  action:
-  - service: script.dog_food_give_snack
-    data: {}
+    trigger: state
+  conditions: []
+  actions:
+  - data: {}
+    action: script.dog_food_give_snack
   mode: single
 - id: '1725548593234'
   alias: Danger - Carbon Monoxide
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - binary_sensor.smoke_alarms_carbon_monoxide_detected
     to: 'on'
-  condition: []
-  action:
+    trigger: state
+  conditions: []
+  actions:
   - metadata: {}
     data:
       message: Carbon Monoxide Detector has sensed CO in the house!
@@ -1790,13 +1790,13 @@
 - id: '1725548730482'
   alias: Danger - Smoke Detector
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - binary_sensor.smoke_alarms_smoke_detected
     to: 'on'
-  condition: []
-  action:
+    trigger: state
+  conditions: []
+  actions:
   - metadata: {}
     data:
       message: Smoke Detector has sensed smoke in the house!

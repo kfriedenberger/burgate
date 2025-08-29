@@ -1,104 +1,104 @@
 notify_residents_critical:
   alias: Notify All Residents - CRITICAL
   sequence:
-  - data:
-      title: '{{ title }}'
-      message: '{{ message }}'
-      data:
-        push:
-          sound:
-            name: default
-            critical: 1
-            volume: 1
-        attachment: '{{ attachment }}'
-        actions: '{{ actions }}'
-    action: notify.mobile_app_iphonekf
-  - if:
-    - condition: state
-      entity_id: input_boolean.debug_mode
-      state: 'on'
-    then:
-    - stop: DEBUG MODE
-    alias: EXIT IF DEBUG MODE IS ON
-  - if:
-    - condition: state
-      entity_id: input_boolean.karri
-      state: 'on'
-    then:
     - data:
-        title: '{{ title }}'
-        message: '{{ message }}'
+        title: "{{ title }}"
+        message: "{{ message }}"
         data:
           push:
             sound:
               name: default
               critical: 1
               volume: 1
-          attachment: '{{ attachment }}'
-          actions: '{{ actions }}'
-      action: notify.mobile_app_karris_new_iphone
-  - if:
-    - condition: state
-      entity_id: input_boolean.quinn
-      state: 'on'
-    then:
-    - data:
-        title: '{{ title }}'
-        message: '{{ message }}'
-        data:
-          push:
-            sound:
-              name: default
-              critical: 1
-              volume: 1
-          attachment: '{{ attachment }}'
-          actions: '{{ actions }}'
-      action: notify.mobile_app_quinns_iphone
-    enabled: true
-  - if:
-    - condition: state
-      entity_id: input_boolean.hanna
-      state: 'on'
-    then:
-    - data:
-        title: '{{ title }}'
-        message: '{{ message }}'
-        data:
-          push:
-            sound:
-              name: default
-              critical: 1
-              volume: 1
-          attachment: '{{ attachment }}'
-          actions: '{{ actions }}'
-      action: notify.mobile_app_hannas_iphone
-    enabled: false
-  - if:
-    - condition: state
-      entity_id: input_boolean.will
-      state: 'on'
-    then:
-    - action: notify.mobile_app_aw_hell_naw_jigsaw
-      data:
-        title: '{{ title }}'
-        message: '{{ message }}'
-        data:
-          push:
-            sound:
-              name: default
-              critical: 1
-              volume: 1
-          attachment: '{{ attachment }}'
-          actions: '{{ actions }}'
-    enabled: true
-  - if:
-    - condition: state
-      entity_id: remote.second_floor_tv
-      state: 'on'
-    then:
-    - data:
-        message: '{{ message }}'
-      action: notify.family_lg_tv
+          attachment: "{{ attachment }}"
+          actions: "{{ actions }}"
+      action: notify.mobile_app_iphonekf
+    - if:
+        - condition: state
+          entity_id: input_boolean.debug_mode
+          state: "on"
+      then:
+        - stop: DEBUG MODE
+      alias: EXIT IF DEBUG MODE IS ON
+    - if:
+        - condition: state
+          entity_id: input_boolean.karri
+          state: "on"
+      then:
+        - data:
+            title: "{{ title }}"
+            message: "{{ message }}"
+            data:
+              push:
+                sound:
+                  name: default
+                  critical: 1
+                  volume: 1
+              attachment: "{{ attachment }}"
+              actions: "{{ actions }}"
+          action: notify.mobile_app_karris_new_iphone
+    - if:
+        - condition: state
+          entity_id: input_boolean.quinn
+          state: "on"
+      then:
+        - data:
+            title: "{{ title }}"
+            message: "{{ message }}"
+            data:
+              push:
+                sound:
+                  name: default
+                  critical: 1
+                  volume: 1
+              attachment: "{{ attachment }}"
+              actions: "{{ actions }}"
+          action: notify.mobile_app_quinns_iphone
+      enabled: true
+    - if:
+        - condition: state
+          entity_id: input_boolean.hanna
+          state: "on"
+      then:
+        - data:
+            title: "{{ title }}"
+            message: "{{ message }}"
+            data:
+              push:
+                sound:
+                  name: default
+                  critical: 1
+                  volume: 1
+              attachment: "{{ attachment }}"
+              actions: "{{ actions }}"
+          action: notify.mobile_app_hannas_iphone
+      enabled: false
+    - if:
+        - condition: state
+          entity_id: input_boolean.will
+          state: "on"
+      then:
+        - action: notify.mobile_app_aw_hell_naw_jigsaw
+          data:
+            title: "{{ title }}"
+            message: "{{ message }}"
+            data:
+              push:
+                sound:
+                  name: default
+                  critical: 1
+                  volume: 1
+              attachment: "{{ attachment }}"
+              actions: "{{ actions }}"
+      enabled: true
+    - if:
+        - condition: state
+          entity_id: remote.second_floor_tv
+          state: "on"
+      then:
+        - data:
+            message: "{{ message }}"
+          action: notify.family_lg_tv
   description: Notify All Residents - CRITICAL
   fields:
     title:
@@ -120,84 +120,84 @@ notify_residents_critical:
 notify_all_residents_new:
   alias: Notify All Residents
   sequence:
-  - if:
-    - condition: state
-      entity_id: input_boolean.kirk
-      state: 'on'
-    then:
-    - data:
-        title: '{{ title }}'
-        message: '{{ message }}'
-        data:
-          attachment: '{{ attachment }}'
-          actions: '{{ actions }}'
-      action: notify.mobile_app_iphonekf
-  - if:
-    - condition: state
-      entity_id: input_boolean.debug_mode
-      state: 'on'
-    then:
-    - stop: DEBUG MODE
-    alias: EXIT IF DEBUG MODE IS ON
-  - if:
-    - condition: state
-      entity_id: input_boolean.karri
-      state: 'on'
-    then:
-    - data:
-        title: '{{ title }}'
-        message: '{{ message }}'
-        data:
-          attachment: '{{ attachment }}'
-          actions: '{{ actions }}'
-      action: notify.mobile_app_karris_new_iphone
-  - if:
-    - condition: state
-      entity_id: input_boolean.quinn
-      state: 'on'
-    then:
-    - data:
-        title: '{{ title }}'
-        message: '{{ message }}'
-        data:
-          attachment: '{{ attachment }}'
-          actions: '{{ actions }}'
-      action: notify.mobile_app_quinns_iphone
-    enabled: true
-  - if:
-    - condition: state
-      entity_id: input_boolean.hanna
-      state: 'on'
-    then:
-    - data:
-        title: '{{ title }}'
-        message: '{{ message }}'
-        data:
-          attachment: '{{ attachment }}'
-          actions: '{{ actions }}'
-      action: notify.mobile_app_hannas_iphone
-    enabled: false
-  - if:
-    - condition: state
-      entity_id: remote.second_floor_tv
-      state: 'on'
-    then:
-    - data:
-        message: '{{ message }}'
-      action: notify.family_lg_tv
-  - if:
-    - condition: state
-      entity_id: input_boolean.will
-      state: 'on'
-    then:
-    - data:
-        title: '{{ title }}'
-        message: '{{ message }}'
-        data:
-          attachment: '{{ attachment }}'
-          actions: '{{ actions }}'
-      action: notify.mobile_app_aw_hell_naw_jigsaw
-    enabled: true
+    - if:
+        - condition: state
+          entity_id: input_boolean.kirk
+          state: "on"
+      then:
+        - data:
+            title: "{{ title }}"
+            message: "{{ message }}"
+            data:
+              attachment: "{{ attachment }}"
+              actions: "{{ actions }}"
+          action: notify.mobile_app_iphonekf
+    - if:
+        - condition: state
+          entity_id: input_boolean.debug_mode
+          state: "on"
+      then:
+        - stop: DEBUG MODE
+      alias: EXIT IF DEBUG MODE IS ON
+    - if:
+        - condition: state
+          entity_id: input_boolean.karri
+          state: "on"
+      then:
+        - data:
+            title: "{{ title }}"
+            message: "{{ message }}"
+            data:
+              attachment: "{{ attachment }}"
+              actions: "{{ actions }}"
+          action: notify.mobile_app_karris_new_iphone
+    - if:
+        - condition: state
+          entity_id: input_boolean.quinn
+          state: "on"
+      then:
+        - data:
+            title: "{{ title }}"
+            message: "{{ message }}"
+            data:
+              attachment: "{{ attachment }}"
+              actions: "{{ actions }}"
+          action: notify.mobile_app_quinns_iphone
+      enabled: true
+    - if:
+        - condition: state
+          entity_id: input_boolean.hanna
+          state: "on"
+      then:
+        - data:
+            title: "{{ title }}"
+            message: "{{ message }}"
+            data:
+              attachment: "{{ attachment }}"
+              actions: "{{ actions }}"
+          action: notify.mobile_app_hannas_iphone
+      enabled: false
+    - if:
+        - condition: state
+          entity_id: remote.second_floor_tv
+          state: "on"
+      then:
+        - data:
+            message: "{{ message }}"
+          action: notify.family_lg_tv
+    - if:
+        - condition: state
+          entity_id: input_boolean.will
+          state: "on"
+      then:
+        - data:
+            title: "{{ title }}"
+            message: "{{ message }}"
+            data:
+              attachment: "{{ attachment }}"
+              actions: "{{ actions }}"
+          action: notify.mobile_app_aw_hell_naw_jigsaw
+      enabled: true
   description: Notify all resident devices
   fields:
     title:
@@ -219,70 +219,70 @@ notify_all_residents_new:
 test_house_alarm:
   alias: House Alarm - Test Siren
   sequence:
-  - action: script.notify_house
-    metadata: {}
-    data:
-      message: Monthly siren test will commence in a few moments!
-    alias: Warn those in the house of pending test
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 20
-  - metadata: {}
-    data: {}
-    target:
-      entity_id: siren.house_alarm
-    action: siren.turn_on
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 1
-      milliseconds: 0
-  - metadata: {}
-    data: {}
-    target:
-      entity_id: siren.house_alarm
-    action: siren.turn_off
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 1
-      milliseconds: 0
-  - metadata: {}
-    data: {}
-    action: siren.turn_on
-    target:
-      entity_id: siren.plug_house_alarm
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 1
-      milliseconds: 0
-  - metadata: {}
-    data: {}
-    action: siren.turn_off
-    target:
-      entity_id: siren.plug_house_alarm
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 1
-      milliseconds: 0
-  - action: siren.turn_on
-    metadata: {}
-    data: {}
-    target:
-      entity_id: siren.pool_alarm_siren_alarm
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 1
-      milliseconds: 0
-  - action: siren.turn_off
-    metadata: {}
-    data: {}
-    target:
-      entity_id: siren.pool_alarm_siren_alarm
+    - action: script.notify_house
+      metadata: {}
+      data:
+        message: Monthly siren test will commence in a few moments!
+      alias: Warn those in the house of pending test
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 20
+    - metadata: {}
+      data: {}
+      target:
+        entity_id: siren.house_alarm
+      action: siren.turn_on
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 1
+        milliseconds: 0
+    - metadata: {}
+      data: {}
+      target:
+        entity_id: siren.house_alarm
+      action: siren.turn_off
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 1
+        milliseconds: 0
+    - metadata: {}
+      data: {}
+      action: siren.turn_on
+      target:
+        entity_id: siren.plug_house_alarm
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 1
+        milliseconds: 0
+    - metadata: {}
+      data: {}
+      action: siren.turn_off
+      target:
+        entity_id: siren.plug_house_alarm
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 1
+        milliseconds: 0
+    - action: siren.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: siren.pool_alarm_siren_alarm
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 1
+        milliseconds: 0
+    - action: siren.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id: siren.pool_alarm_siren_alarm
   variables:
     default_melody: 18
     default_duration: 4
@@ -292,224 +292,230 @@ test_house_alarm:
 announce_to_google_speaker:
   alias: Announce to Google Speaker
   sequence:
-  - parallel:
-    - alias: Play on Kitchen display
-      if:
-      - condition: template
-        value_template: '{{ (speaker == ''kitchen'') or (speaker == ''all'') }}'
-        alias: If Kitchen is target
-      then:
-      - data:
-          volume_level: 0.6
-        target:
-          entity_id:
-          - media_player.kitchen_google_display
-        action: media_player.volume_set
-      - target:
-          entity_id: tts.google_en_com
-        data:
-          media_player_entity_id: media_player.kitchen_google_display
-          message: '{{ message }}'
-        action: tts.speak
-    - alias: Play on Mudroom speaker
-      if:
-      - condition: template
-        value_template: '{{ (speaker == ''mudroom'') or (speaker == ''all'') }}'
-        alias: If Mudroom speaker is target
-      then:
-      - data:
-          volume_level: 0.6
-        target:
-          entity_id:
-          - media_player.mudroom_speaker
-        action: media_player.volume_set
-      - target:
-          entity_id: tts.google_en_com
-        data:
-          media_player_entity_id: media_player.mudroom_speaker
-          message: '{{ message }}'
-        action: tts.speak
-    - alias: Play on Foyer speaker
-      if:
-      - alias: If Foyer speaker is target
-        condition: template
-        value_template: '{{ (speaker == ''foyer'') or (speaker == ''all'') }}'
-      then:
-      - if:
-        - condition: state
-          entity_id: media_player.foyer_speaker
-          state: playing
-        then:
-        - data:
-            volume_level: 0.6
-          action: media_player.volume_set
-          target:
-            entity_id: media_player.foyer_speaker
-        - data:
-            message: '{{ message }}'
-            target:
-            - Entryway
-          action: notify.google_assistant_sdk
-        else:
-        - target:
-            entity_id: tts.google_en_com
-          data:
-            media_player_entity_id: media_player.foyer_speaker
-            message: '{{ message }}'
-          action: tts.speak
-    - alias: Play on Primary Bedroom speaker
-      if:
-      - alias: If Primary Bedroom is target
-        condition: template
-        value_template: '{{ (speaker == ''primary_bedroom'') or (speaker == ''all'')
-          }}'
-      then:
-      - if:
-        - condition: state
-          entity_id: media_player.primary_google_display
-          state: playing
-        then:
-        - data:
-            volume_level: 0.6
-          action: media_player.volume_set
-          target:
-            entity_id: media_player.primary_google_display
-        - data:
-            message: '{{ message }}'
-            target:
-            - Master Bedroom
-          action: notify.google_assistant_sdk
-        else:
-        - target:
-            entity_id: tts.google_en_com
-          data:
-            media_player_entity_id: media_player.primary_google_display
-            message: '{{ message }}'
-          action: tts.speak
-    - alias: Play on Will Bedroom speaker
-      if:
-      - condition: template
-        value_template: '{{ (speaker == ''first_floor_bedroom'') or (speaker == ''all'')
-          }}'
-        alias: If Will Bedroom is target
-      then:
-      - if:
-        - condition: state
-          entity_id: media_player.first_floor_bedroom_speaker
-          state: playing
-        then:
-        - data:
-            volume_level: 0.6
-          target:
-            entity_id:
-            - media_player.first_floor_bedroom_speaker
-          action: media_player.volume_set
-        - data:
-            message: '{{ message }}'
-            target:
-            - FirstFloorBedroom
-          action: notify.google_assistant_sdk
-        else:
-        - target:
-            entity_id: tts.google_en_com
-          data:
-            media_player_entity_id: media_player.first_floor_bedroom_speaker
-            message: '{{ message }}'
-          action: tts.speak
-    - alias: Play on Quinn Bedroom speaker
-      if:
-      - condition: template
-        value_template: '{{ (speaker == ''quinn_bedroom'') or (speaker == ''all'')
-          }}'
-        alias: If Quinn Bedroom is target
-      then:
-      - if:
-        - condition: state
-          entity_id: media_player.quinn_bedroom_speaker
-          state: playing
-        then:
-        - data:
-            volume_level: 0.6
-          target:
-            entity_id:
-            - media_player.quinn_bedroom_speaker
-          action: media_player.volume_set
-        - data:
-            message: '{{ message }}'
-            target:
-            - Quinn Bedroom
-          action: notify.google_assistant_sdk
-        else:
-        - target:
-            entity_id: tts.google_en_com
-          data:
-            media_player_entity_id: media_player.quinn_bedroom_speaker
-            message: '{{ message }}'
-          action: tts.speak
-    - alias: Play on Hanna Bedroom speaker
-      if:
-      - alias: If Hanna Bedroom is target
-        condition: template
-        value_template: '{{ (speaker == ''hanna_bedroom'') or (speaker == ''all'')
-          }}'
-      then:
-      - if:
-        - condition: state
-          entity_id: media_player.hanna_bedroom_speaker
-          state: playing
-        then:
-        - data:
-            volume_level: 0.6
-          action: media_player.volume_set
-          target:
-            entity_id: media_player.hanna_bedroom_speaker
-        - data:
-            message: '{{ message }}'
-            target:
-            - Hanna Bedroom
-          action: notify.google_assistant_sdk
-        else:
-        - target:
-            entity_id: tts.google_en_com
-          data:
-            media_player_entity_id: media_player.hanna_bedroom_speaker
-            message: '{{ message }}'
-          action: tts.speak
-    - alias: Play on Parlor speaker
-      if:
-      - alias: If Parlor is target
-        condition: template
-        value_template: '{{ (speaker == ''parlor'') or (speaker == ''all'') }}'
-      then:
-      - if:
-        - condition: state
-          entity_id: media_player.parlor_speaker
-          state: playing
-        then:
-        - data:
-            volume_level: 0.6
-          action: media_player.volume_set
-          target:
-            entity_id: media_player.parlor_speaker
-        - data:
-            message: '{{ message }}'
-            target:
-            - Parlor
-          action: notify.google_assistant_sdk
-        else:
-        - target:
-            entity_id: tts.google_en_com
-          data:
-            media_player_entity_id: media_player.parlor_speaker
-            message: '{{ message }}'
-          action: tts.speak
-  description: Play sound through google speaker without disrupting media playing
+    - parallel:
+        - alias: Play on Kitchen display
+          if:
+            - condition: template
+              value_template: "{{ (speaker == 'kitchen') or (speaker == 'all') }}"
+              alias: If Kitchen is target
+          then:
+            - data:
+                volume_level: 0.6
+              target:
+                entity_id:
+                  - media_player.kitchen_google_display
+              action: media_player.volume_set
+            - target:
+                entity_id: tts.google_en_com
+              data:
+                media_player_entity_id: media_player.kitchen_google_display
+                message: "{{ message }}"
+              action: tts.speak
+        - alias: Play on Mudroom speaker
+          if:
+            - condition: template
+              value_template: "{{ (speaker == 'mudroom') or (speaker == 'all') }}"
+              alias: If Mudroom speaker is target
+          then:
+            - data:
+                volume_level: 0.6
+              target:
+                entity_id:
+                  - media_player.mudroom_speaker
+              action: media_player.volume_set
+            - target:
+                entity_id: tts.google_en_com
+              data:
+                media_player_entity_id: media_player.mudroom_speaker
+                message: "{{ message }}"
+              action: tts.speak
+        - alias: Play on Foyer speaker
+          if:
+            - alias: If Foyer speaker is target
+              condition: template
+              value_template: "{{ (speaker == 'foyer') or (speaker == 'all') }}"
+          then:
+            - if:
+                - condition: state
+                  entity_id: media_player.foyer_speaker
+                  state: playing
+              then:
+                - data:
+                    volume_level: 0.6
+                  action: media_player.volume_set
+                  target:
+                    entity_id: media_player.foyer_speaker
+                - data:
+                    message: "{{ message }}"
+                    target:
+                      - Entryway
+                  action: notify.google_assistant_sdk
+              else:
+                - target:
+                    entity_id: tts.google_en_com
+                  data:
+                    media_player_entity_id: media_player.foyer_speaker
+                    message: "{{ message }}"
+                  action: tts.speak
+        - alias: Play on Primary Bedroom speaker
+          if:
+            - alias: If Primary Bedroom is target
+              condition: template
+              value_template:
+                "{{ (speaker == 'primary_bedroom') or (speaker == 'all')
+                }}"
+          then:
+            - if:
+                - condition: state
+                  entity_id: media_player.primary_google_display
+                  state: playing
+              then:
+                - data:
+                    volume_level: 0.6
+                  action: media_player.volume_set
+                  target:
+                    entity_id: media_player.primary_google_display
+                - data:
+                    message: "{{ message }}"
+                    target:
+                      - Master Bedroom
+                  action: notify.google_assistant_sdk
+              else:
+                - target:
+                    entity_id: tts.google_en_com
+                  data:
+                    media_player_entity_id: media_player.primary_google_display
+                    message: "{{ message }}"
+                  action: tts.speak
+        - alias: Play on Will Bedroom speaker
+          if:
+            - condition: template
+              value_template:
+                "{{ (speaker == 'first_floor_bedroom') or (speaker == 'all')
+                }}"
+              alias: If Will Bedroom is target
+          then:
+            - if:
+                - condition: state
+                  entity_id: media_player.first_floor_bedroom_speaker
+                  state: playing
+              then:
+                - data:
+                    volume_level: 0.6
+                  target:
+                    entity_id:
+                      - media_player.first_floor_bedroom_speaker
+                  action: media_player.volume_set
+                - data:
+                    message: "{{ message }}"
+                    target:
+                      - FirstFloorBedroom
+                  action: notify.google_assistant_sdk
+              else:
+                - target:
+                    entity_id: tts.google_en_com
+                  data:
+                    media_player_entity_id: media_player.first_floor_bedroom_speaker
+                    message: "{{ message }}"
+                  action: tts.speak
+        - alias: Play on Quinn Bedroom speaker
+          if:
+            - condition: template
+              value_template:
+                "{{ (speaker == 'quinn_bedroom') or (speaker == 'all')
+                }}"
+              alias: If Quinn Bedroom is target
+          then:
+            - if:
+                - condition: state
+                  entity_id: media_player.quinn_bedroom_speaker
+                  state: playing
+              then:
+                - data:
+                    volume_level: 0.6
+                  target:
+                    entity_id:
+                      - media_player.quinn_bedroom_speaker
+                  action: media_player.volume_set
+                - data:
+                    message: "{{ message }}"
+                    target:
+                      - Quinn Bedroom
+                  action: notify.google_assistant_sdk
+              else:
+                - target:
+                    entity_id: tts.google_en_com
+                  data:
+                    media_player_entity_id: media_player.quinn_bedroom_speaker
+                    message: "{{ message }}"
+                  action: tts.speak
+        - alias: Play on Hanna Bedroom speaker
+          if:
+            - alias: If Hanna Bedroom is target
+              condition: template
+              value_template:
+                "{{ (speaker == 'hanna_bedroom') or (speaker == 'all')
+                }}"
+          then:
+            - if:
+                - condition: state
+                  entity_id: media_player.hanna_bedroom_speaker
+                  state: playing
+              then:
+                - data:
+                    volume_level: 0.6
+                  action: media_player.volume_set
+                  target:
+                    entity_id: media_player.hanna_bedroom_speaker
+                - data:
+                    message: "{{ message }}"
+                    target:
+                      - Hanna Bedroom
+                  action: notify.google_assistant_sdk
+              else:
+                - target:
+                    entity_id: tts.google_en_com
+                  data:
+                    media_player_entity_id: media_player.hanna_bedroom_speaker
+                    message: "{{ message }}"
+                  action: tts.speak
+        - alias: Play on Parlor speaker
+          if:
+            - alias: If Parlor is target
+              condition: template
+              value_template: "{{ (speaker == 'parlor') or (speaker == 'all') }}"
+          then:
+            - if:
+                - condition: state
+                  entity_id: media_player.parlor_speaker
+                  state: playing
+              then:
+                - data:
+                    volume_level: 0.6
+                  action: media_player.volume_set
+                  target:
+                    entity_id: media_player.parlor_speaker
+                - data:
+                    message: "{{ message }}"
+                    target:
+                      - Parlor
+                  action: notify.google_assistant_sdk
+              else:
+                - target:
+                    entity_id: tts.google_en_com
+                  data:
+                    media_player_entity_id: media_player.parlor_speaker
+                    message: "{{ message }}"
+                  action: tts.speak
+  description:
+    Play sound through google speaker without disrupting media playing
     at the current time
   fields:
     speaker:
       description: The speaker to play music through
       default: all
-      example: Possible values - all, kitchen, first_floor_bedroom, alarm, master_bedroom,
+      example:
+        Possible values - all, kitchen, first_floor_bedroom, alarm, master_bedroom,
         quinn_bedroom
     message:
       description: The message to say through the speaker
@@ -519,202 +525,204 @@ announce_to_google_speaker:
 house_alarm_turn_off:
   alias: House Alarm - Turn Off
   sequence:
-  - metadata: {}
-    data: {}
-    target:
-      entity_id:
-      - siren.plug_house_alarm
-      - siren.house_alarm
-    action: siren.turn_off
+    - metadata: {}
+      data: {}
+      target:
+        entity_id:
+          - siren.plug_house_alarm
+          - siren.house_alarm
+      action: siren.turn_off
   mode: single
 house_alarm_turn_on:
   alias: House Alarm - Turn On
   sequence:
-  - metadata: {}
-    data: {}
-    target:
-      entity_id:
-      - siren.plug_house_alarm
-      - siren.house_alarm
-    action: siren.turn_on
+    - metadata: {}
+      data: {}
+      target:
+        entity_id:
+          - siren.plug_house_alarm
+          - siren.house_alarm
+      action: siren.turn_on
   mode: single
   icon: mdi:alarm-light
 primary_bedroom_wake_up:
   alias: Primary Bedroom - Wake up; bed & fan setup
   sequence:
-  - data: {}
-    enabled: true
-    target:
-      entity_id: fan.primary_bedroom
-    action: fan.turn_off
-  - alias: If needed, inflate Karri bed
-    if:
-    - condition: not
-      conditions:
-      - condition: state
-        entity_id: number.sleepnumber_master_karri_firmness
-        state: '100'
-      alias: If Karri bed not fully inflated
-    then:
-    - data:
-        value: '100'
-      target:
-        entity_id:
-        - number.sleepnumber_master_karri_firmness
-      enabled: true
-      action: number.set_value
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 45
-        milliseconds: 0
-  - alias: If needed, inflate Kirk bed
-    if:
-    - alias: If Kirk bed not fully inflated
-      condition: not
-      conditions:
-      - condition: state
-        entity_id: number.sleepnumber_master_kirk_firmness
-        state: '100'
-    then:
-    - data:
-        value: '100'
+    - data: {}
       enabled: true
       target:
-        entity_id: number.sleepnumber_master_kirk_firmness
-      action: number.set_value
+        entity_id: fan.primary_bedroom
+      action: fan.turn_off
+    - alias: If needed, inflate Karri bed
+      if:
+        - condition: not
+          conditions:
+            - condition: state
+              entity_id: number.sleepnumber_master_karri_firmness
+              state: "100"
+          alias: If Karri bed not fully inflated
+      then:
+        - data:
+            value: "100"
+          target:
+            entity_id:
+              - number.sleepnumber_master_karri_firmness
+          enabled: true
+          action: number.set_value
+        - delay:
+            hours: 0
+            minutes: 0
+            seconds: 45
+            milliseconds: 0
+    - alias: If needed, inflate Kirk bed
+      if:
+        - alias: If Kirk bed not fully inflated
+          condition: not
+          conditions:
+            - condition: state
+              entity_id: number.sleepnumber_master_kirk_firmness
+              state: "100"
+      then:
+        - data:
+            value: "100"
+          enabled: true
+          target:
+            entity_id: number.sleepnumber_master_kirk_firmness
+          action: number.set_value
   mode: single
   icon: mdi:bed-empty
 primary_bedroom_sleep:
   alias: Primary Bedroom - Sleep; bed & fan setup
   sequence:
-  - data: {}
-    target:
-      entity_id: fan.primary_bedroom
-    action: fan.turn_on
-  - alias: If Karri is a resident, set sleepnumber
-    if:
-    - condition: state
-      entity_id: input_boolean.karri
-      state: 'on'
-    then:
-    - alias: Adjust Karri bed if not set to saved sleepnumber
+    - data: {}
+      target:
+        entity_id: fan.primary_bedroom
+      action: fan.turn_on
+    - alias: If Karri is a resident, set sleepnumber
       if:
-      - alias: Confirm Karri bed is not at saved sleepnumber
-        condition: template
-        value_template: '{{ states(''input_number.sleepnumber_karri'') | int != states(''number.sleepnumber_master_karri_firmness'')
-          | int }}'
+        - condition: state
+          entity_id: input_boolean.karri
+          state: "on"
       then:
-      - target:
-          entity_id: automation.karri_bed_set_firmness_to_sleepnumber
-        data:
-          skip_condition: true
-        action: automation.trigger
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 30
-          milliseconds: 0
-  - alias: If Kirk is a resident, set sleepnumber
-    if:
-    - condition: state
-      entity_id: input_boolean.kirk
-      state: 'on'
-    then:
-    - alias: Adjust Kirk bed if not set to saved sleepnumber
+        - alias: Adjust Karri bed if not set to saved sleepnumber
+          if:
+            - alias: Confirm Karri bed is not at saved sleepnumber
+              condition: template
+              value_template:
+                "{{ states('input_number.sleepnumber_karri') | int != states('number.sleepnumber_master_karri_firmness')
+                | int }}"
+          then:
+            - target:
+                entity_id: automation.karri_bed_set_firmness_to_sleepnumber
+              data:
+                skip_condition: true
+              action: automation.trigger
+            - delay:
+                hours: 0
+                minutes: 0
+                seconds: 30
+                milliseconds: 0
+    - alias: If Kirk is a resident, set sleepnumber
       if:
-      - alias: Confirm Kirk bed is not at saved sleepnumber
-        condition: template
-        value_template: '{{ states(''input_number.sleepnumber_kirk'') | int != states(''number.sleepnumber_master_kirk_firmness'')
-          | int }}'
+        - condition: state
+          entity_id: input_boolean.kirk
+          state: "on"
       then:
-      - target:
-          entity_id:
-          - automation.master_bedroom_set_kirk_bed_firmness_to_sleepnumber
-        data:
-          skip_condition: true
-        action: automation.trigger
+        - alias: Adjust Kirk bed if not set to saved sleepnumber
+          if:
+            - alias: Confirm Kirk bed is not at saved sleepnumber
+              condition: template
+              value_template:
+                "{{ states('input_number.sleepnumber_kirk') | int != states('number.sleepnumber_master_kirk_firmness')
+                | int }}"
+          then:
+            - target:
+                entity_id:
+                  - automation.master_bedroom_set_kirk_bed_firmness_to_sleepnumber
+              data:
+                skip_condition: true
+              action: automation.trigger
   mode: single
   icon: mdi:bed
 dog_food_give_snack:
   alias: Dog Food - Give Snack
   sequence:
-  - alias: Announce feeding in kitchen
-    data:
-      speaker: kitchen
-      message: Oadie Oat, do you wanna treat?
-    action: script.announce_to_google_speaker
-  - alias: Set the feeding serving size to 1
-    target:
-      entity_id: number.otis_feeder_serving_size
-    data:
-      value: '1'
-    action: number.set_value
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 3
-      milliseconds: 0
-  - target:
-      entity_id: select.otis_feeder_feed
-    data:
-      option: START
-    alias: Dispense food
-    action: select.select_option
+    - alias: Announce feeding in kitchen
+      data:
+        speaker: kitchen
+        message: Oadie Oat, do you wanna treat?
+      action: script.announce_to_google_speaker
+    - alias: Set the feeding serving size to 1
+      target:
+        entity_id: number.otis_feeder_serving_size
+      data:
+        value: "1"
+      action: number.set_value
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 3
+        milliseconds: 0
+    - target:
+        entity_id: select.otis_feeder_feed
+      data:
+        option: START
+      alias: Dispense food
+      action: select.select_option
   mode: single
   icon: mdi:dog
 trash_can_transition_state:
   alias: Trash Can - Transition State
   sequence:
-  - service: input_select.select_next
-    metadata: {}
-    data:
-      cycle: true
-    target:
-      entity_id: input_select.trash_can
+    - action: input_select.select_next
+      metadata: {}
+      data:
+        cycle: true
+      target:
+        entity_id: input_select.trash_can
   mode: single
   icon: mdi:trash-can
 notify_house:
   alias: Notify House - TVs and Kitchen Display
   sequence:
-  - alias: Announce in Kitchen if not after hours
-    if:
-    - condition: time
-      after: 07:00:00
-      before: 00:00:00
-    then:
-    - alias: Announce in Kitchen
+    - alias: Announce in Kitchen if not after hours
       if:
-      - condition: not
-        conditions:
-        - condition: state
-          entity_id: media_player.kitchen_google_display
-          state: playing
-        alias: Verify Kitchen Speaker isn't active
+        - condition: time
+          after: 07:00:00
+          before: 00:00:00
       then:
-      - alias: Announce in Kitchen
-        data:
-          speaker: kitchen
-          message: '{{ message }}'
-        action: script.announce_to_google_speaker
-  - alias: Show on Family TV if on
-    if:
-    - condition: state
-      entity_id: media_player.family_lg_tv
-      state: 'on'
-    then:
-    - data:
-        message: '{{ message }}'
-      action: notify.family_lg_tv
-  - alias: Show on Back Porch TV if on
-    if:
-    - condition: state
-      entity_id: media_player.back_porch_lg_tv
-      state: 'on'
-    then:
-    - data:
-        message: '{{ message }}'
-      action: notify.back_porch_lg_tv
+        - alias: Announce in Kitchen
+          if:
+            - condition: not
+              conditions:
+                - condition: state
+                  entity_id: media_player.kitchen_google_display
+                  state: playing
+              alias: Verify Kitchen Speaker isn't active
+          then:
+            - alias: Announce in Kitchen
+              data:
+                speaker: kitchen
+                message: "{{ message }}"
+              action: script.announce_to_google_speaker
+    - alias: Show on Family TV if on
+      if:
+        - condition: state
+          entity_id: media_player.family_lg_tv
+          state: "on"
+      then:
+        - data:
+            message: "{{ message }}"
+          action: notify.family_lg_tv
+    - alias: Show on Back Porch TV if on
+      if:
+        - condition: state
+          entity_id: media_player.back_porch_lg_tv
+          state: "on"
+      then:
+        - data:
+            message: "{{ message }}"
+          action: notify.back_porch_lg_tv
   fields:
     message:
       description: The message to say through the speaker
@@ -724,649 +732,653 @@ notify_house:
 set_kirk_s_bed_to_saved_firmness:
   alias: Set Kirk's Bed to saved firmness
   sequence:
-  - data:
-      value: '{{ states(''input_number.sleepnumber_kirk'')|int }}'
-    target:
-      entity_id: number.sleepnumber_master_kirk_firmness
-    action: number.set_value
-  description: ''
+    - data:
+        value: "{{ states('input_number.sleepnumber_kirk')|int }}"
+      target:
+        entity_id: number.sleepnumber_master_kirk_firmness
+      action: number.set_value
+  description: ""
   icon: mdi:bed
 set_karri_s_bed_to_saved_firmness_duplicate:
   alias: Set Karris Bed to saved firmness
   sequence:
-  - data:
-      value: '{{ states(''input_number.sleepnumber_karri'')|int }}'
-    target:
-      entity_id: number.sleepnumber_master_karri_firmness
-    action: number.set_value
-  description: ''
+    - data:
+        value: "{{ states('input_number.sleepnumber_karri')|int }}"
+      target:
+        entity_id: number.sleepnumber_master_karri_firmness
+      action: number.set_value
+  description: ""
   icon: mdi:bed
 toggle_kirk_s_bed_firmness:
   alias: Toggle Kirk's Bed firmness
   sequence:
-  - if:
-    - condition: numeric_state
-      entity_id: number.sleepnumber_master_kirk_firmness
-      above: 99
-    then:
-    - data:
-        value: '{{ states(''input_number.sleepnumber_kirk'')|int }}'
-      target:
-        entity_id: number.sleepnumber_master_kirk_firmness
-      action: number.set_value
-    else:
-    - action: number.set_value
-      metadata: {}
-      data:
-        value: '100'
-      target:
-        entity_id: number.sleepnumber_master_kirk_firmness
-  description: ''
+    - if:
+        - condition: numeric_state
+          entity_id: number.sleepnumber_master_kirk_firmness
+          above: 99
+      then:
+        - data:
+            value: "{{ states('input_number.sleepnumber_kirk')|int }}"
+          target:
+            entity_id: number.sleepnumber_master_kirk_firmness
+          action: number.set_value
+      else:
+        - action: number.set_value
+          metadata: {}
+          data:
+            value: "100"
+          target:
+            entity_id: number.sleepnumber_master_kirk_firmness
+  description: ""
   icon: mdi:bed
 toggle_karri_s_bed_firmness:
   alias: Toggle Karri's Bed firmness
   sequence:
-  - if:
-    - condition: numeric_state
-      entity_id: number.sleepnumber_master_karri_firmness
-      above: 99
-    then:
-    - data:
-        value: '{{ states(''input_number.sleepnumber_karri'')|int }}'
-      target:
-        entity_id: number.sleepnumber_master_karri_firmness
-      action: number.set_value
-    else:
-    - action: number.set_value
-      metadata: {}
-      data:
-        value: '100'
-      target:
-        entity_id: number.sleepnumber_master_karri_firmness
-  description: ''
+    - if:
+        - condition: numeric_state
+          entity_id: number.sleepnumber_master_karri_firmness
+          above: 99
+      then:
+        - data:
+            value: "{{ states('input_number.sleepnumber_karri')|int }}"
+          target:
+            entity_id: number.sleepnumber_master_karri_firmness
+          action: number.set_value
+      else:
+        - action: number.set_value
+          metadata: {}
+          data:
+            value: "100"
+          target:
+            entity_id: number.sleepnumber_master_karri_firmness
+  description: ""
   icon: mdi:bed
 toggle_kirk_s_garage:
   alias: Kirk's Garage - toggle open/close
   sequence:
-  - alias: Open Garage if Closed
-    if:
-    - condition: state
-      entity_id: cover.ratgdo_kirk_door
-      state: closed
-      enabled: true
-    then:
-    - action: cover.open_cover
-      metadata: {}
-      data: {}
-      target:
-        entity_id: cover.ratgdo_kirk_door
-    else:
-    - action: cover.close_cover
-      metadata: {}
-      data: {}
-      target:
-        entity_id: cover.ratgdo_kirk_door
-  description: ''
+    - alias: Open Garage if Closed
+      if:
+        - condition: state
+          entity_id: cover.ratgdo_kirk_door
+          state: closed
+          enabled: true
+      then:
+        - action: cover.open_cover
+          metadata: {}
+          data: {}
+          target:
+            entity_id: cover.ratgdo_kirk_door
+      else:
+        - action: cover.close_cover
+          metadata: {}
+          data: {}
+          target:
+            entity_id: cover.ratgdo_kirk_door
+  description: ""
   icon: mdi:garage
 toggle_karri_s_garage:
   alias: Toggle Karri's Garage
   sequence:
-  - alias: Open Garage if Closed
-    if:
-    - condition: state
-      entity_id: cover.ratgdo_karri_door
-      state: closed
-      enabled: true
-    then:
-    - action: cover.open_cover
-      metadata: {}
-      data: {}
-      target:
-        entity_id: cover.ratgdo_karri_door
-    else:
-    - action: cover.close_cover
-      metadata: {}
-      data: {}
-      target:
-        entity_id: cover.ratgdo_karri_door
-  description: ''
+    - alias: Open Garage if Closed
+      if:
+        - condition: state
+          entity_id: cover.ratgdo_karri_door
+          state: closed
+          enabled: true
+      then:
+        - action: cover.open_cover
+          metadata: {}
+          data: {}
+          target:
+            entity_id: cover.ratgdo_karri_door
+      else:
+        - action: cover.close_cover
+          metadata: {}
+          data: {}
+          target:
+            entity_id: cover.ratgdo_karri_door
+  description: ""
   icon: mdi:garage
 toggle_house_alarm_auto:
   alias: Toggle House Alarm Auto
   sequence:
-  - if:
-    - condition: state
-      entity_id: automation.house_alarm_autoarm
-      state: 'on'
-    then:
-    - alias: Turn off auto arm
-      action: automation.turn_off
-      metadata: {}
-      data:
-        stop_actions: false
-      target:
-        entity_id:
-        - automation.house_alarm_autodisarm
-        - automation.house_alarm_autoarm
-        - automation.house_alarm_autoarm_when_away
-    else:
-    - alias: Turn on auto arm
-      action: automation.turn_on
-      metadata: {}
-      data: {}
-      target:
-        entity_id:
-        - automation.house_alarm_autodisarm
-        - automation.house_alarm_autoarm
-        - automation.house_alarm_autoarm_when_away
-  description: ''
+    - if:
+        - condition: state
+          entity_id: automation.house_alarm_autoarm
+          state: "on"
+      then:
+        - alias: Turn off auto arm
+          action: automation.turn_off
+          metadata: {}
+          data:
+            stop_actions: false
+          target:
+            entity_id:
+              - automation.house_alarm_autodisarm
+              - automation.house_alarm_autoarm
+              - automation.house_alarm_autoarm_when_away
+      else:
+        - alias: Turn on auto arm
+          action: automation.turn_on
+          metadata: {}
+          data: {}
+          target:
+            entity_id:
+              - automation.house_alarm_autodisarm
+              - automation.house_alarm_autoarm
+              - automation.house_alarm_autoarm_when_away
+  description: ""
   icon: mdi:shield-refresh
 toggle_danger_alerts:
   alias: Toggle Danger Alerts
   sequence:
-  - if:
-    - condition: state
-      entity_id: automation.danger_smoke_detector
-      state: 'on'
-    then:
-    - action: automation.turn_off
-      metadata: {}
-      data:
-        stop_actions: true
-      target:
-        entity_id:
-        - automation.danger_smoke_detector
-        - automation.danger_carbon_monoxide
-        - automation.leak_send_furnace_leak_notification
-        - automation.leak_send_water_heater_notification
-    else:
-    - action: automation.turn_on
-      metadata: {}
-      target:
-        entity_id:
-        - automation.danger_smoke_detector
-        - automation.danger_carbon_monoxide
-        - automation.leak_send_furnace_leak_notification
-        - automation.leak_send_water_heater_notification
-  description: ''
+    - if:
+        - condition: state
+          entity_id: automation.danger_smoke_detector
+          state: "on"
+      then:
+        - action: automation.turn_off
+          metadata: {}
+          data:
+            stop_actions: true
+          target:
+            entity_id:
+              - automation.danger_smoke_detector
+              - automation.danger_carbon_monoxide
+              - automation.leak_send_furnace_leak_notification
+              - automation.leak_send_water_heater_notification
+      else:
+        - action: automation.turn_on
+          metadata: {}
+          target:
+            entity_id:
+              - automation.danger_smoke_detector
+              - automation.danger_carbon_monoxide
+              - automation.leak_send_furnace_leak_notification
+              - automation.leak_send_water_heater_notification
+  description: ""
   icon: mdi:fire-alert
 toggle_door_notifications:
   alias: Toggle Door Notifications
   sequence:
-  - if:
-    - condition: state
-      entity_id: automation.zone_changes_notify_when_no_one_home
-      state: 'on'
-    then:
-    - action: automation.turn_off
-      metadata: {}
-      data:
-        stop_actions: true
-      target:
-        entity_id:
-        - automation.door_open_close
-        - automation.zone_changes_notify_when_no_one_home
-        - automation.garage_karri_still_open_send_notification_2
-        - automation.garage_karri_still_open_send_notification
-    else:
-    - action: automation.turn_on
-      metadata: {}
-      target:
-        entity_id:
-        - automation.door_open_close
-        - automation.zone_changes_notify_when_no_one_home
-        - automation.garage_karri_still_open_send_notification_2
-        - automation.garage_karri_still_open_send_notification
-      data: {}
-  description: ''
+    - if:
+        - condition: state
+          entity_id: automation.zone_changes_notify_when_no_one_home
+          state: "on"
+      then:
+        - action: automation.turn_off
+          metadata: {}
+          data:
+            stop_actions: true
+          target:
+            entity_id:
+              - automation.door_open_close
+              - automation.zone_changes_notify_when_no_one_home
+              - automation.garage_karri_still_open_send_notification_2
+              - automation.garage_karri_still_open_send_notification
+      else:
+        - action: automation.turn_on
+          metadata: {}
+          target:
+            entity_id:
+              - automation.door_open_close
+              - automation.zone_changes_notify_when_no_one_home
+              - automation.garage_karri_still_open_send_notification_2
+              - automation.garage_karri_still_open_send_notification
+          data: {}
+  description: ""
   icon: mdi:garage-alert
 toggle_otis_autofeed:
   alias: Toggle Otis Autofeed
   sequence:
-  - if:
-    - condition: state
-      entity_id: automation.dog_food_feed_at_8am
-      state: 'on'
-    then:
-    - action: automation.turn_off
-      metadata: {}
-      data:
-        stop_actions: true
-      target:
-        entity_id:
-        - automation.dog_food_feed_at_8am
-        - automation.dog_food_feed_at_4pm
-        - automation.dog_food_feed_at_9pm
-    else:
-    - action: automation.turn_on
-      metadata: {}
-      target:
-        entity_id:
-        - automation.dog_food_feed_at_8am
-        - automation.dog_food_feed_at_4pm
-        - automation.dog_food_feed_at_9pm
-  description: ''
+    - if:
+        - condition: state
+          entity_id: automation.dog_food_feed_at_8am
+          state: "on"
+      then:
+        - action: automation.turn_off
+          metadata: {}
+          data:
+            stop_actions: true
+          target:
+            entity_id:
+              - automation.dog_food_feed_at_8am
+              - automation.dog_food_feed_at_4pm
+              - automation.dog_food_feed_at_9pm
+      else:
+        - action: automation.turn_on
+          metadata: {}
+          target:
+            entity_id:
+              - automation.dog_food_feed_at_8am
+              - automation.dog_food_feed_at_4pm
+              - automation.dog_food_feed_at_9pm
+  description: ""
   icon: mdi:dog
 swim_mode_add_5_minutes:
   sequence:
-  - if:
-    - condition: state
-      entity_id: timer.swim_mode
-      state: active
-    then:
-    - data:
-        duration: '{% set tempo = state_attr(''timer.swim_mode'', ''finishes_at'')%}
-          {{ 0 if tempo == none else (tempo | as_datetime - now()).total_seconds()
-          | int(0) + (states(''input_number.swim_mode_incremental_time'')|int *60)
-          }}'
-      target:
-        entity_id: timer.swim_mode
-      action: timer.start
-    else:
-    - data:
-        duration: 00:{{ states('input_number.swim_mode_initial_time')|int}}:00
-      target:
-        entity_id: timer.swim_mode
-      action: timer.start
+    - if:
+        - condition: state
+          entity_id: timer.swim_mode
+          state: active
+      then:
+        - data:
+            duration:
+              "{% set tempo = state_attr('timer.swim_mode', 'finishes_at')%}
+              {{ 0 if tempo == none else (tempo | as_datetime - now()).total_seconds()
+              | int(0) + (states('input_number.swim_mode_incremental_time')|int *60)
+              }}"
+          target:
+            entity_id: timer.swim_mode
+          action: timer.start
+      else:
+        - data:
+            duration: 00:{{ states('input_number.swim_mode_initial_time')|int}}:00
+          target:
+            entity_id: timer.swim_mode
+          action: timer.start
   alias: Swim Mode - Add More Time
-  description: ''
+  description: ""
 swim_mode_toggle:
   sequence:
-  - if:
-    - condition: state
-      entity_id: timer.swim_mode
-      state: active
-    then:
-    - action: timer.finish
-      metadata: {}
-      data: {}
-      target:
-        entity_id: timer.swim_mode
-    else:
-    - action: timer.start
-      metadata: {}
-      data:
-        duration: 00:{{ states('input_number.swim_mode_initial_time')|int}}:00
-      target:
-        entity_id: timer.swim_mode
+    - if:
+        - condition: state
+          entity_id: timer.swim_mode
+          state: active
+      then:
+        - action: timer.finish
+          metadata: {}
+          data: {}
+          target:
+            entity_id: timer.swim_mode
+      else:
+        - action: timer.start
+          metadata: {}
+          data:
+            duration: 00:{{ states('input_number.swim_mode_initial_time')|int}}:00
+          target:
+            entity_id: timer.swim_mode
   alias: Swim Mode - Toggle
-  description: ''
+  description: ""
 furnace_filter_replace_now:
   sequence:
-  - action: input_datetime.set_datetime
-    metadata: {}
-    data:
-      datetime: '{{ now() }}'
-    target:
-      entity_id: input_datetime.furnace_filter
+    - action: input_datetime.set_datetime
+      metadata: {}
+      data:
+        datetime: "{{ now() }}"
+      target:
+        entity_id: input_datetime.furnace_filter
   alias: Furnace Filter - replace now
-  description: ''
+  description: ""
 pool_vacuum_just_ran_now:
   sequence:
-  - action: input_datetime.set_datetime
-    metadata: {}
-    data:
-      datetime: '{{ now() }}'
-    target:
-      entity_id: input_datetime.pool_vacuum
+    - action: input_datetime.set_datetime
+      metadata: {}
+      data:
+        datetime: "{{ now() }}"
+      target:
+        entity_id: input_datetime.pool_vacuum
   alias: Pool Vacuum - just ran now
-  description: ''
+  description: ""
 pool_water_test_just_completed:
   sequence:
-  - action: input_datetime.set_datetime
-    metadata: {}
-    data:
-      datetime: '{{ now() }}'
-    target:
-      entity_id: input_datetime.pool_water_test
+    - action: input_datetime.set_datetime
+      metadata: {}
+      data:
+        datetime: "{{ now() }}"
+      target:
+        entity_id: input_datetime.pool_water_test
   alias: Pool Water Test - just completed
-  description: ''
+  description: ""
 pool_filter_cleaning_just_completed:
   sequence:
-  - action: input_datetime.set_datetime
-    metadata: {}
-    data:
-      datetime: '{{ now() }}'
-    target:
-      entity_id: input_datetime.pool_filter_cleaning
+    - action: input_datetime.set_datetime
+      metadata: {}
+      data:
+        datetime: "{{ now() }}"
+      target:
+        entity_id: input_datetime.pool_filter_cleaning
   alias: Pool Filter Cleaning - just completed
-  description: ''
+  description: ""
 prepare_speaker_without_sound:
   alias: Prepare kitchen speaker without sound
   sequence:
-  - choose:
-    - conditions:
-      - condition: state
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: media_player.kitchen_google_display
+              state: "off"
+          sequence:
+            - data:
+                is_volume_muted: true
+              target:
+                entity_id: media_player.kitchen_google_display
+              action: media_player.volume_mute
+            - target:
+                entity_id: media_player.kitchen_google_display
+              data: {}
+              action: media_player.turn_on
+            - wait_template:
+                "{{ is_state('media_player.kitchen_google_display', 'idle')
+                }}"
+        - conditions:
+            - condition: state
+              entity_id: media_player.kitchen_google_display
+              state: idle
+          sequence:
+            - data:
+                entity_id: media_player.kitchen_google_display
+                is_volume_muted: false
+              action: media_player.volume_mute
+      default: []
+    - data:
+        is_volume_muted: true
+      target:
         entity_id: media_player.kitchen_google_display
-        state: 'off'
-      sequence:
-      - data:
-          is_volume_muted: true
-        target:
-          entity_id: media_player.kitchen_google_display
-        action: media_player.volume_mute
-      - target:
-          entity_id: media_player.kitchen_google_display
-        data: {}
-        action: media_player.turn_on
-      - wait_template: '{{ is_state(''media_player.kitchen_google_display'', ''idle'')
-          }}'
-    - conditions:
-      - condition: state
+      action: media_player.volume_mute
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 1
+        milliseconds: 0
+    - data:
+        volume_level: 0.5
+      target:
         entity_id: media_player.kitchen_google_display
-        state: idle
-      sequence:
-      - data:
-          entity_id: media_player.kitchen_google_display
-          is_volume_muted: false
-        action: media_player.volume_mute
-    default: []
-  - data:
-      is_volume_muted: true
-    target:
-      entity_id: media_player.kitchen_google_display
-    action: media_player.volume_mute
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 1
-      milliseconds: 0
-  - data:
-      volume_level: 0.5
-    target:
-      entity_id: media_player.kitchen_google_display
-    action: media_player.volume_set
-  - data:
-      is_volume_muted: false
-    target:
-      entity_id: media_player.kitchen_google_display
-    action: media_player.volume_mute
+      action: media_player.volume_set
+    - data:
+        is_volume_muted: false
+      target:
+        entity_id: media_player.kitchen_google_display
+      action: media_player.volume_mute
   mode: single
 hot_tub_heater_toggle_on_off:
   sequence:
-  - if:
-    - condition: state
-      entity_id: water_heater.omnilogic_spa_heater
-      state: 'on'
-    then:
-    - action: water_heater.set_operation_mode
-      metadata: {}
-      data:
-        operation_mode: 'off'
-      target:
-        entity_id:
-        - water_heater.omnilogic_spa_heater
-    else:
     - if:
-      - condition: state
-        entity_id: water_heater.omnilogic_spa_heater
-        state: 'off'
-      then:
-      - action: water_heater.set_operation_mode
-        metadata: {}
-        data:
-          operation_mode: 'on'
-        target:
+        - condition: state
           entity_id: water_heater.omnilogic_spa_heater
+          state: "on"
+      then:
+        - action: water_heater.set_operation_mode
+          metadata: {}
+          data:
+            operation_mode: "off"
+          target:
+            entity_id:
+              - water_heater.omnilogic_spa_heater
+      else:
+        - if:
+            - condition: state
+              entity_id: water_heater.omnilogic_spa_heater
+              state: "off"
+          then:
+            - action: water_heater.set_operation_mode
+              metadata: {}
+              data:
+                operation_mode: "on"
+              target:
+                entity_id: water_heater.omnilogic_spa_heater
   alias: Spa Heater - Toggle on/off
-  description: ''
+  description: ""
 pool_heater_toggle_on_off:
   sequence:
-  - if:
-    - condition: state
-      entity_id: water_heater.omnilogic_pool_heater
-      state: 'on'
-    then:
-    - action: water_heater.set_operation_mode
-      metadata: {}
-      data:
-        operation_mode: 'off'
-      target:
-        entity_id:
-        - water_heater.omnilogic_pool_heater
-    else:
     - if:
-      - condition: state
-        entity_id: water_heater.omnilogic_pool_heater
-        state: 'off'
+        - condition: state
+          entity_id: water_heater.omnilogic_pool_heater
+          state: "on"
       then:
-      - action: water_heater.set_operation_mode
-        metadata: {}
-        data:
-          operation_mode: 'on'
-        target:
-          entity_id:
-          - water_heater.omnilogic_pool_heater
+        - action: water_heater.set_operation_mode
+          metadata: {}
+          data:
+            operation_mode: "off"
+          target:
+            entity_id:
+              - water_heater.omnilogic_pool_heater
+      else:
+        - if:
+            - condition: state
+              entity_id: water_heater.omnilogic_pool_heater
+              state: "off"
+          then:
+            - action: water_heater.set_operation_mode
+              metadata: {}
+              data:
+                operation_mode: "on"
+              target:
+                entity_id:
+                  - water_heater.omnilogic_pool_heater
   alias: Pool Heater - Toggle on/off
-  description: ''
+  description: ""
 irrigation_re_calculate_planned_irrigation_for_tomorrow:
   sequence:
-  - alias: 1. Front Yard - Grass (ET and Irrigation and Precipitation)
-    if:
-    - alias: If zone needs at least a half inch of water
-      condition: numeric_state
-      entity_id: sensor.zone_1_forecasted_cumulative_deficit
-      above: 0.49
-    then:
-    - action: input_number.set_value
-      metadata: {}
-      data:
-        value: 0.5
-      target:
-        entity_id:
-        - input_number.zone_1_irrigation_planned
-    else:
-    - if:
-      - alias: If zone needs any water and it's Monday
-        condition: and
-        conditions:
-        - alias: If zone needs any water
+    - alias: 1. Front Yard - Grass (ET and Irrigation and Precipitation)
+      if:
+        - alias: If zone needs at least a half inch of water
           condition: numeric_state
           entity_id: sensor.zone_1_forecasted_cumulative_deficit
-          above: 0
-        - condition: time
-          weekday:
-          - sun
-          enabled: true
+          above: 0.49
       then:
-      - action: input_number.set_value
-        metadata: {}
-        data:
-          value: '{{ states(''sensor.zone_1_forecasted_cumulative_deficit'') | float}}'
-        target:
-          entity_id: input_number.zone_1_irrigation_planned
+        - action: input_number.set_value
+          metadata: {}
+          data:
+            value: 0.5
+          target:
+            entity_id:
+              - input_number.zone_1_irrigation_planned
       else:
-      - action: input_number.set_value
-        metadata: {}
-        data:
-          value: 0
-        target:
-          entity_id: input_number.zone_1_irrigation_planned
-  - alias: 3. South Yard - Grass  (ET and Irrigation and Precipitation)
-    if:
-    - alias: If zone needs at least a half inch of water
-      condition: numeric_state
-      entity_id: sensor.zone_3_forecasted_cumulative_deficit
-      above: 0.49
-    then:
-    - action: input_number.set_value
-      metadata: {}
-      data:
-        value: 0.5
-      target:
-        entity_id:
-        - input_number.zone_3_irrigation_planned
-    else:
-    - if:
-      - alias: If zone needs any water and it's Monday
-        condition: and
-        conditions:
-        - alias: If zone needs any water
+        - if:
+            - alias: If zone needs any water and it's Monday
+              condition: and
+              conditions:
+                - alias: If zone needs any water
+                  condition: numeric_state
+                  entity_id: sensor.zone_1_forecasted_cumulative_deficit
+                  above: 0
+                - condition: time
+                  weekday:
+                    - sun
+                  enabled: true
+          then:
+            - action: input_number.set_value
+              metadata: {}
+              data:
+                value: "{{ states('sensor.zone_1_forecasted_cumulative_deficit') | float}}"
+              target:
+                entity_id: input_number.zone_1_irrigation_planned
+          else:
+            - action: input_number.set_value
+              metadata: {}
+              data:
+                value: 0
+              target:
+                entity_id: input_number.zone_1_irrigation_planned
+    - alias: 3. South Yard - Grass  (ET and Irrigation and Precipitation)
+      if:
+        - alias: If zone needs at least a half inch of water
           condition: numeric_state
           entity_id: sensor.zone_3_forecasted_cumulative_deficit
-          above: 0
-        - condition: time
-          weekday:
-          - sun
-          enabled: true
+          above: 0.49
       then:
-      - action: input_number.set_value
-        metadata: {}
-        data:
-          value: '{{ states(''sensor.zone_3_forecasted_cumulative_deficit'') | float}}'
-        target:
-          entity_id: input_number.zone_3_irrigation_planned
+        - action: input_number.set_value
+          metadata: {}
+          data:
+            value: 0.5
+          target:
+            entity_id:
+              - input_number.zone_3_irrigation_planned
       else:
-      - action: input_number.set_value
-        metadata: {}
-        data:
-          value: 0
-        target:
-          entity_id: input_number.zone_3_irrigation_planned
-  - alias: 4. North Yard - Grass  (ET and Irrigation and Precipitation)
-    if:
-    - alias: If zone needs at least a half inch of water
-      condition: numeric_state
-      entity_id: sensor.zone_4_forecasted_cumulative_deficit
-      above: 0.49
-    then:
-    - action: input_number.set_value
-      metadata: {}
-      data:
-        value: 0.5
-      target:
-        entity_id:
-        - input_number.zone_4_irrigation_planned
-    else:
-    - if:
-      - alias: If zone needs any water and it's Monday
-        condition: and
-        conditions:
-        - alias: If zone needs any water
+        - if:
+            - alias: If zone needs any water and it's Monday
+              condition: and
+              conditions:
+                - alias: If zone needs any water
+                  condition: numeric_state
+                  entity_id: sensor.zone_3_forecasted_cumulative_deficit
+                  above: 0
+                - condition: time
+                  weekday:
+                    - sun
+                  enabled: true
+          then:
+            - action: input_number.set_value
+              metadata: {}
+              data:
+                value: "{{ states('sensor.zone_3_forecasted_cumulative_deficit') | float}}"
+              target:
+                entity_id: input_number.zone_3_irrigation_planned
+          else:
+            - action: input_number.set_value
+              metadata: {}
+              data:
+                value: 0
+              target:
+                entity_id: input_number.zone_3_irrigation_planned
+    - alias: 4. North Yard - Grass  (ET and Irrigation and Precipitation)
+      if:
+        - alias: If zone needs at least a half inch of water
           condition: numeric_state
           entity_id: sensor.zone_4_forecasted_cumulative_deficit
-          above: 0
-        - condition: time
-          weekday:
-          - sun
-          enabled: true
+          above: 0.49
       then:
-      - action: input_number.set_value
-        metadata: {}
-        data:
-          value: '{{ states(''sensor.zone_4_forecasted_cumulative_deficit'') | float}}'
-        target:
-          entity_id: input_number.zone_4_irrigation_planned
+        - action: input_number.set_value
+          metadata: {}
+          data:
+            value: 0.5
+          target:
+            entity_id:
+              - input_number.zone_4_irrigation_planned
       else:
-      - action: input_number.set_value
-        metadata: {}
-        data:
-          value: 0
-        target:
-          entity_id: input_number.zone_4_irrigation_planned
-      enabled: false
-  - alias: 2. Front Yard - Beds (Sun, Wed, Fri for 5 min unless 0.5in rain)
-    if:
-    - condition: and
-      conditions:
-      - condition: time
-        weekday:
-        - thu
-        - tue
-        - sat
-      - condition: numeric_state
-        entity_id: sensor.forecasted_precipitation_tomorrow
-        below: 0.5
-    then:
-    - action: input_number.set_value
-      metadata: {}
-      data:
-        value: 5
-      target:
-        entity_id: input_number.zone_2_irrigation_planned
-    else:
-    - action: input_number.set_value
-      metadata: {}
-      data:
-        value: 0
-      target:
-        entity_id: input_number.zone_2_irrigation_planned
-  - alias: 5. Back Yard Beds (four days for 15 min unless 0.5in rain)
-    if:
-    - condition: numeric_state
-      entity_id: sensor.forecasted_precipitation_tomorrow
-      below: 0.5
-    then:
-    - if:
-      - condition: time
-        weekday:
-        - thu
-        - tue
-        - sun
-        - sat
-        - wed
-        - fri
-        - mon
+        - if:
+            - alias: If zone needs any water and it's Monday
+              condition: and
+              conditions:
+                - alias: If zone needs any water
+                  condition: numeric_state
+                  entity_id: sensor.zone_4_forecasted_cumulative_deficit
+                  above: 0
+                - condition: time
+                  weekday:
+                    - sun
+                  enabled: true
+          then:
+            - action: input_number.set_value
+              metadata: {}
+              data:
+                value: "{{ states('sensor.zone_4_forecasted_cumulative_deficit') | float}}"
+              target:
+                entity_id: input_number.zone_4_irrigation_planned
+          else:
+            - action: input_number.set_value
+              metadata: {}
+              data:
+                value: 0
+              target:
+                entity_id: input_number.zone_4_irrigation_planned
+          enabled: false
+    - alias: 2. Front Yard - Beds (Sun, Wed, Fri for 5 min unless 0.5in rain)
+      if:
+        - condition: and
+          conditions:
+            - condition: time
+              weekday:
+                - thu
+                - tue
+                - sat
+            - condition: numeric_state
+              entity_id: sensor.forecasted_precipitation_tomorrow
+              below: 0.5
       then:
-      - action: input_number.set_value
-        metadata: {}
-        data:
-          value: 15
-        target:
-          entity_id: input_number.zone_5_irrigation_planned
-    else:
+        - action: input_number.set_value
+          metadata: {}
+          data:
+            value: 5
+          target:
+            entity_id: input_number.zone_2_irrigation_planned
+      else:
+        - action: input_number.set_value
+          metadata: {}
+          data:
+            value: 0
+          target:
+            entity_id: input_number.zone_2_irrigation_planned
+    - alias: 5. Back Yard Beds (four days for 15 min unless 0.5in rain)
+      if:
+        - condition: numeric_state
+          entity_id: sensor.forecasted_precipitation_tomorrow
+          below: 0.5
+      then:
+        - if:
+            - condition: time
+              weekday:
+                - thu
+                - tue
+                - sun
+                - sat
+                - wed
+                - fri
+                - mon
+          then:
+            - action: input_number.set_value
+              metadata: {}
+              data:
+                value: 15
+              target:
+                entity_id: input_number.zone_5_irrigation_planned
+      else:
+        - action: input_number.set_value
+          metadata: {}
+          data:
+            value: 0
+          target:
+            entity_id: input_number.zone_5_irrigation_planned
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 0
+        milliseconds: 1
+    - sequence:
+        - variables:
+            sunrise_ts: "{{ as_timestamp(state_attr('sun.sun', 'next_rising')) }}"
+            total_min:
+              "{{\n  states('sensor.zone_1_irrigation_planned_minutes') | float(0)
+              +\n  states('sensor.zone_2_irrigation_planned_minutes') | float(0) +\n  states('sensor.zone_3_irrigation_planned_minutes')
+              | float(0) +\n  states('sensor.zone_4_irrigation_planned_minutes') | float(0)
+              +\n  states('sensor.zone_5_irrigation_planned_minutes') | float(0)\n}}\n"
+            start_ts: "{{ sunrise_ts - (total_min * 60) }}"
+            hour: "{{ (start_ts | timestamp_custom('%H')) | int }}"
+            minute: "{{ (start_ts | timestamp_custom('%M')) | int }}"
+        - target:
+            entity_id: input_datetime.irrigation_start_time
+          data:
+            time: "{{ '%02d:%02d:00' | format(hour, minute) }}"
+          action: input_datetime.set_datetime
+      alias: Set irrigation start time for tomorrow
+  alias: Irrigation - (Re)Calculate Planned Irrigation for Tomorrow
+  description: ""
+irrigation_cancelplanned_irrigation:
+  sequence:
     - action: input_number.set_value
       metadata: {}
       data:
         value: 0
       target:
-        entity_id: input_number.zone_5_irrigation_planned
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 0
-      milliseconds: 1
-  - sequence:
-    - variables:
-        sunrise_ts: '{{ as_timestamp(state_attr(''sun.sun'', ''next_rising'')) }}'
-        total_min: "{{\n  states('sensor.zone_1_irrigation_planned_minutes') | float(0)
-          +\n  states('sensor.zone_2_irrigation_planned_minutes') | float(0) +\n  states('sensor.zone_3_irrigation_planned_minutes')
-          | float(0) +\n  states('sensor.zone_4_irrigation_planned_minutes') | float(0)
-          +\n  states('sensor.zone_5_irrigation_planned_minutes') | float(0)\n}}\n"
-        start_ts: '{{ sunrise_ts - (total_min * 60) }}'
-        hour: '{{ (start_ts | timestamp_custom(''%H'')) | int }}'
-        minute: '{{ (start_ts | timestamp_custom(''%M'')) | int }}'
+        entity_id:
+          - input_number.zone_1_irrigation_planned
+          - input_number.zone_4_irrigation_planned
+          - input_number.zone_3_irrigation_planned
+          - input_number.zone_5_irrigation_planned
+          - input_number.zone_2_irrigation_planned
     - target:
         entity_id: input_datetime.irrigation_start_time
       data:
-        time: '{{ ''%02d:%02d:00'' | format(hour, minute) }}'
+        time: 00:00:00
       action: input_datetime.set_datetime
-    alias: Set irrigation start time for tomorrow
-  alias: Irrigation - (Re)Calculate Planned Irrigation for Tomorrow
-  description: ''
-irrigation_cancelplanned_irrigation:
-  sequence:
-  - action: input_number.set_value
-    metadata: {}
-    data:
-      value: 0
-    target:
-      entity_id:
-      - input_number.zone_1_irrigation_planned
-      - input_number.zone_4_irrigation_planned
-      - input_number.zone_3_irrigation_planned
-      - input_number.zone_5_irrigation_planned
-      - input_number.zone_2_irrigation_planned
-  - target:
-      entity_id: input_datetime.irrigation_start_time
-    data:
-      time: 00:00:00
-    action: input_datetime.set_datetime
   alias: Irrigation - Cancel Planned Irrigation
-  description: ''
+  description: ""
 notify_all_residents_2:
   alias: Notify All Residents Defensive
-  description: Notify all resident devices; defensively avoids failures if a channel
+  description:
+    Notify all resident devices; defensively avoids failures if a channel
     is missing
   icon: mdi:bell-alert
   mode: single
@@ -1399,82 +1411,84 @@ notify_all_residents_2:
       default: false
   variables:
     recipients:
-    - name: Kirk
-      enabled: '{{ is_state(''input_boolean.kirk'', ''on'') }}'
-      svc: notify.mobile_app_iphonekf
-    - name: Karri
-      enabled: '{{ is_state(''input_boolean.karri'', ''on'') }}'
-      svc: notify.mobile_app_karris_new_iphone
-    - name: Quinn
-      enabled: '{{ is_state(''input_boolean.quinn'', ''on'') }}'
-      svc: notify.mobile_app_quinns_iphone
-    - name: Hanna
-      enabled: '{{ is_state(''input_boolean.hanna'', ''on'') }}'
-      svc: notify.mobile_app_hannas_iphone
-    - name: Will
-      enabled: '{{ is_state(''input_boolean.will'', ''on'') }}'
-      svc: notify.mobile_app_aw_hell_naw_jigsaw
+      - name: Kirk
+        enabled: "{{ is_state('input_boolean.kirk', 'on') }}"
+        svc: notify.mobile_app_iphonekf
+      - name: Karri
+        enabled: "{{ is_state('input_boolean.karri', 'on') }}"
+        svc: notify.mobile_app_karris_new_iphone
+      - name: Quinn
+        enabled: "{{ is_state('input_boolean.quinn', 'on') }}"
+        svc: notify.mobile_app_quinns_iphone
+      - name: Hanna
+        enabled: "{{ is_state('input_boolean.hanna', 'on') }}"
+        svc: notify.mobile_app_hannas_iphone
+      - name: Will
+        enabled: "{{ is_state('input_boolean.will', 'on') }}"
+        svc: notify.mobile_app_aw_hell_naw_jigsaw
   sequence:
-  - choose:
-    - conditions:
-      - condition: template
-        value_template: '{{ is_state(''input_boolean.kirk'', ''on'') }}'
-      sequence:
-      - choose:
+    - choose:
         - conditions:
-          - condition: template
-            value_template: '{{ not (dry_run | default(false)) }}'
+            - condition: template
+              value_template: "{{ is_state('input_boolean.kirk', 'on') }}"
           sequence:
-          - continue_on_error: true
-            data:
-              title: '{{ title }}'
-              message: '{{ message }}'
-              data:
-                attachment: '{{ attachment }}'
-                actions: '{{ actions }}'
-            action: notify.mobile_app_iphonekf
-        default:
-        - data:
-            message: '[DRY RUN] Would notify Kirk via notify.mobile_app_iphonekf:
-              {{ message }}'
-            level: info
-            logger: notify_all_residents
-          action: system_log.write
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: input_boolean.debug_mode
-        state: 'on'
-      sequence:
-      - stop: DEBUG MODE
-    alias: EXIT IF DEBUG MODE IS ON
-  - repeat:
-      for_each: '{{ recipients }}'
-      sequence:
-      - choose:
+            - choose:
+                - conditions:
+                    - condition: template
+                      value_template: "{{ not (dry_run | default(false)) }}"
+                  sequence:
+                    - continue_on_error: true
+                      data:
+                        title: "{{ title }}"
+                        message: "{{ message }}"
+                        data:
+                          attachment: "{{ attachment }}"
+                          actions: "{{ actions }}"
+                      action: notify.mobile_app_iphonekf
+              default:
+                - data:
+                    message:
+                      "[DRY RUN] Would notify Kirk via notify.mobile_app_iphonekf:
+                      {{ message }}"
+                    level: info
+                    logger: notify_all_residents
+                  action: system_log.write
+    - choose:
         - conditions:
-          - condition: template
-            value_template: '{{ repeat.item.name != ''Kirk'' }}'
-          - condition: template
-            value_template: '{{ repeat.item.enabled | bool }}'
+            - condition: state
+              entity_id: input_boolean.debug_mode
+              state: "on"
           sequence:
+            - stop: DEBUG MODE
+      alias: EXIT IF DEBUG MODE IS ON
+    - repeat:
+        for_each: "{{ recipients }}"
+        sequence:
           - choose:
-            - conditions:
-              - condition: template
-                value_template: '{{ not (dry_run | default(false)) }}'
-              sequence:
-              - continue_on_error: true
-                data:
-                  title: '{{ title }}'
-                  message: '{{ message }}'
-                  data:
-                    attachment: '{{ attachment }}'
-                    actions: '{{ actions }}'
-                action: '{{ repeat.item.svc }}'
-            default:
-            - data:
-                message: '[DRY RUN] Would notify {{ repeat.item.name }} via {{ repeat.item.svc
-                  }}: {{ message }}'
-                level: info
-                logger: notify_all_residents
-              action: system_log.write
+              - conditions:
+                  - condition: template
+                    value_template: "{{ repeat.item.name != 'Kirk' }}"
+                  - condition: template
+                    value_template: "{{ repeat.item.enabled | bool }}"
+                sequence:
+                  - choose:
+                      - conditions:
+                          - condition: template
+                            value_template: "{{ not (dry_run | default(false)) }}"
+                        sequence:
+                          - continue_on_error: true
+                            data:
+                              title: "{{ title }}"
+                              message: "{{ message }}"
+                              data:
+                                attachment: "{{ attachment }}"
+                                actions: "{{ actions }}"
+                            action: "{{ repeat.item.svc }}"
+                    default:
+                      - data:
+                          message:
+                            "[DRY RUN] Would notify {{ repeat.item.name }} via {{ repeat.item.svc
+                            }}: {{ message }}"
+                          level: info
+                          logger: notify_all_residents
+                        action: system_log.write

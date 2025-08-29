@@ -11,7 +11,7 @@
             - condition: state
               entity_id: number.sleepnumber_master_karri_firmness
               state: "100.0"
-        - service: number.set_value
+        - action: number.set_value
           target:
             entity_id: number.sleepnumber_master_karri_firmness
           data:
@@ -22,13 +22,13 @@
             - condition: state
               entity_id: number.sleepnumber_master_karri_firmness
               state: "{{ states('input_number.sleepnumber_karri') }}"
-        - service: number.set_value
+        - action: number.set_value
           target:
             entity_id: number.sleepnumber_master_karri_firmness
           data:
             value: "{{ states('input_number.sleepnumber_karri') }}"
       stop_cover:
-        - service: button.press
+        - action: button.press
           target:
             entity_id: button.sleepnumber_master_stop_pump
       icon_template: >-
@@ -48,7 +48,7 @@
             - condition: state
               entity_id: number.sleepnumber_master_kirk_firmness
               state: "100.0"
-        - service: number.set_value
+        - action: number.set_value
           target:
             entity_id: number.sleepnumber_master_kirk_firmness
           data:
@@ -59,13 +59,13 @@
             - condition: state
               entity_id: number.sleepnumber_master_kirk_firmness
               state: "{{ states('input_number.sleepnumber_kirk') }}"
-        - service: number.set_value
+        - action: number.set_value
           target:
             entity_id: number.sleepnumber_master_kirk_firmness
           data:
             value: "{{ states('input_number.sleepnumber_kirk') | float }}"
       stop_cover:
-        - service: button.press
+        - action: button.press
           target:
             entity_id: button.sleepnumber_master_stop_pump
       icon_template: >-

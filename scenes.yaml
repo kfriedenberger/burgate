@@ -1,4 +1,4 @@
-- id: '1737984582117'
+- id: "1737984582117"
   name: Bedtime
   entities:
     fan.back_porch_fan:
@@ -9,185 +9,181 @@
       preset_mode:
       friendly_name: Back Porch Fan
       supported_features: 53
-      state: 'off'
+      state: "off"
     light.back_porch_can_lights:
       supported_color_modes:
-      - onoff
+        - onoff
       color_mode:
       icon: mdi:light-recessed
       friendly_name: Back Porch Can Lights
       supported_features: 0
-      state: 'off'
+      state: "off"
     light.family_light_1:
       supported_color_modes:
-      - onoff
+        - onoff
       color_mode:
       icon: mdi:lamp
       friendly_name: Family Light
       supported_features: 0
-      state: 'off'
+      state: "off"
     light.foyer_light:
       supported_color_modes:
-      - onoff
+        - onoff
       color_mode:
       icon: mdi:lamp
       friendly_name: Foyer Light
       supported_features: 0
-      state: 'off'
+      state: "off"
     light.parlor_light:
       supported_color_modes:
-      - onoff
+        - onoff
       color_mode:
       icon: mdi:lamp
       friendly_name: Parlor Light
       supported_features: 0
-      state: 'off'
+      state: "off"
     light.christmas_lights:
       supported_color_modes:
-      - onoff
+        - onoff
       icon: mdi:string-lights
       friendly_name: Christmas Lights
       supported_features: 0
       state: unavailable
     light.christmas_tree:
       supported_color_modes:
-      - onoff
+        - onoff
       icon: mdi:pine-tree
       friendly_name: Christmas Tree
       supported_features: 0
       state: unavailable
     light.parlor_tree:
       supported_color_modes:
-      - onoff
+        - onoff
       icon: mdi:pine-tree
       friendly_name: Parlor Tree
       supported_features: 0
       state: unavailable
     light.kitchen_led:
       supported_color_modes:
-      - onoff
+        - onoff
       color_mode:
       friendly_name: Kitchen LEDs
       supported_features: 0
-      state: 'off'
+      state: "off"
     light.light_backyard_fan_yellow:
       effect_list:
       supported_color_modes:
-      - onoff
+        - onoff
       effect:
       color_mode:
       raw_state: false
       icon: mdi:ceiling-fan-light
       friendly_name: Back Porch Fan Light (Yellow)
       supported_features: 4
-      state: 'off'
+      state: "off"
     light.backyard_spotlights:
       supported_color_modes:
-      - onoff
+        - onoff
       color_mode:
       icon: mdi:spotlight-beam
       friendly_name: Backyard Spotlights
       supported_features: 0
-      state: 'off'
+      state: "off"
     light.front_porch_light:
       supported_color_modes:
-      - onoff
+        - onoff
       color_mode:
       icon: mdi:coach-lamp
       friendly_name: Front Porch Light
       supported_features: 0
-      state: 'off'
+      state: "off"
     light.ratgdo_karri_light:
       supported_color_modes:
-      - onoff
+        - onoff
       color_mode:
       friendly_name: Garage Light - Karri
       supported_features: 0
-      state: 'off'
+      state: "off"
     light.ratgdo_kirk_light:
       supported_color_modes:
-      - onoff
+        - onoff
       color_mode:
       friendly_name: Garage Light - Kirk
       supported_features: 0
-      state: 'off'
+      state: "off"
     light.garage_lights:
       supported_color_modes:
-      - onoff
+        - onoff
       color_mode:
       friendly_name: Garage Lights
       supported_features: 0
-      state: 'off'
+      state: "off"
     light.light_backyard_fan_white:
       effect_list:
       supported_color_modes:
-      - brightness
+        - brightness
       effect:
       color_mode:
-      brightness:
       raw_state: false
       icon: mdi:ceiling-fan-light
       friendly_name: Light - Backyard Fan (White)
       supported_features: 4
-      state: 'off'
+      state: "off"
     light.omnilogic_pool_color_lights:
       effect_list:
-      - VOODOO_LOUNGE
-      - DEEP_BLUE_SEA
-      - ROYAL_BLUE
-      - AFTERNOON_SKY
-      - AQUA_GREEN
-      - EMERALD
-      - CLOUD_WHITE
-      - WARM_RED
-      - FLAMINGO
-      - VIVID_VIOLET
-      - SANGRIA
-      - TWILIGHT
-      - TRANQUILITY
-      - GEMSTONE
-      - USA
-      - MARDI_GRAS
-      - COOL_CABARET
-      - YELLOW
-      - ORANGE
-      - GOLD
-      - MINT
-      - TEAL
-      - BURNT_ORANGE
-      - PURE_WHITE
-      - CRISP_WHITE
-      - WARM_WHITE
-      - BRIGHT_YELLOW
+        - VOODOO_LOUNGE
+        - DEEP_BLUE_SEA
+        - ROYAL_BLUE
+        - AFTERNOON_SKY
+        - AQUA_GREEN
+        - EMERALD
+        - CLOUD_WHITE
+        - WARM_RED
+        - FLAMINGO
+        - VIVID_VIOLET
+        - SANGRIA
+        - TWILIGHT
+        - TRANQUILITY
+        - GEMSTONE
+        - USA
+        - MARDI_GRAS
+        - COOL_CABARET
+        - YELLOW
+        - ORANGE
+        - GOLD
+        - MINT
+        - TEAL
+        - BURNT_ORANGE
+        - PURE_WHITE
+        - CRISP_WHITE
+        - WARM_WHITE
+        - BRIGHT_YELLOW
       supported_color_modes:
-      - brightness
-      effect:
-      color_mode:
-      brightness:
+        - brightness
       omni_system_id: 7
       omni_bow_id: 1
-      omnilogic_state: 'Off'
+      omnilogic_state: "Off"
       speed: One Times
       icon: mdi:bulkhead-light
       friendly_name: Pool Lights
       supported_features: 4
-      state: 'off'
+      state: "off"
     climate.first_floor_thermostat:
       hvac_modes:
-      - 'off'
-      - heat
-      - cool
-      - heat_cool
+        - "off"
+        - heat
+        - cool
+        - heat_cool
       min_temp: 32
       max_temp: 122
       fan_modes:
-      - Auto low
-      - Low
-      - Circulation
+        - Auto low
+        - Low
+        - Circulation
       preset_modes:
-      - none
-      - Energy heat
-      - Energy cool
+        - none
+        - Energy heat
+        - Energy cool
       current_temperature: 75
       temperature:
       target_temp_high: 71
@@ -197,25 +193,25 @@
       hvac_action: idle
       preset_mode: none
       fan_state: Idle / off
-      friendly_name: 'First Floor Thermostat '
+      friendly_name: "First Floor Thermostat "
       supported_features: 411
       state: heat_cool
     climate.second_floor_thermostat:
       hvac_modes:
-      - 'off'
-      - heat
-      - cool
-      - heat_cool
+        - "off"
+        - heat
+        - cool
+        - heat_cool
       min_temp: 32
       max_temp: 122
       fan_modes:
-      - Auto low
-      - Low
-      - Circulation
+        - Auto low
+        - Low
+        - Circulation
       preset_modes:
-      - none
-      - Energy heat
-      - Energy cool
+        - none
+        - Energy heat
+        - Energy cool
       current_temperature: 70
       temperature:
       target_temp_high: 71
@@ -225,7 +221,7 @@
       hvac_action: idle
       preset_mode: none
       fan_state: Idle / off
-      friendly_name: 'Second Floor Thermostat '
+      friendly_name: "Second Floor Thermostat "
       supported_features: 411
       state: heat_cool
   icon: mdi:bed
@@ -262,77 +258,77 @@
       entity_only: true
     light.omnilogic_pool_color_lights:
       entity_only: true
-- id: '1737985241718'
+- id: "1737985241718"
   name: Dusk
   entities:
     light.foyer_light:
       supported_color_modes:
-      - onoff
+        - onoff
       color_mode: onoff
       icon: mdi:lamp
       friendly_name: Foyer Light
       supported_features: 0
-      state: 'on'
+      state: "on"
     light.family_light_1:
       supported_color_modes:
-      - onoff
+        - onoff
       color_mode: onoff
       icon: mdi:lamp
       friendly_name: Family Light
       supported_features: 0
-      state: 'on'
+      state: "on"
     light.karri_s_driveway_light:
       min_color_temp_kelvin: 2000
       max_color_temp_kelvin: 6493
       min_mireds: 154
       max_mireds: 500
       supported_color_modes:
-      - color_temp
-      - xy
+        - color_temp
+        - xy
       color_mode: color_temp
       brightness: 255
       color_temp_kelvin: 4000
       color_temp: 250
       hs_color:
-      - 26.812
-      - 34.87
+        - 26.812
+        - 34.87
       rgb_color:
-      - 255
-      - 206
-      - 166
+        - 255
+        - 206
+        - 166
       xy_color:
-      - 0.42
-      - 0.365
+        - 0.42
+        - 0.365
       icon: mdi:outdoor-lamp
       friendly_name: Karri's Driveway Light
       supported_features: 40
-      state: 'on'
+      state: "on"
     light.kirk_s_driveway_light:
       min_color_temp_kelvin: 2000
       max_color_temp_kelvin: 6493
       min_mireds: 154
       max_mireds: 500
       supported_color_modes:
-      - color_temp
-      - xy
+        - color_temp
+        - xy
       color_mode: color_temp
       brightness: 255
       color_temp_kelvin: 4000
       color_temp: 250
       hs_color:
-      - 26.812
-      - 34.87
+        - 26.812
+        - 34.87
       rgb_color:
-      - 255
-      - 206
-      - 166
+        - 255
+        - 206
+        - 166
       xy_color:
-      - 0.42
-      - 0.365
+        - 0.42
+        - 0.365
       icon: mdi:outdoor-lamp
       friendly_name: Kirk's Driveway Light
       supported_features: 40
-      state: 'on'
+      state: "on"
   icon: mdi:weather-sunset-down
   metadata:
     light.foyer_light:
@@ -343,7 +339,7 @@
       entity_only: true
     light.kirk_s_driveway_light:
       entity_only: true
-- id: '1737985477761'
+- id: "1737985477761"
   name: Dawn
   entities:
     light.kirk_s_driveway_light:
@@ -352,54 +348,40 @@
       min_mireds: 154
       max_mireds: 500
       supported_color_modes:
-      - color_temp
-      - xy
-      color_mode:
-      brightness:
-      color_temp_kelvin:
-      color_temp:
-      hs_color:
-      rgb_color:
-      xy_color:
+        - color_temp
+        - xy
       icon: mdi:outdoor-lamp
       friendly_name: Kirk's Driveway Light
       supported_features: 40
-      state: 'off'
+      state: "off"
     light.karri_s_driveway_light:
       min_color_temp_kelvin: 2000
       max_color_temp_kelvin: 6493
       min_mireds: 154
       max_mireds: 500
       supported_color_modes:
-      - color_temp
-      - xy
-      color_mode:
-      brightness:
-      color_temp_kelvin:
-      color_temp:
-      hs_color:
-      rgb_color:
-      xy_color:
+        - color_temp
+        - xy
       icon: mdi:outdoor-lamp
       friendly_name: Karri's Driveway Light
       supported_features: 40
-      state: 'off'
+      state: "off"
     climate.first_floor_thermostat:
       hvac_modes:
-      - 'off'
-      - heat
-      - cool
-      - heat_cool
+        - "off"
+        - heat
+        - cool
+        - heat_cool
       min_temp: 32
       max_temp: 122
       fan_modes:
-      - Auto low
-      - Low
-      - Circulation
+        - Auto low
+        - Low
+        - Circulation
       preset_modes:
-      - none
-      - Energy heat
-      - Energy cool
+        - none
+        - Energy heat
+        - Energy cool
       current_temperature: 75
       temperature:
       target_temp_high: 75
@@ -409,25 +391,25 @@
       hvac_action: idle
       preset_mode: none
       fan_state: Idle / off
-      friendly_name: 'First Floor Thermostat '
+      friendly_name: "First Floor Thermostat "
       supported_features: 411
       state: heat_cool
     climate.second_floor_thermostat:
       hvac_modes:
-      - 'off'
-      - heat
-      - cool
-      - heat_cool
+        - "off"
+        - heat
+        - cool
+        - heat_cool
       min_temp: 32
       max_temp: 122
       fan_modes:
-      - Auto low
-      - Low
-      - Circulation
+        - Auto low
+        - Low
+        - Circulation
       preset_modes:
-      - none
-      - Energy heat
-      - Energy cool
+        - none
+        - Energy heat
+        - Energy cool
       current_temperature: 70
       temperature:
       target_temp_high: 73
@@ -437,7 +419,7 @@
       hvac_action: idle
       preset_mode: none
       fan_state: Idle / off
-      friendly_name: 'Second Floor Thermostat '
+      friendly_name: "Second Floor Thermostat "
       supported_features: 411
       state: heat_cool
   icon: mdi:weather-sunset-up
@@ -446,11 +428,11 @@
       entity_only: true
     light.karri_s_driveway_light:
       entity_only: true
-- id: '1737985985341'
+- id: "1737985985341"
   name: Swimming
   entities:
     timer.swim_mode:
-      duration: '1:30:00'
+      duration: "1:30:00"
       editable: true
       restore: true
       icon: mdi:swim
@@ -459,11 +441,11 @@
     switch.omnilogic_pool_filter_pump:
       omni_system_id: 3
       omni_bow_id: 1
-      filter_state: 'On'
+      filter_state: "On"
       why_on: Manual On
       icon: mdi:pump
       friendly_name: Pool Pump
-      state: 'on'
+      state: "on"
     number.omnilogic_pool_filter_pump_speed:
       min: 50
       max: 100
@@ -480,21 +462,21 @@
       unit_of_measurement: Percent
       icon: mdi:gauge
       friendly_name: Pool Pump Speed
-      state: '100'
+      state: "100"
     switch.omnilogic_pool_bubbler:
       omni_system_id: 6
       omni_bow_id: 1
       why_on: 5
       icon: mdi:fountain
       friendly_name: Bubbler
-      state: 'on'
+      state: "on"
     switch.omnilogic_spa_spillover:
       omni_system_id: 12
       omni_bow_id: 2
       why_on: 5
       icon: mdi:fountain
       friendly_name: Spillover
-      state: 'on'
+      state: "on"
   icon: mdi:swim
   metadata:
     timer.swim_mode:
@@ -507,11 +489,11 @@
       entity_only: true
     switch.omnilogic_spa_spillover:
       entity_only: true
-- id: '1737995916325'
+- id: "1737995916325"
   name: Hot Tubbing
   entities:
     timer.swim_mode:
-      duration: '1:30:00'
+      duration: "1:30:00"
       editable: true
       restore: true
       icon: mdi:swim
@@ -533,195 +515,189 @@
       unit_of_measurement: Percent
       icon: mdi:gauge
       friendly_name: Hot Tub Filter Pump Speed
-      state: '100'
+      state: "100"
     switch.omnilogic_spa_filter_pump:
       omni_system_id: 9
       omni_bow_id: 2
-      filter_state: 'On'
-      why_on: 'On'
+      filter_state: "On"
+      why_on: "On"
       icon: mdi:pump-off
       friendly_name: Hot Tub Filter Pump
-      state: 'on'
+      state: "on"
     switch.omnilogic_spa_spillover:
       omni_system_id: 12
       omni_bow_id: 2
       why_on: 7
       icon: mdi:fountain
       friendly_name: Hot Tub Spillover
-      state: 'off'
+      state: "off"
     switch.omnilogic_spa_blower:
       omni_system_id: 13
       omni_bow_id: 2
       icon: mdi:hot-tub
       friendly_name: Hot Tub Jets
-      state: 'off'
+      state: "off"
     water_heater.omnilogic_spa_heater:
       min_temp: 55
       max_temp: 104
       operation_list:
-      - 'on'
-      - 'off'
+        - "on"
+        - "off"
       current_temperature:
       temperature: 96
       target_temp_high:
       target_temp_low:
-      operation_mode: 'on'
+      operation_mode: "on"
       omni_system_id: 10
       omni_bow_id: 2
       solar_set_point: 103
-      omni_heater_gas_enabled: 'yes'
+      omni_heater_gas_enabled: "yes"
       omni_heater_gas_system_id: 11
       omni_heater_gas_bow_id: 2
-      omni_heater_gas_state: 'On'
+      omni_heater_gas_state: "On"
       omni_heater_gas_sensor_temp: 65535
       friendly_name: Hot Tub Heater
       supported_features: 11
-      state: 'on'
+      state: "on"
   icon: mdi:hot-tub
   metadata: {}
-- id: '1744208924095'
+- id: "1744208924095"
   name: Pool Shutdown
   entities:
     light.back_porch_can_lights:
       supported_color_modes:
-      - onoff
+        - onoff
       color_mode:
       icon: mdi:light-recessed
       friendly_name: Back Porch Can Lights
       supported_features: 0
-      state: 'off'
+      state: "off"
     light.light_backyard_fan_yellow:
       effect_list:
       supported_color_modes:
-      - onoff
+        - onoff
       effect:
       color_mode:
       raw_state: false
       icon: mdi:ceiling-fan-light
       friendly_name: Back Porch Fan Light (Yellow)
       supported_features: 4
-      state: 'off'
+      state: "off"
     light.backyard_spotlights:
       supported_color_modes:
-      - onoff
+        - onoff
       color_mode:
       icon: mdi:spotlight-beam
       friendly_name: Backyard Spotlights
       supported_features: 0
-      state: 'off'
+      state: "off"
     light.light_backyard_fan_white:
       effect_list:
       supported_color_modes:
-      - brightness
-      effect:
-      color_mode:
-      brightness:
+        - brightness
       raw_state: false
       friendly_name: Light - Backyard Fan (White)
       supported_features: 4
-      state: 'off'
+      state: "off"
     light.omnilogic_pool_color_lights:
       effect_list:
-      - VOODOO_LOUNGE
-      - DEEP_BLUE_SEA
-      - ROYAL_BLUE
-      - AFTERNOON_SKY
-      - AQUA_GREEN
-      - EMERALD
-      - CLOUD_WHITE
-      - WARM_RED
-      - FLAMINGO
-      - VIVID_VIOLET
-      - SANGRIA
-      - TWILIGHT
-      - TRANQUILITY
-      - GEMSTONE
-      - USA
-      - MARDI_GRAS
-      - COOL_CABARET
-      - YELLOW
-      - ORANGE
-      - GOLD
-      - MINT
-      - TEAL
-      - BURNT_ORANGE
-      - PURE_WHITE
-      - CRISP_WHITE
-      - WARM_WHITE
-      - BRIGHT_YELLOW
+        - VOODOO_LOUNGE
+        - DEEP_BLUE_SEA
+        - ROYAL_BLUE
+        - AFTERNOON_SKY
+        - AQUA_GREEN
+        - EMERALD
+        - CLOUD_WHITE
+        - WARM_RED
+        - FLAMINGO
+        - VIVID_VIOLET
+        - SANGRIA
+        - TWILIGHT
+        - TRANQUILITY
+        - GEMSTONE
+        - USA
+        - MARDI_GRAS
+        - COOL_CABARET
+        - YELLOW
+        - ORANGE
+        - GOLD
+        - MINT
+        - TEAL
+        - BURNT_ORANGE
+        - PURE_WHITE
+        - CRISP_WHITE
+        - WARM_WHITE
+        - BRIGHT_YELLOW
       supported_color_modes:
-      - brightness
-      effect:
-      color_mode:
-      brightness:
+        - brightness
       omni_system_id: 7
       omni_bow_id: 1
-      omnilogic_state: 'Off'
+      omnilogic_state: "Off"
       speed: One Times
       icon: mdi:bulkhead-light
       friendly_name: Pool Lights
       supported_features: 4
-      state: 'off'
+      state: "off"
     switch.omnilogic_spa_filter_pump:
       omni_system_id: 9
       omni_bow_id: 2
-      filter_state: 'Off'
-      why_on: 'Off'
+      filter_state: "Off"
+      why_on: "Off"
       icon: mdi:pump-off
       friendly_name: Hot Tub Pump
-      state: 'off'
+      state: "off"
     switch.omnilogic_pool_filter_pump:
       omni_system_id: 3
       omni_bow_id: 1
-      filter_state: 'Off'
-      why_on: 'Off'
+      filter_state: "Off"
+      why_on: "Off"
       icon: mdi:pump-off
       friendly_name: Pool Pump
-      state: 'off'
+      state: "off"
     water_heater.omnilogic_spa_heater:
       min_temp: 55
       max_temp: 104
       operation_list:
-      - 'on'
-      - 'off'
+        - "on"
+        - "off"
       current_temperature:
       temperature: 97
       target_temp_high:
       target_temp_low:
-      operation_mode: 'off'
+      operation_mode: "off"
       omni_system_id: 10
       omni_bow_id: 2
       solar_set_point:
-      omni_heater_gas_enabled: 'yes'
+      omni_heater_gas_enabled: "yes"
       omni_heater_gas_system_id: 11
       omni_heater_gas_bow_id: 2
-      omni_heater_gas_state: 'Off'
+      omni_heater_gas_state: "Off"
       omni_heater_gas_sensor_temp: 65535
       friendly_name: Hot Tub Heater
       supported_features: 11
-      state: 'off'
+      state: "off"
     water_heater.omnilogic_pool_heater:
       min_temp: 55
       max_temp: 104
       operation_list:
-      - 'on'
-      - 'off'
+        - "on"
+        - "off"
       current_temperature:
       temperature: 80
       target_temp_high:
       target_temp_low:
-      operation_mode: 'off'
+      operation_mode: "off"
       omni_system_id: 4
       omni_bow_id: 1
       solar_set_point: 81
-      omni_heater_gas_enabled: 'yes'
+      omni_heater_gas_enabled: "yes"
       omni_heater_gas_system_id: 11
       omni_heater_gas_bow_id: 2
-      omni_heater_gas_state: 'Off'
+      omni_heater_gas_state: "Off"
       omni_heater_gas_sensor_temp: 65535
       friendly_name: Pool Heater
       supported_features: 11
-      state: 'off'
+      state: "off"
     timer.swim_mode:
       duration: 0:15:00
       editable: true
@@ -753,40 +729,40 @@
       entity_only: true
     timer.swim_mode:
       entity_only: true
-- id: '1755994696135'
+- id: "1755994696135"
   name: Actually Dark
   entities:
     light.omnilogic_pool_color_lights:
       effect_list:
-      - VOODOO_LOUNGE
-      - DEEP_BLUE_SEA
-      - ROYAL_BLUE
-      - AFTERNOON_SKY
-      - AQUA_GREEN
-      - EMERALD
-      - CLOUD_WHITE
-      - WARM_RED
-      - FLAMINGO
-      - VIVID_VIOLET
-      - SANGRIA
-      - TWILIGHT
-      - TRANQUILITY
-      - GEMSTONE
-      - USA
-      - MARDI_GRAS
-      - COOL_CABARET
-      - YELLOW
-      - ORANGE
-      - GOLD
-      - MINT
-      - TEAL
-      - BURNT_ORANGE
-      - PURE_WHITE
-      - CRISP_WHITE
-      - WARM_WHITE
-      - BRIGHT_YELLOW
+        - VOODOO_LOUNGE
+        - DEEP_BLUE_SEA
+        - ROYAL_BLUE
+        - AFTERNOON_SKY
+        - AQUA_GREEN
+        - EMERALD
+        - CLOUD_WHITE
+        - WARM_RED
+        - FLAMINGO
+        - VIVID_VIOLET
+        - SANGRIA
+        - TWILIGHT
+        - TRANQUILITY
+        - GEMSTONE
+        - USA
+        - MARDI_GRAS
+        - COOL_CABARET
+        - YELLOW
+        - ORANGE
+        - GOLD
+        - MINT
+        - TEAL
+        - BURNT_ORANGE
+        - PURE_WHITE
+        - CRISP_WHITE
+        - WARM_WHITE
+        - BRIGHT_YELLOW
       supported_color_modes:
-      - brightness
+        - brightness
       color_mode: brightness
       brightness: 255
       omni_system_id: 7
@@ -796,7 +772,7 @@
       icon: mdi:bulkhead-light
       friendly_name: Pool Lights
       supported_features: 4
-      state: 'on'
+      state: "on"
   icon: mdi:theme-light-dark
   metadata:
     light.omnilogic_pool_color_lights:
