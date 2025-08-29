@@ -1,0 +1,3459 @@
+- id: 118afb36f63a4d8390330c3cf9593d91
+  alias: House Alarm - On Disarm, notify and stop ticking in foyer
+  description: ''
+  triggers:
+  - entity_id:
+    - alarm_control_panel.alarmo
+    trigger: state
+    to: disarmed
+  actions:
+  - data: {}
+    alias: Turn off siren
+    action: script.house_alarm_turn_off
+  - if:
+    - condition: state
+      entity_id: media_player.foyer_speaker
+      state: playing
+    then:
+    - action: media_player.media_stop
+      metadata: {}
+      data: {}
+      target:
+        entity_id: media_player.foyer_speaker
+    alias: Stop Foyer ticking if needed
+    enabled: false
+  - alias: Stop mudroom ticking if needed
+    if:
+    - condition: state
+      entity_id: media_player.mudroom_speaker
+      state: playing
+    then:
+    - action: media_player.media_stop
+      metadata: {}
+      data: {}
+      target:
+        entity_id: media_player.mudroom_speaker
+  - if:
+    - condition: time
+      after: 09:00:00
+      before: 02:00:00
+    then:
+    - alias: Announce alarm disarmed
+      data:
+        speaker: kitchen
+        message: Alarm disarmed
+      action: script.announce_to_google_speaker
+      enabled: true
+    alias: Announce disarmed if not late
+- id: f781b2a0a6c245c98daccfa1641879d1
+  alias: House Alarm - On Alarm Trigger, Turn on Siren
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: alarm_control_panel.alarmo
+    to: triggered
+  action:
+  - service: script.notify_residents_critical
+    data:
+      message: House Alarm Triggered
+      title: House Alarm
+    alias: Notify all residents of Alarm Event
+  - alias: Announce alarm triggered
+    service: script.announce_to_google_speaker
+    data:
+      speaker: kitchen
+      message: House Alarm Triggered, Police Notified!
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+  - service: script.house_alarm_turn_on
+    data: {}
+    alias: Turn on House Siren
+- id: efbb8954de8045aaaa0aa814bde515ae
+  alias: House Alarm - On zone open, Trigger Alarm
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.will_window_1_contact
+    - binary_sensor.will_window_2_contact
+    - binary_sensor.will_window_3_contact
+    - binary_sensor.breakfast_window_1_contact
+    - binary_sensor.breakfast_window_2_contact
+    - binary_sensor.kitchen_window_1_contact
+    - binary_sensor.kitchen_window_2_contact
+    - binary_sensor.kitchen_window_3_contact
+    - binary_sensor.primary_window_1_contact
+    - binary_sensor.primary_window_2_contact
+    - binary_sensor.primary_window_3_contact
+    - binary_sensor.back_contact
+    - binary_sensor.front_contact
+    - binary_sensor.mudroom_door_contact
+    to: 'on'
+  condition:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: alarm_control_panel.alarmo
+      state: armed_home
+    - condition: state
+      entity_id: alarm_control_panel.alarmo
+      state: armed_away
+  action:
+  - service: alarm_control_panel.alarm_trigger
+    entity_id: alarm_control_panel.alarmo
+- id: '1679257926710'
+  alias: Zone State Change - Kitchen Announcement
+  description: ''
+  triggers:
+  - entity_id:
+    - cover.ratgdo_karri_door
+    - cover.ratgdo_kirk_door
+    to: opening
+    trigger: state
+  - trigger: state
+    entity_id:
+    - binary_sensor.front_contact
+    - binary_sensor.back_contact
+    - binary_sensor.mudroom_door_contact
+    to: 'on'
+  - trigger: state
+    entity_id:
+    - binary_sensor.gate_east_contact
+    - binary_sensor.left_pool_gate_contact
+    - binary_sensor.gate_south_contact
+    to: 'on'
+  conditions:
+  - condition: state
+    entity_id: alarm_control_panel.alarmo
+    state: disarmed
+  actions:
+  - alias: Notify for Garage Doors
+    if:
+    - condition: template
+      value_template: '  {{ (trigger.to_state.name == "Karri''s Garage") or (trigger.to_state.name
+        == "Kirk''s Garage") }}'
+    then:
+    - action: script.notify_house
+      metadata: {}
+      data:
+        message: '{{ trigger.to_state.name }}'
+      alias: Notify for House doors
+  - alias: Notify for Pool Gates
+    if:
+    - condition: template
+      value_template: '  {{ (trigger.to_state.name == "Left Pool Gate") or (trigger.to_state.name
+        == "Right Pool Gate") or (trigger.to_state.name == "Back Pool Gate") }}'
+    then:
+    - action: script.notify_house
+      metadata: {}
+      data:
+        message: '{{ trigger.to_state.name }}'
+      alias: Notify for Pool Gates
+  - alias: Notify for House doors if Kids Mode on
+    if:
+    - condition: template
+      value_template: '  {{ (states(''input_boolean.kid_mode'')==''on'') and ((trigger.to_state.name
+        == ''Front Door'') or (trigger.to_state.name == ''Mudroom Door'') or (trigger.to_state.name
+        == ''Back Door'')) }}'
+    then:
+    - action: script.notify_house
+      metadata: {}
+      data:
+        message: '{{ trigger.to_state.name }}'
+      alias: Notify for House doors
+  mode: single
+- id: '1680134780804'
+  alias: House Alarm - On Pending or Arming, play ticking sound
+  description: ''
+  triggers:
+  - entity_id:
+    - alarm_control_panel.alarmo
+    to: pending
+    trigger: state
+  - entity_id:
+    - alarm_control_panel.alarmo
+    to: arming
+    trigger: state
+  conditions: []
+  actions:
+  - action: media_player.volume_set
+    metadata: {}
+    data:
+      volume_level: 0.5
+    target:
+      area_id:
+      - mudroom
+  - alias: Play ticking on mudroom speaker
+    target:
+      entity_id: media_player.mudroom_speaker
+    data:
+      media_content_id: media-source://media_source/local/ClockTick.mp3
+      media_content_type: audio/mpeg
+    metadata:
+      title: ClockTick.mp3
+      thumbnail:
+      media_class: music
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://media_source
+    action: media_player.play_media
+  mode: single
+- id: '1680649265777'
+  alias: House Alarm - Announce Armed Home
+  description: ''
+  triggers:
+  - entity_id:
+    - alarm_control_panel.alarmo
+    to: armed_home
+    trigger: state
+  conditions: []
+  actions:
+  - alias: Announce alarm set to armed home
+    data:
+      speaker: kitchen
+      message: Alarm set to Armed Home
+    action: script.announce_to_google_speaker
+  mode: single
+- id: '1682521302872'
+  alias: Primary Bedroom - Set Karri bed firmness to sleepnumber
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.sleepnumber_master_karri_is_in_bed
+    to: 'on'
+  condition:
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: number.sleepnumber_master_karri_firmness
+      state: '{{ states(''input_number.sleepnumber_karri'')|int }}'
+  - condition: time
+    after: '22:00:00'
+    before: 04:00:00
+    weekday:
+    - sat
+    - fri
+    - thu
+    - wed
+    - tue
+    - mon
+    - sun
+    enabled: true
+  action:
+  - service: number.set_value
+    data:
+      value: '{{ states(''input_number.sleepnumber_karri'')|int }}'
+    target:
+      entity_id: number.sleepnumber_master_karri_firmness
+  mode: single
+- id: '1682521468552'
+  alias: Primary Bedroom - Set Kirk bed firmness to sleepnumber
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.sleepnumber_master_kirk_is_in_bed
+    to: 'on'
+  condition:
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: number.sleepnumber_master_kirk_firmness
+      state: '{{ states(''input_number.sleepnumber_kirk'')|int }}'
+  - condition: time
+    after: '22:00:00'
+    before: 04:00:00
+    weekday:
+    - sun
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+    - sat
+  action:
+  - service: number.set_value
+    data:
+      value: '{{ states(''input_number.sleepnumber_kirk'')|int }}'
+    target:
+      entity_id: number.sleepnumber_master_kirk_firmness
+  mode: single
+- id: '1682521550219'
+  alias: Primary Bedroom - Turn off sleep mode when vacant timer ends
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - timer.master_bed_vacant_timer
+    to: idle
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: binary_sensor.sleepnumber_master_kirk_is_in_bed
+      state: 'off'
+      for:
+        hours: 0
+        minutes: 15
+        seconds: 0
+    - condition: state
+      entity_id: binary_sensor.sleepnumber_master_karri_is_in_bed
+      state: 'off'
+      for:
+        hours: 0
+        minutes: 15
+        seconds: 0
+    - condition: time
+      after: 06:00:00
+      before: '21:00:00'
+      weekday:
+      - sun
+      - mon
+      - tue
+      - thu
+      - wed
+      - fri
+      - sat
+  action:
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.sleep_mode
+    data: {}
+  mode: single
+- id: '1682521597134'
+  alias: Primary Bedroom - Start bed vacant timer
+  description: ''
+  triggers:
+  - entity_id:
+    - binary_sensor.sleepnumber_master_karri_is_in_bed
+    to: 'off'
+    trigger: state
+  - entity_id:
+    - binary_sensor.sleepnumber_master_kirk_is_in_bed
+    to: 'off'
+    trigger: state
+  conditions:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.sleep_mode
+      state: 'on'
+    - alias: After 6AM and before 2pm
+      condition: time
+      after: 06:00:00
+      before: '14:00:00'
+    - condition: state
+      entity_id: binary_sensor.sleepnumber_master_kirk_is_in_bed
+      state: 'off'
+    - condition: state
+      entity_id: binary_sensor.sleepnumber_master_karri_is_in_bed
+      state: 'off'
+  actions:
+  - data:
+      duration: 0
+    target:
+      entity_id: timer.master_bed_vacant_timer
+    action: timer.start
+  mode: single
+- id: '1682521677832'
+  alias: Primary Bedroom - Turn on Sleep Mode when activated passively
+  description: ''
+  triggers:
+  - entity_id:
+    - number.sleepnumber_master_karri_firmness
+    alias: When Karri bed firmness changes
+    trigger: state
+  - entity_id:
+    - number.sleepnumber_master_kirk_firmness
+    alias: When Kirk bed firmness changes
+    trigger: state
+  - trigger: state
+    entity_id:
+    - input_boolean.karri
+  - trigger: state
+    entity_id:
+    - input_boolean.kirk
+  conditions:
+  - condition: and
+    conditions:
+    - condition: time
+      weekday:
+      - sat
+      - fri
+      - thu
+      - wed
+      - tue
+      - mon
+      - sun
+      before: 04:00:00
+      after: '21:00:00'
+    - alias: Kirk not a resident or firmness set for sleep
+      condition: or
+      conditions:
+      - alias: Confirm Kirk bed is at saved sleepnumber
+        condition: template
+        value_template: '{{ states(''input_number.sleepnumber_kirk'') | int == states(''number.sleepnumber_master_kirk_firmness'')
+          | int }}'
+      - condition: state
+        entity_id: input_boolean.kirk
+        state: 'off'
+    - alias: Karri not a resident or firmness set for sleep
+      condition: or
+      conditions:
+      - condition: template
+        value_template: '{{ states(''input_number.sleepnumber_karri'') | int == states(''number.sleepnumber_master_karri_firmness'')
+          | int }}'
+        alias: Confirm Karri bed is at saved sleepnumber
+      - condition: state
+        entity_id: input_boolean.karri
+        state: 'off'
+  actions:
+  - target:
+      entity_id: input_boolean.sleep_mode
+    data: {}
+    action: input_boolean.turn_on
+  mode: single
+- id: '1682523212451'
+  alias: Lights - At sunset-45m, turn on
+  description: ''
+  triggers:
+  - event: sunset
+    offset: -00:45:00
+    alias: 45 minutes before sunset
+    trigger: sun
+  conditions: []
+  actions:
+  - action: scene.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: scene.dusk
+  mode: single
+- id: '1682524561488'
+  alias: Lights - Turn off indoor at midnight
+  description: ''
+  triggers:
+  - at: 00:00:00
+    alias: At midnight
+    enabled: true
+    trigger: time
+  conditions: []
+  actions:
+  - action: scene.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: scene.bedtime
+  mode: single
+- id: '1682548468008'
+  alias: House Alarm - AutoArm
+  description: ''
+  triggers:
+  - trigger: time
+    at: input_datetime.autoarm_start
+  conditions:
+  - condition: state
+    entity_id: alarm_control_panel.alarmo
+    state: disarmed
+  actions:
+  - choose:
+    - conditions:
+      - condition: not
+        conditions:
+        - condition: state
+          entity_id: timer.swim_mode
+          state: idle
+      sequence:
+      - action: script.notify_all_residents_new
+        data:
+          title: House Alarm
+          message: House Alarm was not auto-armed because people are swimming.
+      - action: script.announce_to_google_speaker
+        data:
+          speaker: kitchen
+          message: House Alarm was not auto-armed because Swim Mode is active.
+      alias: If swim mode is on
+    - conditions:
+      - condition: template
+        value_template: '{{ states(''media_player.back_porch_tv'') not in [''off'',
+          ''unavailable'', ''unknown''] }}
+
+          '
+      sequence:
+      - action: script.notify_all_residents_new
+        data:
+          title: House Alarm
+          message: House Alarm was not auto-armed because people are watching TV on
+            the back porch.
+      alias: If back porch tv is on
+    - conditions:
+      - condition: state
+        entity_id: binary_sensor.person_in_pool
+        state: 'on'
+      sequence:
+      - action: script.notify_all_residents_new
+        data:
+          title: House Alarm
+          message: House Alarm was not auto-armed because people are in the pool.
+    - conditions:
+      - condition: state
+        entity_id: binary_sensor.person_in_backyard
+        state: 'on'
+      sequence:
+      - action: script.notify_all_residents_new
+        data:
+          title: House Alarm
+          message: House Alarm was not auto-armed because people are in the backyard.
+    - conditions:
+      - condition: state
+        entity_id: input_boolean.house_full
+        state: 'off'
+      sequence:
+      - action: script.notify_all_residents_new
+        data:
+          title: House Alarm
+          message: House Alarm was not auto-armed because everyone isn't home.
+    default:
+    - action: alarm_control_panel.alarm_arm_home
+      target:
+        entity_id: alarm_control_panel.alarmo
+      data: {}
+    - action: script.notify_all_residents_new
+      data:
+        title: House Alarm
+        message: House Alarm was auto-armed (everyone is home and inside the house).
+  mode: single
+- id: '1682548515658'
+  alias: House Alarm - AutoArm when house empty
+  description: ''
+  triggers:
+  - entity_id:
+    - input_boolean.house_empty
+    from:
+    to: 'on'
+    trigger: state
+  conditions:
+  - condition: state
+    entity_id: alarm_control_panel.alarmo
+    state: disarmed
+  - condition: state
+    entity_id: timer.swim_mode
+    state: idle
+  actions:
+  - data: {}
+    target:
+      entity_id:
+      - alarm_control_panel.alarmo
+    alias: Set house alarm to Arm Away
+    action: alarm_control_panel.alarm_arm_away
+  mode: single
+- id: '1682548558925'
+  alias: House Alarm - AutoDisarm
+  description: ''
+  triggers:
+  - at: input_datetime.autoarm_end
+    trigger: time
+  conditions:
+  - condition: state
+    entity_id: input_boolean.house_empty
+    state: 'off'
+    alias: Confirm someone is home
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: alarm_control_panel.alarmo
+      state: disarmed
+    alias: Alarm not disarmed
+  actions:
+  - data:
+      code: '7273'
+    target:
+      entity_id: alarm_control_panel.alarmo
+    alias: Disarm House Alarm
+    action: alarm_control_panel.alarm_disarm
+  mode: single
+- id: '1688409102303'
+  alias: House Alarm - On mudroom motion, warn alarm still on
+  description: ''
+  triggers:
+  - alias: When Mudroom Motion changes to Detected
+    entity_id:
+    - binary_sensor.stairway_motion_occupancy
+    to: 'on'
+    trigger: state
+  conditions:
+  - condition: state
+    entity_id: alarm_control_panel.alarmo
+    state: armed_home
+  actions:
+  - data:
+      volume_level: 0.1
+    enabled: true
+    target:
+      entity_id: media_player.mudroom_speaker
+    action: media_player.volume_set
+  - alias: Announce alarm still armed
+    data:
+      speaker: mudroom
+      message: Alarm is still armed
+    action: script.announce_to_google_speaker
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+  - data:
+      volume_level: 1
+    action: media_player.volume_set
+    target:
+      entity_id: media_player.mudroom_speaker
+  mode: single
+- id: '1688576803081'
+  alias: Door Opening - Vacant Notifications
+  description: ''
+  triggers:
+  - entity_id:
+    - binary_sensor.front_contact
+    - binary_sensor.mudroom_door_contact
+    - binary_sensor.back_contact
+    to: 'on'
+    enabled: true
+    trigger: state
+  - entity_id:
+    - cover.ratgdo_kirk_door
+    - cover.ratgdo_karri_door
+    to: opening
+    trigger: state
+  conditions:
+  - condition: state
+    entity_id: alarm_control_panel.alarmo
+    state: disarmed
+  - condition: state
+    entity_id: input_boolean.house_empty
+    state: 'on'
+  actions:
+  - data:
+      message: '{{ trigger.to_state.name }}'
+      title: Empty House Activity
+    alias: Notify residents of open zone
+    action: script.notify_all_residents_new
+  mode: single
+- id: '1702221567198'
+  alias: Primary Bedroom - React to Sleep Mode Change
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - input_boolean.sleep_mode
+  condition: []
+  action:
+  - if:
+    - condition: state
+      entity_id: input_boolean.sleep_mode
+      state: 'on'
+    then:
+    - service: script.primary_bedroom_sleep
+      data: {}
+    else:
+    - service: script.primary_bedroom_wake_up
+      data: {}
+  mode: single
+- id: '1706454234452'
+  alias: Doorbell - When pressed, notify residents
+  description: Trigger when Amcrest Button Press Event Fires
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.house_doorbell_call_no_answered
+    from: 'off'
+    to: 'on'
+  conditions: []
+  actions:
+  - entity_id: camera.frontdoor
+    data:
+      filename: /config/www/tmp/snapshot_front_door_snapshot.jpg
+    action: camera.snapshot
+  - action: script.notify_all_residents_new
+    data:
+      message: Someone rang the doorbell!
+      title: Doorbell
+      attachment:
+        content-type: jpeg
+        url: /local/tmp/snapshot_front_door_snapshot.jpg
+      actions:
+      - action: URI
+        title: See Front Door Camera
+        uri: /dashboard-home/cameras?frigate-card-action.camera_select=camera.frontdoor
+        icon: sfsymbols:video.fill
+      - action: MUTEFRONTDOOR
+        title: Mute Alerts
+        icon: sfsymbols:bell.slash
+      - action: SOUNDHOUSEALARM
+        title: Sound Alarm
+        icon: sfsymbols:bell
+        destructive: true
+  - alias: If after sunset, turn on porch light
+    if:
+    - condition: sun
+      before: sunrise
+      after: sunset
+    then:
+    - action: light.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: light.front_porch_light
+    - action: timer.start
+      metadata: {}
+      data: {}
+      target:
+        entity_id: timer.front_porch_lights_auto_off
+  mode: single
+- id: '1708996422626'
+  alias: Dog Food - Feed at 8AM
+  description: ''
+  triggers:
+  - at: input_datetime.otis_feeding_time_1
+    trigger: time
+  conditions: []
+  actions:
+  - alias: Check on skipping this feeding
+    if:
+    - condition: state
+      entity_id: input_boolean.skip_next_feeding
+      state: 'on'
+    then:
+    - action: input_boolean.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id: input_boolean.skip_next_feeding
+    - stop: ''
+  - alias: Announce feeding in kitchen
+    data:
+      speaker: kitchen
+      message: Oadie Oat, do you wanna eat?
+    action: script.announce_to_google_speaker
+    enabled: true
+  - alias: Set the feeding serving size
+    data:
+      value: 8
+    target:
+      entity_id: number.otis_feeder_serving_size
+    action: number.set_value
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 3
+      milliseconds: 0
+  - alias: Dispense the food in servings
+    target:
+      entity_id:
+      - select.otis_feeder_feed
+    data:
+      option: START
+    enabled: true
+    action: select.select_option
+  - alias: Set the feeding serving size
+    data:
+      value: '1'
+    target:
+      entity_id: number.otis_feeder_serving_size
+    action: number.set_value
+  mode: single
+- id: '1708996500279'
+  alias: Dog Food - Feed at 4PM
+  description: ''
+  triggers:
+  - at: input_datetime.otis_feeding_time_2
+    trigger: time
+  conditions: []
+  actions:
+  - alias: Check on skipping this feeding
+    if:
+    - condition: state
+      entity_id: input_boolean.skip_next_feeding
+      state: 'on'
+    then:
+    - action: input_boolean.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id: input_boolean.skip_next_feeding
+    - stop: ''
+  - alias: Announce feeding in kitchen
+    data:
+      speaker: kitchen
+      message: Oadie Oat, do you wanna eat?
+    action: script.announce_to_google_speaker
+    enabled: true
+  - alias: Set the feeding serving size
+    target:
+      entity_id:
+      - number.otis_feeder_serving_size
+    data:
+      value: '4'
+    action: number.set_value
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 3
+      milliseconds: 0
+  - alias: Dispense the food in servings
+    target:
+      entity_id:
+      - select.otis_feeder_feed
+    data:
+      option: START
+    enabled: true
+    action: select.select_option
+  - alias: Set the feeding serving size
+    data:
+      value: '1'
+    target:
+      entity_id: number.otis_feeder_serving_size
+    action: number.set_value
+  mode: single
+- id: '1708996556661'
+  alias: Dog Food - Feed at 9PM
+  description: ''
+  triggers:
+  - at: input_datetime.otis_feeding_time_3
+    trigger: time
+  conditions: []
+  actions:
+  - alias: Check on skipping this feeding
+    if:
+    - condition: state
+      entity_id: input_boolean.skip_next_feeding
+      state: 'on'
+    then:
+    - action: input_boolean.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id: input_boolean.skip_next_feeding
+    - stop: ''
+  - alias: Feed if less than total daily feeding amount
+    if:
+    - condition: numeric_state
+      entity_id: sensor.feeder_otis_portions_per_day
+      below: 18
+    then:
+    - alias: Announce feeding in kitchen
+      data:
+        speaker: kitchen
+        message: Oadie Oat, do you wanna eat?
+      action: script.announce_to_google_speaker
+      enabled: true
+    - alias: Set the feeding serving size
+      target:
+        entity_id:
+        - number.otis_feeder_serving_size
+      data:
+        value: '4'
+      action: number.set_value
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 3
+        milliseconds: 0
+    - alias: Dispense the food in servings
+      data:
+        option: START
+      enabled: true
+      target:
+        entity_id: select.otis_feeder_feed
+      action: select.select_option
+  - alias: Reset feeding serving size to snack
+    data:
+      value: '1'
+    target:
+      entity_id: number.otis_feeder_serving_size
+    action: number.set_value
+  mode: single
+- id: '1709477702426'
+  alias: Residents - Track Location
+  description: ''
+  triggers:
+  - alias: When any family member changes location
+    entity_id:
+    - person.kirk
+    - person.karri
+    - person.quinn
+    - person.hanna
+    - person.will
+    trigger: state
+  - alias: When any family member changes resident status
+    entity_id:
+    - input_boolean.kirk
+    - input_boolean.karri
+    - input_boolean.hanna
+    - input_boolean.quinn
+    - input_boolean.will
+    trigger: state
+  conditions: []
+  actions:
+  - alias: Set House Empty state based on resident locations
+    if:
+    - alias: If all residents are not home
+      condition: and
+      conditions:
+      - alias: Kirk
+        condition: or
+        conditions:
+        - condition: state
+          entity_id: input_boolean.kirk
+          state: 'off'
+        - condition: not
+          conditions:
+          - condition: state
+            entity_id: person.kirk
+            state: home
+          alias: Kirk is not home
+      - alias: Karri
+        condition: or
+        conditions:
+        - condition: state
+          entity_id: input_boolean.karri
+          state: 'off'
+        - condition: not
+          conditions:
+          - condition: state
+            entity_id: person.karri
+            state: home
+          alias: Karri is not home
+      - alias: Quinn
+        condition: or
+        conditions:
+        - condition: state
+          entity_id: input_boolean.quinn
+          state: 'off'
+        - condition: not
+          conditions:
+          - condition: state
+            entity_id: person.quinn
+            state: home
+          alias: Quinn is not home
+      - alias: Hanna
+        condition: or
+        conditions:
+        - condition: state
+          entity_id: input_boolean.hanna
+          state: 'off'
+        - condition: not
+          conditions:
+          - condition: state
+            entity_id: person.hanna
+            state: home
+          alias: Hanna is not home
+      - alias: Will
+        condition: or
+        conditions:
+        - condition: state
+          entity_id: input_boolean.will
+          state: 'off'
+        - condition: not
+          conditions:
+          - condition: state
+            entity_id: person.will
+            state: home
+          alias: Will is not home
+    then:
+    - metadata: {}
+      data: {}
+      target:
+        entity_id:
+        - input_boolean.house_empty
+      action: input_boolean.turn_on
+    else:
+    - metadata: {}
+      data: {}
+      target:
+        entity_id: input_boolean.house_empty
+      action: input_boolean.turn_off
+  - alias: Set House Full state based on resident locations
+    if:
+    - alias: All residents home?
+      condition: and
+      conditions:
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: input_boolean.kirk
+          state: 'off'
+        - condition: state
+          state: home
+          entity_id: person.kirk
+        alias: Kirk
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: input_boolean.karri
+          state: 'off'
+        - condition: state
+          entity_id: person.karri
+          state: home
+        alias: Karri
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: input_boolean.quinn
+          state: 'off'
+        - condition: state
+          entity_id: person.quinn
+          state: home
+        alias: Quinn
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: input_boolean.hanna
+          state: 'off'
+        - condition: state
+          entity_id: person.hanna
+          state: home
+        alias: Hanna
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: input_boolean.will
+          state: 'off'
+        - condition: state
+          entity_id: person.will
+          state: home
+        alias: Will
+    then:
+    - metadata: {}
+      data: {}
+      target:
+        entity_id: input_boolean.house_full
+      action: input_boolean.turn_on
+    else:
+    - metadata: {}
+      data: {}
+      target:
+        entity_id: input_boolean.house_full
+      action: input_boolean.turn_off
+  - alias: Reset Residents Counts
+    action: input_number.set_value
+    metadata: {}
+    data:
+      value: 0
+    target:
+      entity_id:
+      - input_number.residents_home
+      - input_number.residents_total
+  - alias: Count Kirk Status
+    if:
+    - condition: state
+      entity_id: input_boolean.kirk
+      state: 'on'
+    then:
+    - action: input_number.increment
+      metadata: {}
+      data: {}
+      target:
+        entity_id: input_number.residents_total
+    - if:
+      - condition: state
+        state: home
+        entity_id: person.kirk
+      then:
+      - action: input_number.increment
+        metadata: {}
+        data: {}
+        target:
+          entity_id: input_number.residents_home
+  - alias: Count karri Status
+    if:
+    - condition: state
+      entity_id: input_boolean.karri
+      state: 'on'
+    then:
+    - action: input_number.increment
+      metadata: {}
+      data: {}
+      target:
+        entity_id: input_number.residents_total
+    - if:
+      - condition: state
+        state: home
+        entity_id: person.karri
+      then:
+      - action: input_number.increment
+        metadata: {}
+        data: {}
+        target:
+          entity_id: input_number.residents_home
+  - alias: Count Ian Status
+    if:
+    - condition: state
+      entity_id: input_boolean.ian
+      state: 'on'
+    then:
+    - action: input_number.increment
+      metadata: {}
+      data: {}
+      target:
+        entity_id: input_number.residents_total
+    - if:
+      - condition: state
+        state: home
+        entity_id: person.ian
+      then:
+      - action: input_number.increment
+        metadata: {}
+        data: {}
+        target:
+          entity_id: input_number.residents_home
+  - alias: Count Hanna Status
+    if:
+    - condition: state
+      entity_id: input_boolean.hanna
+      state: 'on'
+    then:
+    - action: input_number.increment
+      metadata: {}
+      data: {}
+      target:
+        entity_id: input_number.residents_total
+    - if:
+      - condition: state
+        state: home
+        entity_id: person.hanna
+      then:
+      - action: input_number.increment
+        metadata: {}
+        data: {}
+        target:
+          entity_id: input_number.residents_home
+  - alias: Count Quinn Status
+    if:
+    - condition: state
+      entity_id: input_boolean.quinn
+      state: 'on'
+    then:
+    - action: input_number.increment
+      metadata: {}
+      data: {}
+      target:
+        entity_id: input_number.residents_total
+    - if:
+      - condition: state
+        state: home
+        entity_id: person.quinn
+      then:
+      - action: input_number.increment
+        metadata: {}
+        data: {}
+        target:
+          entity_id: input_number.residents_home
+  - alias: Count Will Status
+    if:
+    - condition: state
+      entity_id: input_boolean.will
+      state: 'on'
+    then:
+    - action: input_number.increment
+      metadata: {}
+      data: {}
+      target:
+        entity_id: input_number.residents_total
+    - if:
+      - condition: state
+        state: home
+        entity_id: person.will
+      then:
+      - action: input_number.increment
+        metadata: {}
+        data: {}
+        target:
+          entity_id: input_number.residents_home
+  mode: single
+- id: '1709482485867'
+  alias: House Alarm - Arming
+  description: ''
+  triggers:
+  - entity_id:
+    - alarm_control_panel.alarmo
+    to: arming
+    trigger: state
+  conditions: []
+  actions:
+  - alias: Announce alarm arming
+    data:
+      speaker: kitchen
+      message: Alarm Arming
+    action: script.announce_to_google_speaker
+  mode: single
+- id: '1712361381801'
+  alias: Garage Karri Closed - Stop Notification Timer
+  description: ''
+  triggers:
+  - entity_id:
+    - cover.ratgdo_karri_door
+    to: closed
+    trigger: state
+  conditions: []
+  actions:
+  - alias: Stop garage notification timer
+    data: {}
+    target:
+      entity_id: timer.garage_karri_open_timer
+    action: timer.cancel
+  - alias: Reset number of garage notifications sent
+    data: {}
+    target:
+      entity_id: counter.garage_karri_num_notifications
+    action: counter.reset
+  mode: single
+- id: '1712361480699'
+  alias: Garage Karri - On Open Timer end interval, send notification
+  description: ''
+  triggers:
+  - event_type: timer.finished
+    event_data:
+      entity_id: timer.garage_karri_open_timer
+    trigger: event
+  conditions: []
+  actions:
+  - alias: If Garage Open, send notification and reset timer
+    if:
+    - condition: state
+      entity_id: cover.ratgdo_karri_door
+      state: open
+    then:
+    - alias: Capture snapshot from garage camera
+      target:
+        entity_id: camera.garage
+      data:
+        filename: /config/www/tmp/snapshot_karri_garage_snapshot.jpg
+      action: camera.snapshot
+    - alias: Notify residents that garage is open
+      if:
+      - condition: template
+        value_template: '{{ (states(''counter.garage_karri_num_notifications'') |
+          int(0)) % 3 == 0 }}
+
+          '
+      then:
+      - data:
+          message: Karri's Garage has been open for {{ states('counter.garage_karri_num_notifications')
+            | int * 10 }} minutes!
+          title: Garage Door
+          attachment:
+            content-type: jpeg
+            url: /local/tmp/snapshot_karri_garage_snapshot.jpg
+          actions:
+          - action: CloseGarageKarri
+            title: Close Garage
+        action: script.notify_residents_critical
+      else:
+      - data:
+          message: Karri's Garage has been open for {{ states('counter.garage_karri_num_notifications')
+            | int * 10 }} minutes!
+          title: Garage Door
+          attachment:
+            content-type: jpeg
+            url: /local/tmp/snapshot_karri_garage_snapshot.jpg
+          actions:
+          - action: CloseGarageKarri
+            title: Close Garage
+        action: script.notify_all_residents_new
+    - alias: Increment number of garage notifications sent
+      target:
+        entity_id: counter.garage_karri_num_notifications
+      action: counter.increment
+      data: {}
+    - alias: Restart garage notification timer
+      target:
+        entity_id: timer.garage_karri_open_timer
+      data:
+        duration: '0'
+      action: timer.start
+    else:
+    - alias: Reset number of garage notifications
+      target:
+        entity_id: counter.garage_karri_num_notifications
+      action: counter.reset
+      data: {}
+  mode: single
+- id: '1712361838923'
+  alias: Garage Kirk Closed - Stop Notification Timer
+  description: ''
+  triggers:
+  - entity_id:
+    - cover.ratgdo_kirk_door
+    to: closed
+    trigger: state
+  conditions: []
+  actions:
+  - alias: Stop garage notification timer
+    data: {}
+    target:
+      entity_id:
+      - timer.garage_kirk_open_timer
+    action: timer.cancel
+  - alias: Reset number of garage notifications sent
+    data: {}
+    target:
+      entity_id: counter.garage_kirk_num_notifications
+    action: counter.reset
+  mode: single
+- id: '1712362047234'
+  alias: Garage Kirk - On Open Timer end interval, send notification
+  description: ''
+  triggers:
+  - event_type: timer.finished
+    event_data:
+      entity_id: timer.garage_kirk_open_timer
+    trigger: event
+  conditions: []
+  actions:
+  - alias: If Garage Open, send notification and reset timer
+    if:
+    - condition: state
+      entity_id: cover.ratgdo_kirk_door
+      state: open
+    then:
+    - alias: Capture snapshot from garage camera
+      target:
+        entity_id: camera.garage
+      data:
+        filename: /config/www/tmp/snapshot_kirk_garage_snapshot.jpg
+      action: camera.snapshot
+    - alias: Notify residents that garage is open
+      if:
+      - condition: template
+        value_template: '{{ (states(''counter.garage_kirk_num_notifications'') | int(0))
+          % 3 == 0 }}
+
+          '
+      then:
+      - data:
+          message: Kirk's Garage has been open for {{ states('counter.garage_kirk_num_notifications')
+            | int * 10 }} minutes!
+          title: Garage Door
+          attachment:
+            content-type: jpeg
+            url: /local/tmp/snapshot_kirk_garage_snapshot.jpg
+          actions:
+          - action: CloseGarageKirk
+            title: Close Garage
+        action: script.notify_residents_critical
+      else:
+      - data:
+          message: Kirk's Garage has been open for {{ states('counter.garage_kirk_num_notifications')
+            | int * 10 }} minutes!
+          title: Garage Door
+          attachment:
+            content-type: jpeg
+            url: /local/tmp/snapshot_kirk_garage_snapshot.jpg
+          actions:
+          - action: CloseGarageKirk
+            title: Close Garage
+        action: script.notify_all_residents_new
+    - alias: Increment number of garage notifications sent
+      target:
+        entity_id: counter.garage_kirk_num_notifications
+      action: counter.increment
+      data: {}
+    - alias: Restart garage notification timer
+      target:
+        entity_id: timer.garage_kirk_open_timer
+      data:
+        duration: '0'
+      action: timer.start
+    else:
+    - alias: Reset notification counter
+      target:
+        entity_id: counter.garage_kirk_num_notifications
+      action: counter.reset
+      data: {}
+  mode: single
+- id: '1712362130205'
+  alias: Garage Karri Opening - Start Notification Timer
+  description: ''
+  triggers:
+  - entity_id:
+    - cover.ratgdo_karri_door
+    to: opening
+    trigger: state
+  conditions: []
+  actions:
+  - alias: Reset garage notification counter to zero
+    data: {}
+    target:
+      entity_id:
+      - counter.garage_karri_num_notifications
+    action: counter.reset
+  - alias: Start timer for garage open notifications
+    data:
+      duration: 0
+    target:
+      entity_id:
+      - timer.garage_karri_open_timer
+    action: timer.start
+  mode: single
+- id: '1712362186550'
+  alias: Garage Kirk Opened - Start Notification Timer
+  description: ''
+  triggers:
+  - entity_id:
+    - cover.ratgdo_kirk_door
+    to: opening
+    trigger: state
+  conditions: []
+  actions:
+  - alias: Reset garage notification counter to zero
+    data: {}
+    target:
+      entity_id:
+      - counter.garage_kirk_num_notifications
+    action: counter.reset
+  - alias: Start timer for garage open notifications
+    data:
+      duration: 0
+    target:
+      entity_id:
+      - timer.garage_kirk_open_timer
+    action: timer.start
+  mode: single
+- id: '1712371792300'
+  alias: Lights - At sunrise, turn off outdoor
+  description: ''
+  triggers:
+  - event: sunrise
+    trigger: sun
+  conditions: []
+  actions:
+  - action: scene.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: scene.dawm
+  mode: single
+- id: '1713413168492'
+  alias: Lights - Turn on Kirk's light if person detected
+  description: ''
+  triggers:
+  - entity_id:
+    - binary_sensor.ratgdo_kirk_obstruction
+    to: 'on'
+    trigger: state
+  conditions:
+  - condition: state
+    entity_id: light.ratgdo_kirk_light
+    state: 'off'
+  - condition: state
+    entity_id: cover.ratgdo_kirk_door
+    state: open
+  - condition: sun
+    before: sunrise
+    after: sunset
+  actions:
+  - metadata: {}
+    data: {}
+    target:
+      entity_id: light.ratgdo_kirk_light
+    action: light.turn_on
+  - delay:
+      hours: 0
+      minutes: 1
+      seconds: 0
+      milliseconds: 0
+  - metadata: {}
+    data: {}
+    target:
+      entity_id: light.ratgdo_kirk_light
+    action: light.turn_off
+  mode: single
+- id: '1713413264659'
+  alias: Lights - Turn on Karri's light if person detected
+  description: ''
+  triggers:
+  - entity_id:
+    - binary_sensor.ratgdo_karri_obstruction
+    to: 'on'
+    trigger: state
+  conditions:
+  - condition: state
+    entity_id: light.ratgdo_karri_light
+    state: 'off'
+  - condition: state
+    entity_id: cover.ratgdo_karri_door
+    state: open
+  - condition: sun
+    before: sunrise
+    after: sunset
+  actions:
+  - metadata: {}
+    data: {}
+    target:
+      entity_id: light.ratgdo_karri_light
+    action: light.turn_on
+  - delay:
+      hours: 0
+      minutes: 1
+      seconds: 0
+      milliseconds: 0
+  - metadata: {}
+    data: {}
+    target:
+      entity_id: light.ratgdo_karri_light
+    action: light.turn_off
+  mode: single
+- id: '1717367682404'
+  alias: Lights - Turn off garage lights after 5 mins
+  description: ''
+  triggers:
+  - entity_id:
+    - binary_sensor.garage_person_occupancy
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    trigger: state
+  conditions: []
+  actions:
+  - alias: Turn off Garage light if needed
+    if:
+    - condition: state
+      entity_id: light.garage_lights
+      state: 'on'
+    then:
+    - metadata: {}
+      data: {}
+      action: light.turn_off
+      target:
+        entity_id: light.garage_lights
+  - if:
+    - condition: state
+      entity_id: light.ratgdo_karri_light
+      state: 'on'
+    then:
+    - metadata: {}
+      data: {}
+      action: light.turn_off
+      target:
+        entity_id: light.ratgdo_karri_light
+    alias: Turn off Karri Garage light if needed
+    enabled: false
+  - if:
+    - condition: state
+      entity_id: light.ratgdo_kirk_light
+      state: 'on'
+    then:
+    - metadata: {}
+      data: {}
+      action: light.turn_off
+      target:
+        entity_id: light.ratgdo_kirk_light
+    alias: Turn off Kirk Garage light if needed
+    enabled: false
+  mode: single
+- id: '1717442144497'
+  alias: Litter - Warning level
+  description: ''
+  triggers:
+  - at: '12:00:00'
+    trigger: time
+  - entity_id:
+    - sensor.kylos_shitter_waste_drawer
+    above: 60
+    trigger: numeric_state
+  conditions: []
+  actions:
+  - if:
+    - condition: numeric_state
+      entity_id: sensor.kylos_shitter_waste_drawer
+      above: 60
+      below: 81
+    then:
+    - metadata: {}
+      data:
+        title: Kylo Litter
+        message: 'Warning: Kylo''s litterbox waste drawer has just passed the 60%
+          level'
+      action: script.notify_all_residents_new
+      alias: Send warning only
+    alias: Send warning when over 60%
+  - alias: Send alert when over 80%
+    if:
+    - condition: numeric_state
+      entity_id: sensor.kylos_shitter_waste_drawer
+      above: 80
+    then:
+    - metadata: {}
+      data:
+        message: Kylo's last shit has raised the litterbox waste drawer to toxic spill
+          level!
+        title: Kylo Litter
+      action: script.notify_residents_critical
+  mode: single
+- id: '1717443482942'
+  alias: Leak - Send furnace leak notification
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.leak_furnace_water_leak
+    to: 'on'
+  condition: []
+  action:
+  - service: script.notify_residents_critical
+    metadata: {}
+    data:
+      message: Water has been detected under the furnace in the attic! This shouldn't
+        happen...
+      title: Furnace Leak
+  mode: single
+- id: '1717443621541'
+  alias: Leak - Send water heater notification
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.leak_water_heater_water_leak
+    to: 'on'
+  condition: []
+  action:
+  - service: script.notify_residents_critical
+    metadata: {}
+    data:
+      message: Water has been detected under the water heater in the garage! This
+        shouldn't happen...
+      title: Water Heater
+  mode: single
+- id: '1717522097054'
+  alias: Trash Can - On Monday night, notify to take out
+  description: ''
+  triggers:
+  - at: '18:00:00'
+    trigger: time
+  - trigger: state
+    entity_id:
+    - timer.trash_notification
+    from: active
+    to: idle
+  conditions:
+  - condition: time
+    weekday:
+    - mon
+  actions:
+  - alias: If trash isn't at curb, notify residents in kitchen
+    if:
+    - condition: not
+      conditions:
+      - condition: state
+        entity_id: input_select.trash_can
+        state: Awaiting Truck
+      alias: If Trash isn't at curb
+    then:
+    - metadata: {}
+      data:
+        option: Ready for Curb
+      target:
+        entity_id: input_select.trash_can
+      action: input_select.select_option
+    - metadata: {}
+      data:
+        message: Trash can is ready to go to the curb!
+        title: Trash Monday Night
+      alias: Notify residents that trash needs to go out
+      action: script.notify_all_residents_new
+    - alias: Announce in Kitchen
+      data:
+        speaker: kitchen
+        message: Trash can is ready to go to the curb!
+      action: script.announce_to_google_speaker
+    - action: timer.start
+      metadata: {}
+      data: {}
+      target:
+        entity_id: timer.trash_notification
+  mode: single
+- id: '1717522879349'
+  alias: Trash Can - When moved, update it's state
+  description: ''
+  triggers:
+  - entity_id:
+    - binary_sensor.garbage_sensor_vibration
+    to: 'on'
+    trigger: state
+    from: 'off'
+  conditions: []
+  actions:
+  - alias: If moved at Accepting Trash, do nothing
+    if:
+    - condition: state
+      entity_id: input_select.trash_can
+      state: Accepting Trash
+    then: []
+    else:
+    - alias: If moved at Ready for Curb, set Awaiting Truck
+      if:
+      - condition: state
+        entity_id: input_select.trash_can
+        state: Ready for Curb
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: cover.ratgdo_karri_door
+          state: open
+        - condition: state
+          entity_id: cover.ratgdo_karri_door
+          state: opening
+        - condition: state
+          entity_id: cover.ratgdo_kirk_door
+          state: open
+        - condition: state
+          entity_id: cover.ratgdo_kirk_door
+          state: opening
+        alias: Garage door is open/opening
+      then:
+      - alias: Set Awaiting Truck
+        target:
+          entity_id: input_select.trash_can
+        data:
+          option: Awaiting Truck
+        action: input_select.select_option
+      else:
+      - alias: If moved at Awaiting Truck on Tuesday AM, set Ready for Garage
+        if:
+        - condition: and
+          conditions:
+          - condition: state
+            entity_id: input_select.trash_can
+            state: Awaiting Truck
+          - condition: time
+            weekday:
+            - tue
+            after: 06:00:00
+        then:
+        - target:
+            entity_id: input_select.trash_can
+          data:
+            option: Ready for Garage
+          alias: Set Ready for Garage
+          action: input_select.select_option
+        else:
+        - alias: If moved at Ready for Garage, set Accepting Trash
+          if:
+          - condition: state
+            entity_id: input_select.trash_can
+            state: Ready for Garage
+          then:
+          - target:
+              entity_id: input_select.trash_can
+            data:
+              option: Accepting Trash
+            alias: Set Accepting Trash
+            action: input_select.select_option
+  mode: single
+- id: '1718294328135'
+  alias: Dog Food - Give Snack
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - input_button.otis_snack
+    to:
+  condition: []
+  action:
+  - service: script.dog_food_give_snack
+    data: {}
+  mode: single
+- id: '1725548593234'
+  alias: Danger - Carbon Monoxide
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.smoke_alarms_carbon_monoxide_detected
+    to: 'on'
+  condition: []
+  action:
+  - metadata: {}
+    data:
+      message: Carbon Monoxide Detector has sensed CO in the house!
+      title: Carbon Monoxide ALERT
+    action: script.notify_residents_critical
+  mode: single
+- id: '1725548730482'
+  alias: Danger - Smoke Detector
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.smoke_alarms_smoke_detected
+    to: 'on'
+  condition: []
+  action:
+  - metadata: {}
+    data:
+      message: Smoke Detector has sensed smoke in the house!
+      title: House Fire ALERT
+    action: script.notify_residents_critical
+  mode: single
+- id: '1736694558914'
+  alias: Aqara Button
+  description: ''
+  use_blueprint:
+    path: denselm/zigbee2mqtt_aqara_wireless_switch.yaml
+    input:
+      input_device_id: f0e002354b83ff7c7c8cf9c283fe1de8
+      press_single:
+      - action: siren.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: siren.pool_alarm_siren_alarm
+      - action: script.swim_mode_add_5_minutes
+        metadata: {}
+        data: {}
+      press_double:
+      - if:
+        - condition: state
+          entity_id: alarm_control_panel.alarmo
+          state: disarmed
+        then:
+        - action: alarm_control_panel.alarm_arm_home
+          metadata: {}
+          data: {}
+          target:
+            entity_id: alarm_control_panel.alarmo
+        else:
+        - action: alarm_control_panel.alarm_disarm
+          metadata: {}
+          data:
+            code: '7273'
+          target:
+            entity_id: alarm_control_panel.alarmo
+      press_hold:
+      - action: light.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id:
+          - light.backyard_spotlights
+          - light.back_porch_can_lights
+          - light.light_backyard_fan_yellow
+      press_release:
+      - action: light.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id:
+          - light.backyard_spotlights
+          - light.back_porch_can_lights
+          - light.light_backyard_fan_yellow
+- id: '1736746031110'
+  alias: Light - Turn on bed light when getting up to pee
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.sleepnumber_master_kirk_is_in_bed
+    from: 'on'
+    to: 'off'
+  - trigger: state
+    entity_id:
+    - binary_sensor.sleepnumber_master_karri_is_in_bed
+    from: 'on'
+    to: 'off'
+  - trigger: state
+    entity_id:
+    - binary_sensor.motion_primary_occupancy
+    from: 'off'
+    to: 'on'
+  - trigger: state
+    entity_id:
+    - binary_sensor.primary_bedroom_presence_presence
+    to: 'on'
+  conditions:
+  - alias: If it's bedtime
+    condition: or
+    conditions:
+    - condition: time
+      after: '19:00:00'
+      enabled: false
+    - condition: time
+      before: 06:00:00
+      enabled: false
+    - condition: state
+      entity_id: sun.sun
+      state: below_horizon
+  - condition: state
+    entity_id: light.karri_light
+    state: 'off'
+  - condition: state
+    entity_id: light.kirk_light
+    state: 'off'
+  actions:
+  - action: light.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.primary_bed_light
+  - action: timer.start
+    metadata: {}
+    data:
+      duration: 00:05:00
+    target:
+      entity_id: timer.bed_light_timer
+  mode: single
+- id: '1736746499761'
+  alias: Light - Turn off bed light after 5 minutes
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - timer.bed_light_timer
+    from: active
+    to: idle
+  - trigger: state
+    entity_id:
+    - binary_sensor.sleepnumber_master_kirk_is_in_bed
+    - binary_sensor.sleepnumber_master_karri_is_in_bed
+    from: 'off'
+    to: 'on'
+  - trigger: state
+    entity_id:
+    - light.kirk_light
+    - light.karri_light
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  conditions: []
+  actions:
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.primary_bed_light
+  - action: timer.finish
+    metadata: {}
+    data: {}
+    target:
+      entity_id: timer.bed_light_timer
+  mode: single
+- id: '1737546212301'
+  alias: Backyard - Notify when person seen
+  description: ''
+  triggers:
+  - entity_id:
+    - binary_sensor.person_in_backyard
+    to: 'on'
+    enabled: true
+    trigger: state
+    from: 'off'
+  conditions: []
+  actions:
+  - alias: Don't send notification is swim mode is on
+    if:
+    - condition: state
+      entity_id: timer.swim_mode
+      state: 'on'
+    then:
+    - stop: Swim mode is on — suppressing backyard alert
+  - alias: Send Notification if notifications are active right now
+    if:
+    - condition: state
+      entity_id: timer.pool_notifications_throttle
+      state: idle
+    - condition: state
+      entity_id: timer.pool_notification_break
+      state: idle
+    then:
+    - alias: Send Notification
+      if:
+      - alias: House Armed or Empty House or KidMode and Not Swimming, Send Critical
+          Notification
+        condition: or
+        conditions:
+        - condition: not
+          conditions:
+          - condition: state
+            entity_id: alarm_control_panel.alarmo
+            state: disarmed
+          alias: House Alarm armed
+        - condition: state
+          entity_id: input_boolean.house_empty
+          state: 'on'
+        - condition: and
+          conditions:
+          - condition: state
+            entity_id: input_boolean.kid_mode
+            state: 'on'
+          - condition: not
+            conditions:
+            - condition: state
+              entity_id: timer.swim_mode
+              state: 'on'
+            alias: Swim Mode is not on
+          alias: Kid Mode on and Swim Mode not on
+      then:
+      - action: script.notify_residents_critical
+        data:
+          message: Someone is moving around in the back yard
+          title: '{{ trigger.to_state.name }}'
+          actions:
+          - action: URI
+            title: See Pool Camera
+            uri: /dashboard-home/cameras?frigate-card-action.camera_select=camera.pool
+            icon: sfsymbols:video.fill
+          - action: MUTEALERTS
+            title: Mute Alerts
+            icon: sfsymbols:bell.slash
+          - action: SOUNDALARM
+            title: Sound Alarm
+            icon: sfsymbols:bell
+            destructive: true
+        alias: Notify residents of movement in back yard
+      - action: timer.start
+        metadata: {}
+        data: {}
+        target:
+          entity_id: timer.pool_notifications_throttle
+      else:
+      - alias: Send Notification if Not Empty and After Midnight
+        if:
+        - condition: and
+          conditions:
+          - condition: state
+            entity_id: input_boolean.house_empty
+            state: 'off'
+          - condition: state
+            entity_id: binary_sensor.house_alarm_hours
+            state: 'on'
+        then:
+        - action: script.notify_all_residents_new
+          data:
+            message: Someone is moving around in the back yard
+            title: '{{ trigger.to_state.name }}'
+            actions:
+            - action: URI
+              title: See Pool Camera
+              uri: /dashboard-home/cameras?frigate-card-action.camera_select=camera.pool
+              icon: sfsymbols:video.fill
+            - action: MUTEALERTS
+              title: Mute Alerts
+              icon: sfsymbols:bell.slash
+            - action: SOUNDALARM
+              title: Sound Alarm
+              icon: sfsymbols:bell
+              destructive: true
+          alias: Notify residents of movement in back yard
+      - action: timer.start
+        metadata: {}
+        data: {}
+        target:
+          entity_id: timer.pool_notifications_throttle
+  - alias: Announce in Kitchen if Home
+    if:
+    - condition: and
+      conditions:
+      - condition: state
+        entity_id: input_boolean.kid_mode
+        state: 'on'
+      - condition: state
+        entity_id: timer.swim_mode
+        state: idle
+      alias: Kids Mode and not Swim Mode
+    - condition: state
+      entity_id: timer.pool_notifications_throttle
+      state: idle
+    - condition: state
+      entity_id: timer.pool_notification_break
+      state: idle
+    then:
+    - action: script.announce_to_google_speaker
+      metadata: {}
+      data:
+        speaker: kitchen
+        message: Has a kid escaped and playing near the pool?
+    - action: timer.start
+      metadata: {}
+      data: {}
+      target:
+        entity_id: timer.pool_notifications_throttle
+  - alias: Turn on spotlights for 2 min if dark and not swimming
+    if:
+    - condition: and
+      conditions:
+      - condition: sun
+        before: sunrise
+        after: sunset
+      - condition: state
+        entity_id: timer.swim_mode
+        state: idle
+      alias: If dark and not swimming
+    then:
+    - action: light.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: light.backyard_spotlights
+    - action: timer.start
+      metadata: {}
+      data: {}
+      target:
+        entity_id: timer.spotlights_autooff
+  mode: single
+- id: '1737547189418'
+  alias: Pool - Notify when person seen
+  description: ''
+  triggers:
+  - entity_id:
+    - binary_sensor.person_in_pool
+    to: 'on'
+    enabled: true
+    trigger: state
+    from: 'off'
+  conditions:
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: timer.swim_mode
+      state: active
+    alias: Swim mode isn’t on
+  actions:
+  - alias: Send Notification if notifications are active right now
+    if:
+    - condition: state
+      entity_id: timer.pool_notifications_throttle
+      state: idle
+    - condition: state
+      entity_id: timer.pool_notification_break
+      state: idle
+    then:
+    - alias: Send Notification
+      if:
+      - alias: House Armed or Empty House, Send Critical Notification
+        condition: or
+        conditions:
+        - condition: not
+          conditions:
+          - condition: state
+            entity_id: alarm_control_panel.alarmo
+            state: disarmed
+          alias: House Alarm armed
+        - condition: state
+          entity_id: input_boolean.house_empty
+          state: 'on'
+        - condition: and
+          conditions:
+          - condition: state
+            entity_id: input_boolean.kid_mode
+            state: 'on'
+          - condition: not
+            conditions:
+            - condition: state
+              entity_id: timer.swim_mode
+              state: 'on'
+            alias: Swim Mode is not on
+          alias: Kid Mode on and Swim Mode not on
+      then:
+      - alias: Capture snapshot from pool camera
+        target:
+          entity_id: camera.pool
+        data:
+          filename: /config/www/tmp/camera_pool_snapshot.jpg
+        action: camera.snapshot
+      - action: script.notify_residents_critical
+        data:
+          message: Someone is in the pool!
+          title: TEST
+          attachment:
+            content-type: jpeg
+            url: /local/tmp/camera_pool_snapshot.jpg
+          actions:
+          - action: URI
+            title: See Pool Camera
+            uri: /dashboard-home/cameras?frigate-card-action.camera_select=camera.pool
+            icon: sfsymbols:video.fill
+          - action: MUTEALERTS
+            title: Mute Alerts
+            icon: sfsymbols:bell.slash
+          - action: SOUNDALARM
+            title: Sound Alarm
+            icon: sfsymbols:bell
+            destructive: true
+        alias: Notify residents of movement in pool
+      - action: timer.start
+        metadata: {}
+        data: {}
+        target:
+          entity_id: timer.pool_notifications_throttle
+      else:
+      - alias: Send Critical Notification if Not Empty and Very Late
+        if:
+        - condition: and
+          conditions:
+          - condition: state
+            entity_id: input_boolean.house_empty
+            state: 'off'
+          - condition: state
+            entity_id: binary_sensor.house_alarm_hours
+            state: 'on'
+        then:
+        - alias: Capture snapshot from pool camera
+          target:
+            entity_id: camera.pool
+          data:
+            filename: /config/www/tmp/camera_pool_snapshot.jpg
+          action: camera.snapshot
+        - action: script.notify_residents_critical
+          data:
+            message: Someone is in the pool!
+            title: '{{ trigger.to_state.name }}'
+            attachment:
+              content-type: jpeg
+              url: /local/tmp/camera_pool_snapshot.jpg
+            actions:
+            - action: URI
+              title: See Pool Camera
+              uri: /dashboard-home/cameras?frigate-card-action.camera_select=camera.pool
+              icon: sfsymbols:video.fill
+            - action: MUTEALERTS
+              title: Mute Alerts
+              icon: sfsymbols:bell.slash
+            - action: SOUNDALARM
+              title: Sound Alarm
+              icon: sfsymbols:bell
+              destructive: true
+          alias: Notify residents of movement in pool
+        - action: timer.start
+          metadata: {}
+          data: {}
+          target:
+            entity_id: timer.pool_notifications_throttle
+  - alias: Announce in house and Alarm if Kid Mode on
+    if:
+    - condition: state
+      entity_id: input_boolean.kid_mode
+      state: 'on'
+    then:
+    - action: script.announce_to_google_speaker
+      metadata: {}
+      data:
+        speaker: kitchen
+        message: Has a kid escaped and fell into the pool?
+    - action: siren.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: siren.pool_alarm_siren_alarm
+    - action: timer.start
+      metadata: {}
+      data: {}
+      target:
+        entity_id: timer.pool_notifications_throttle
+  - alias: Turn on spotlights for 2 min if dark
+    if:
+    - condition: state
+      entity_id: sun.sun
+      state: below_horizon
+    then:
+    - action: light.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: light.backyard_spotlights
+    - action: timer.start
+      metadata: {}
+      data: {}
+      target:
+        entity_id: timer.spotlights_autooff
+  mode: single
+- id: '1738610433824'
+  alias: Pool Notifications - Mute Alerts
+  description: ''
+  triggers:
+  - trigger: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: MUTEALERTS
+  conditions: []
+  actions:
+  - action: timer.cancel
+    metadata: {}
+    data: {}
+    target:
+      entity_id: timer.pool_notification_break
+  - action: timer.start
+    metadata: {}
+    data: {}
+    target:
+      entity_id: timer.pool_notification_break
+  mode: single
+- id: '1738610683622'
+  alias: Pool Notifications - Sound Alarm
+  description: ''
+  triggers:
+  - trigger: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: SOUNDALARM
+  conditions: []
+  actions:
+  - action: siren.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: siren.pool_alarm_siren_alarm
+  mode: single
+- id: '1738632554566'
+  alias: Spotlights - Auto-off after timer
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - timer.spotlights_autooff
+    from: active
+    to: idle
+  conditions: []
+  actions:
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.backyard_spotlights
+  mode: single
+- id: '1738692210141'
+  alias: Front Porch - Notify when person seen
+  description: ''
+  triggers:
+  - entity_id:
+    - binary_sensor.frontdoor_porch_entry_person_occupancy
+    to: 'on'
+    enabled: true
+    trigger: state
+    from: 'off'
+  conditions:
+  - condition: state
+    entity_id: binary_sensor.front_contact
+    state: 'off'
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  actions:
+  - alias: Send Notification if notifications are active right now
+    if:
+    - condition: state
+      entity_id: timer.front_porch_notifications_throttle
+      state: idle
+    - condition: state
+      entity_id: timer.front_porch_notifications_break
+      state: idle
+    then:
+    - entity_id: camera.frontdoor
+      data:
+        filename: /config/www/tmp/snapshot_front_door_snapshot.jpg
+      action: camera.snapshot
+    - action: script.notify_all_residents_new
+      data:
+        message: Someone is on the front porch
+        title: Front Door
+        attachment:
+          content-type: jpeg
+          url: /local/tmp/snapshot_front_door_snapshot.jpg
+        actions:
+        - action: URI
+          title: See Front Door Camera
+          uri: /dashboard-home/cameras?frigate-card-action.camera_select=camera.frontdoor
+          icon: sfsymbols:video.fill
+        - action: MUTEFRONTDOOR
+          title: Mute Alerts
+          icon: sfsymbols:bell.slash
+        - action: SOUNDHOUSEALARM
+          title: Sound Alarm
+          icon: sfsymbols:bell
+          destructive: true
+      alias: Notify residents of someone on front porch
+    enabled: true
+  - alias: Announce in Kitchen if Home
+    if:
+    - condition: state
+      entity_id: input_boolean.house_empty
+      state: 'off'
+    - condition: state
+      entity_id: timer.front_porch_notifications_throttle
+      state: idle
+    - condition: state
+      entity_id: timer.front_porch_notifications_break
+      state: idle
+    then:
+    - action: script.announce_to_google_speaker
+      metadata: {}
+      data:
+        speaker: kitchen
+        message: Someone is on the porch
+    - action: timer.start
+      metadata: {}
+      data: {}
+      target:
+        entity_id:
+        - timer.front_porch_notifications_throttle
+      enabled: true
+  - alias: Turn on front porch light for 2 min if dark
+    if:
+    - condition: sun
+      before: sunrise
+      after: sunset
+    then:
+    - action: light.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: light.front_porch_light
+    - action: timer.start
+      metadata: {}
+      data: {}
+      target:
+        entity_id:
+        - timer.front_porch_lights_auto_off
+      enabled: true
+  mode: single
+- id: '1738693010308'
+  alias: Front Porch Lights - Auto-off after timer
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - timer.front_porch_lights_auto_off
+    from: active
+    to: idle
+  conditions: []
+  actions:
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.front_porch_light
+  mode: single
+- id: '1738693286831'
+  alias: Front Porch - Mute Alerts
+  description: ''
+  triggers:
+  - trigger: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: MUTEFRONTDOOR
+  conditions: []
+  actions:
+  - action: timer.cancel
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - timer.front_porch_notifications_break
+  - action: timer.start
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - timer.front_porch_notifications_break
+  mode: single
+- id: '1738693361987'
+  alias: Sound House Alarm
+  description: ''
+  triggers:
+  - trigger: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: SOUNDHOUSEALARM
+  conditions: []
+  actions:
+  - action: siren.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: siren.plug_house_alarm
+  mode: single
+- id: '1738867358713'
+  alias: Irrigation - Get forecast every hour for smart irrigation
+  description: ''
+  triggers:
+  - trigger: time_pattern
+    hours: /1
+    minutes: '30'
+  conditions: []
+  actions:
+  - action: weather.get_forecasts
+    data:
+      type: daily
+    response_variable: results
+    target:
+      entity_id: weather.ktnthomp12
+  - data:
+      entity_id: input_number.tomorrow_high_temperature
+      value: '{% set forecast = results[''weather.ktnthomp12''].forecast[0].temperature
+        %} {% set current = states(''input_number.tomorrow_high_temperature'') | float(0)
+        %} {{ forecast if forecast is not none else current }}
+
+        '
+    action: input_number.set_value
+  - data:
+      entity_id: input_number.tomorrow_low_temperature
+      value: '{% set forecast = results[''weather.ktnthomp12''].forecast[0].templow
+        %} {% set current = states(''input_number.tomorrow_low_temperature'') | float(0)
+        %} {{ forecast if forecast is not none else current }}
+
+        '
+    action: input_number.set_value
+  mode: single
+- id: '1738951180072'
+  alias: Irrigation - At midnight, create watering plan for tomorrow
+  description: ''
+  triggers:
+  - trigger: time
+    at: 00:00:00
+  conditions: []
+  actions:
+  - action: script.irrigation_re_calculate_planned_irrigation_for_tomorrow
+    metadata: {}
+    data: {}
+    alias: (Re)Calculate Planned Irrigation and Irrigation Start Time
+  - alias: Save today's metrics as yesterday's metrics
+    sequence:
+    - alias: Save today's deficits to the cumulative deficit
+      sequence:
+      - action: input_number.set_value
+        target:
+          entity_id: input_number.zone_1_cumulative_deficit
+        data:
+          value: '{{ states(''sensor.zone_1_cumulative_deficit'') }}'
+      - action: input_number.set_value
+        target:
+          entity_id: input_number.zone_3_cumulative_deficit
+        data:
+          value: '{{ states(''sensor.zone_3_cumulative_deficit'') }}'
+      - action: input_number.set_value
+        target:
+          entity_id: input_number.zone_4_cumulative_deficit
+        data:
+          value: '{{ states(''sensor.zone_4_cumulative_deficit_cumulative_deficit'')
+            }}'
+      enabled: true
+    - alias: Save today's high and low temperatures as yesterday's range
+      sequence:
+      - alias: Save today's low temp as yesterday's low temp
+        action: input_number.set_value
+        metadata: {}
+        data:
+          value: '{{ states(''sensor.daily_low_temperature'') | float }}'
+        target:
+          entity_id:
+          - input_number.yesterday_low_temperature
+      - alias: Save today's high temp as yesterday's high temp
+        action: input_number.set_value
+        metadata: {}
+        data:
+          value: '{{ states(''sensor.daily_high_temperature'') | float }}'
+        target:
+          entity_id: input_number.yesterday_high_temperature
+      - alias: Save today's average temp as yesterday's average temp
+        action: input_number.set_value
+        metadata: {}
+        data:
+          value: '{{ states(''sensor.daily_average_temperature'') | float }}'
+        target:
+          entity_id:
+          - input_number.average_temperature_yesterday
+    - action: input_number.set_value
+      metadata: {}
+      data:
+        value: '{{ states(''sensor.daily_lawn_evapotranspiration'') | float }}'
+      target:
+        entity_id: input_number.evapotranspiration_yesterday
+      alias: Save today's ET as yesterday's ET
+    - alias: Save today's precipitation as yesterday's precipitation
+      action: input_number.set_value
+      metadata: {}
+      data:
+        value: '{{ states(''sensor.precipitation_today'') | float }}'
+      target:
+        entity_id: input_number.precipitation_yesterday
+    - alias: Save today's Solar Radiation as yesterday's Solar Radiation
+      action: input_number.set_value
+      metadata: {}
+      data:
+        value: '{{ states(''sensor.daily_solar_radiation_mj'') | float }}'
+      target:
+        entity_id: input_number.solar_radiation_yesterday
+    - alias: Save today's Wind Speed as yesterday's Wind Speed
+      action: input_number.set_value
+      metadata: {}
+      data:
+        value: '{{ states(''sensor.daily_average_wind_speed'') | float }}'
+      target:
+        entity_id: input_number.wind_speed_yesterday
+    - alias: Save today's Humidity as yesterday's Humidity
+      action: input_number.set_value
+      metadata: {}
+      data:
+        value: '{{ states(''sensor.daily_average_humidity'') | float }}'
+      target:
+        entity_id: input_number.humidity_yesterday
+  - alias: Save sticky notification for watering plan
+    sequence:
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 2
+        milliseconds: 0
+      alias: Delay for 2 seconds so sensors update
+    - action: persistent_notification.create
+      metadata: {}
+      data:
+        title: Watering Plan for Tomorrow
+        message: 'Front Grass: {{ states("sensor.zone_1_irrigation_planned_minutes")
+          | int }}m<br> South Grass: {{ states("sensor.zone_3_irrigation_planned_minutes")
+          | int }}m<br> North Grass: {{ states("sensor.zone_4_irrigation_planned_minutes")
+          | int }}m<br> <br> Front Beds: {{ states("sensor.zone_2_irrigation_planned_minutes")
+          | int }}m<br> Back Beds: {{ states("sensor.zone_5_irrigation_planned_minutes")
+          | int }}m'
+      alias: Save the plan in a notification for tomorrow's watering
+  mode: single
+- id: '1739279897498'
+  alias: Irrigation - At 5a, execute daily watering plan
+  description: ''
+  triggers:
+  - at: input_datetime.irrigation_start_time
+    trigger: time
+    alias: When it is Irrigation Start Time (will finish at sunrise)
+  - trigger: state
+    entity_id:
+    - timer.irrigation_watering_timer
+    to: idle
+    from: active
+    alias: When an irrigation zone finished running (by timer)
+  - alias: When Rainbird comes back online
+    trigger: state
+    entity_id:
+    - calendar.rain_bird_controller
+    from: unavailable
+    to: 'off'
+  - trigger: state
+    entity_id:
+    - switch.rain_bird_sprinkler_1
+    - switch.rain_bird_sprinkler_2
+    - switch.rain_bird_sprinkler_3
+    - switch.rain_bird_sprinkler_4
+    - switch.rain_bird_sprinkler_5
+    from: 'on'
+    to: 'off'
+    alias: When any sprinkler turns off (catches manual intervention by controller)
+    enabled: false
+  conditions:
+  - condition: state
+    entity_id: timer.irrigation_watering_timer
+    state: idle
+    alias: No zones are currently running
+  - condition: time
+    after: input_datetime.irrigation_start_time
+  - condition: sun
+    before: sunrise
+  actions:
+  - alias: If timer is running, stop it and exit (prevents skipping a zone error)
+    if:
+    - condition: state
+      entity_id: timer.irrigation_watering_timer
+      state: active
+    then:
+    - action: timer.finish
+      metadata: {}
+      data: {}
+      target:
+        entity_id: timer.irrigation_watering_timer
+    - stop: Timer out of synch with automation for some reason
+  - alias: Turn off currently running sprinkler if needed
+    choose:
+    - conditions:
+      - condition: numeric_state
+        entity_id: input_number.irrigation_current_sprinkler_active
+        above: 0
+        below: 2
+      sequence:
+      - alias: Turn off irrigation
+        action: switch.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.rain_bird_sprinkler_1
+      - action: input_number.set_value
+        metadata: {}
+        data:
+          value: 0
+        target:
+          entity_id: input_number.irrigation_current_sprinkler_active
+        alias: Reset active sprinkler state
+      alias: Front Yard - Grass
+    - conditions:
+      - condition: numeric_state
+        entity_id: input_number.irrigation_current_sprinkler_active
+        above: 1
+        below: 3
+      sequence:
+      - alias: Turn off irrigation
+        action: switch.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.rain_bird_sprinkler_2
+      - action: input_number.set_value
+        metadata: {}
+        data:
+          value: 0
+        target:
+          entity_id: input_number.irrigation_current_sprinkler_active
+        alias: Reset active sprinkler state
+      alias: Front Yard - Beds
+    - conditions:
+      - condition: numeric_state
+        entity_id: input_number.irrigation_current_sprinkler_active
+        above: 2
+        below: 4
+      sequence:
+      - alias: Turn off irrigation
+        action: switch.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.rain_bird_sprinkler_3
+      - action: input_number.set_value
+        metadata: {}
+        data:
+          value: 0
+        target:
+          entity_id: input_number.irrigation_current_sprinkler_active
+        alias: Reset active sprinkler state
+      alias: South Yard - Grass
+    - conditions:
+      - condition: numeric_state
+        entity_id: input_number.irrigation_current_sprinkler_active
+        above: 3
+        below: 5
+      sequence:
+      - alias: Turn off irrigation
+        action: switch.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id:
+          - switch.rain_bird_sprinkler_4
+      - action: input_number.set_value
+        metadata: {}
+        data:
+          value: 0
+        target:
+          entity_id: input_number.irrigation_current_sprinkler_active
+        alias: Reset active sprinkler state
+      alias: North Yard - Grass
+    - conditions:
+      - condition: numeric_state
+        entity_id: input_number.irrigation_current_sprinkler_active
+        above: 4
+        below: 6
+      sequence:
+      - alias: Turn off irrigation
+        action: switch.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id:
+          - switch.rain_bird_sprinkler_5
+      - action: input_number.set_value
+        metadata: {}
+        data:
+          value: 0
+        target:
+          entity_id: input_number.irrigation_current_sprinkler_active
+        alias: Reset active sprinkler state
+      alias: Back Yard - Beds
+  - alias: Start watering next zone (and reset bucket) if needed
+    choose:
+    - conditions:
+      - alias: If zone needs water today
+        condition: numeric_state
+        entity_id: sensor.zone_1_irrigation_planned_minutes
+        above: 0
+      sequence:
+      - action: rainbird.start_irrigation
+        metadata: {}
+        data:
+          duration: '{{ states(''sensor.zone_1_irrigation_planned_minutes'') | int
+            + 1 }}'
+        target:
+          entity_id: switch.rain_bird_sprinkler_1
+      - alias: Set currently active sprinkler (for later HA-reboot-safe turning off)
+        action: input_number.set_value
+        metadata: {}
+        data:
+          value: 1
+        target:
+          entity_id: input_number.irrigation_current_sprinkler_active
+      - action: timer.start
+        target:
+          entity_id: timer.irrigation_watering_timer
+        data:
+          duration:
+            minutes: '{{ states(''sensor.zone_1_irrigation_planned_minutes'') | int(0)
+              }}'
+      - action: input_number.set_value
+        metadata: {}
+        data:
+          value: 0
+        target:
+          entity_id:
+          - input_number.zone_1_irrigation_planned
+      alias: Front Yard - Grass
+    - conditions:
+      - alias: If zone needs any water
+        condition: numeric_state
+        entity_id: sensor.zone_2_irrigation_planned_minutes
+        above: 0
+      sequence:
+      - action: rainbird.start_irrigation
+        metadata: {}
+        data:
+          duration: '{{ states(''sensor.zone_2_irrigation_planned_minutes'') | int
+            + 1 }}'
+        target:
+          entity_id: switch.rain_bird_sprinkler_2
+      - alias: Set currently active sprinkler (for later HA-reboot-safe turning off)
+        action: input_number.set_value
+        metadata: {}
+        data:
+          value: 2
+        target:
+          entity_id: input_number.irrigation_current_sprinkler_active
+      - action: timer.start
+        target:
+          entity_id: timer.irrigation_watering_timer
+        data:
+          duration:
+            minutes: '{{ states(''sensor.zone_2_irrigation_planned_minutes'') | int(0)
+              }}'
+      - action: input_number.set_value
+        metadata: {}
+        data:
+          value: 0
+        target:
+          entity_id:
+          - input_number.zone_2_irrigation_planned
+      alias: Front Yard - Beds
+    - conditions:
+      - alias: If zone needs any water
+        condition: numeric_state
+        entity_id: sensor.zone_3_irrigation_planned_minutes
+        above: 0
+      sequence:
+      - action: rainbird.start_irrigation
+        metadata: {}
+        data:
+          duration: '{{ states(''sensor.zone_3_irrigation_planned_minutes'') | int
+            + 1 }}'
+        target:
+          entity_id: switch.rain_bird_sprinkler_3
+      - alias: Set currently active sprinkler (for later HA-reboot-safe turning off)
+        action: input_number.set_value
+        metadata: {}
+        data:
+          value: 3
+        target:
+          entity_id: input_number.irrigation_current_sprinkler_active
+      - action: timer.start
+        target:
+          entity_id: timer.irrigation_watering_timer
+        data:
+          duration:
+            minutes: '{{ states(''sensor.zone_3_irrigation_planned_minutes'') | int(0)
+              }}'
+      - action: input_number.set_value
+        metadata: {}
+        data:
+          value: 0
+        target:
+          entity_id:
+          - input_number.zone_3_irrigation_planned
+      alias: South Yard - Grass
+    - conditions:
+      - alias: If zone needs any water
+        condition: numeric_state
+        entity_id: sensor.zone_4_irrigation_planned_minutes
+        above: 0
+      sequence:
+      - action: rainbird.start_irrigation
+        metadata: {}
+        data:
+          duration: '{{ states(''sensor.zone_4_irrigation_planned_minutes'') | int
+            + 1 }}'
+        target:
+          entity_id: switch.rain_bird_sprinkler_4
+      - alias: Set currently active sprinkler (for later HA-reboot-safe turning off)
+        action: input_number.set_value
+        metadata: {}
+        data:
+          value: 4
+        target:
+          entity_id: input_number.irrigation_current_sprinkler_active
+      - action: timer.start
+        target:
+          entity_id: timer.irrigation_watering_timer
+        data:
+          duration:
+            minutes: '{{ states(''sensor.zone_4_irrigation_planned_minutes'') | int(0)
+              }}'
+      - action: input_number.set_value
+        metadata: {}
+        data:
+          value: 0
+        target:
+          entity_id:
+          - input_number.zone_4_irrigation_planned
+      alias: North Yard - Grass
+    - conditions:
+      - alias: If zone needs any water
+        condition: numeric_state
+        entity_id: sensor.zone_5_irrigation_planned_minutes
+        above: 0
+      sequence:
+      - action: rainbird.start_irrigation
+        metadata: {}
+        data:
+          duration: '{{ states(''sensor.zone_5_irrigation_planned_minutes'') | int
+            + 1 }}'
+        target:
+          entity_id: switch.rain_bird_sprinkler_5
+      - alias: Set currently active sprinkler (for later HA-reboot-safe turning off)
+        action: input_number.set_value
+        metadata: {}
+        data:
+          value: 5
+        target:
+          entity_id: input_number.irrigation_current_sprinkler_active
+      - action: timer.start
+        target:
+          entity_id: timer.irrigation_watering_timer
+        data:
+          duration:
+            minutes: '{{ states(''sensor.zone_5_irrigation_planned_minutes'') | int(0)
+              }}'
+      - action: input_number.set_value
+        metadata: {}
+        data:
+          value: 0
+        target:
+          entity_id:
+          - input_number.zone_5_irrigation_planned
+      alias: Back Yard - Beds
+  mode: single
+- id: '1742257868722'
+  alias: Pool - Set last test datetime
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.pool_ph
+    - sensor.pool_ch
+    - sensor.pool_csi
+    - sensor.pool_cya
+    - sensor.pool_fc
+    - sensor.pool_ta
+    - sensor.burgate_temp
+  conditions: []
+  actions:
+  - action: input_datetime.set_datetime
+    metadata: {}
+    data:
+      datetime: '{{ now() }}'
+    target:
+      entity_id: input_datetime.pool_water_test
+  mode: single
+- id: '1745848050327'
+  alias: Garage Lights - Turn on when opening mudroom door
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.mudroom_door_contact
+    from: 'off'
+    to: 'on'
+  conditions:
+  - condition: or
+    conditions:
+    - condition: sun
+      before: sunrise
+      after: sunset
+    - condition: and
+      conditions:
+      - condition: state
+        entity_id: cover.ratgdo_karri_door
+        state: closed
+      - condition: state
+        entity_id: cover.ratgdo_kirk_door
+        state: closed
+  - condition: state
+    entity_id: light.garage_lights
+    state: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+  actions:
+  - action: light.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.garage_lights
+  mode: single
+- id: '1747067855204'
+  alias: Irrigation - Set irrigation start time if planned durations change
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.zone_1_irrigation_planned_minutes
+    above: 0
+  - trigger: numeric_state
+    entity_id:
+    - sensor.zone_2_irrigation_planned_minutes
+    above: 0
+  - trigger: numeric_state
+    entity_id:
+    - sensor.zone_3_irrigation_planned_minutes
+    above: 0
+  - trigger: numeric_state
+    entity_id:
+    - sensor.zone_4_irrigation_planned_minutes
+    above: 0
+  - trigger: numeric_state
+    entity_id:
+    - sensor.zone_5_irrigation_planned_minutes
+    above: 0
+  conditions:
+  - condition: time
+    after: 06:00:00
+  actions:
+  - sequence:
+    - variables:
+        sunrise_ts: '{{ as_timestamp(state_attr(''sun.sun'', ''next_rising'')) }}'
+        total_min: "{{\n  states('sensor.zone_1_irrigation_planned_minutes') | float(0)
+          +\n  states('sensor.zone_2_irrigation_planned_minutes') | float(0) +\n  states('sensor.zone_3_irrigation_planned_minutes')
+          | float(0) +\n  states('sensor.zone_4_irrigation_planned_minutes') | float(0)
+          +\n  states('sensor.zone_5_irrigation_planned_minutes') | float(0)\n}}\n"
+        start_ts: '{{ sunrise_ts - (total_min * 60) }}'
+        hour: '{{ (start_ts | timestamp_custom(''%H'')) | int }}'
+        minute: '{{ (start_ts | timestamp_custom(''%M'')) | int }}'
+    - target:
+        entity_id: input_datetime.irrigation_start_time
+      data:
+        time: '{{ ''%02d:%02d:00'' | format(hour, minute) }}'
+      action: input_datetime.set_datetime
+    alias: Set irrigation start time for tomorrow
+  mode: single
+- id: '1747616707380'
+  alias: Apple Watch - Update watch states
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.all_zones_irrigation_planned_minutes
+  - trigger: state
+    entity_id:
+    - sensor.open_garages
+  - trigger: state
+    entity_id:
+    - sensor.pool_status
+  - entity_id:
+    - alarm_control_panel.alarmo
+    trigger: state
+  conditions: []
+  actions:
+  - data:
+      message: update_complications
+    action: notify.mobile_app_iphonekf
+    alias: Refresh Kirk's Watch
+  mode: single
+- id: '1752167045406'
+  alias: Swim Mode - Turn off spotlights
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - timer.swim_mode
+    to: active
+  conditions: []
+  actions:
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.backyard_spotlights
+  mode: single
+- id: '1752167475231'
+  alias: Swim Mode - Turn on when hottubbing or swimming
+  description: ''
+  triggers:
+  - event_type: scene.turn_on
+    event_data:
+      entity_id: scene.hot_tubbing
+    trigger: event
+    alias: Hottubbing is activated
+  - event_type: scene.turn_on
+    event_data:
+      entity_id: scene.swimming
+    trigger: event
+    alias: Swimming is activated
+  conditions: []
+  actions:
+  - action: timer.start
+    metadata: {}
+    data: {}
+    target:
+      entity_id: timer.swim_mode
+  mode: single
+- id: '1752167704305'
+  alias: Swim Mode - Turn off when pool shutdown
+  description: ''
+  triggers:
+  - alias: Pool Shutdown is activated
+    event_type: scene.turn_on
+    event_data:
+      entity_id: scene.pool_shutdown
+    trigger: event
+  conditions: []
+  actions:
+  - action: timer.finish
+    metadata: {}
+    data: {}
+    target:
+      entity_id: timer.swim_mode
+  mode: single
+- id: '1753450364607'
+  alias: HomeHub - Docker Image Update Available
+  description: ''
+  triggers:
+  - webhook_id: homehub_docker_update
+    allowed_methods:
+    - POST
+    - PUT
+    trigger: webhook
+    local_only: true
+  actions:
+  - variables:
+      image: '{{ trigger.json.image }}'
+      container: '{{ trigger.json.metadata.ctn_names }}'
+  - data:
+      title: HomeHub Docker Image Update
+      message: "An update is available for HomeHub ({{ container }}).  \n\"[Click
+        here to update](https://homehub.lan:9443/#!/3/docker/stacks)\""
+      notification_id: homehub_docker_update_{{ container }}
+    action: persistent_notification.create
+  mode: single
+- id: '1753456085929'
+  alias: HomeHub - Docker Pull and Restart Container via Webhook
+  description: Triggered from a clickable link in a notification
+  triggers:
+  - webhook_id: homehub_docker_update_execute
+    trigger: webhook
+    allowed_methods:
+    - POST
+    - PUT
+    - GET
+    local_only: false
+  actions:
+  - variables:
+      container: '{{ trigger.query.container }}'
+  - data:
+      container: '{{ container }}'
+    action: rest_command.homehub_docker_pull_and_restart
+  mode: single
+- id: '1753458471681'
+  alias: HomeServer -  Docker Image Update Available
+  description: ''
+  triggers:
+  - webhook_id: homeserver_docker_update
+    allowed_methods:
+    - POST
+    - PUT
+    trigger: webhook
+    local_only: true
+  conditions: []
+  actions:
+  - variables:
+      image: '{{ trigger.json.image }}'
+      container: '{{ trigger.json.metadata.ctn_names }}'
+  - data:
+      title: HomeServer Docker Image Update
+      message: "An update is available for HomeServer ({{ container }}).  \n\"[Click
+        here to update](https://homehub.lan:9443/#!/11/docker/stacks)\""
+      notification_id: homeserver_docker_update_{{ container }}
+    action: persistent_notification.create
+  mode: single
+- id: '1753458749030'
+  alias: Frigate - Docker Image Update Available
+  description: ''
+  triggers:
+  - webhook_id: frigate_docker_update
+    allowed_methods:
+    - POST
+    - PUT
+    trigger: webhook
+    local_only: true
+  conditions: []
+  actions:
+  - variables:
+      image: '{{ trigger.json.image }}'
+      container: '{{ trigger.json.metadata.ctn_names }}'
+  - data:
+      title: Frigate Docker Image Update
+      message: "An update is available for Frigate ({{ container }}).  \n\"[Click
+        here to update](https://homehub.lan:9443/#!/10/docker/stacks)\""
+      notification_id: frigate_docker_update_{{ container }}
+    action: persistent_notification.create
+  mode: single
+- id: '1753458884349'
+  alias: HomeServer - Docker Pull and Restart Container via Webhook
+  description: Triggered from a clickable link in a notification
+  triggers:
+  - webhook_id: homeserver_docker_update_execute
+    trigger: webhook
+    allowed_methods:
+    - POST
+    - PUT
+    - GET
+    local_only: false
+  conditions: []
+  actions:
+  - variables:
+      container: '{{ trigger.container }}'
+  - data:
+      container: '{{ container }}'
+    action: rest_command.homeserver_docker_pull_and_restart
+  mode: single
+- id: '1753458949033'
+  alias: Frigate - Docker Pull and Restart Container via Webhook
+  description: Triggered from a clickable link in a notification
+  triggers:
+  - webhook_id: frigate_docker_update_execute
+    trigger: webhook
+    allowed_methods:
+    - POST
+    - PUT
+    - GET
+    local_only: false
+  conditions: []
+  actions:
+  - variables:
+      container: '{{ trigger.query.container }}'
+  - data:
+      container: '{{ container }}'
+    action: rest_command.frigate_docker_pull_and_restart
+  mode: single
+- id: '1754603470129'
+  alias: Pool Gates - Notify on Open
+  description: Notify when any pool gate opens; camera and text depend on which gate
+  triggers:
+  - alias: When a gate opens
+    trigger: state
+    entity_id:
+    - binary_sensor.gate_south_contact
+    - binary_sensor.left_pool_gate_contact
+    - binary_sensor.gate_east_contact
+    from: 'off'
+    to: 'on'
+    enabled: true
+  conditions:
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: timer.swim_mode
+      state: active
+    alias: Swim mode isn’t on
+  actions:
+  - alias: Send Notification if notifications are active right now
+    if:
+    - condition: state
+      entity_id: timer.gate_notifications_throttle
+      state: idle
+    - condition: state
+      entity_id: timer.gate_notifications_break
+      state: idle
+    then:
+    - alias: Delay if South Gate
+      if:
+      - condition: template
+        value_template: '{{ gate_entity == ''binary_sensor.south_pool_gate_contact''
+          }}'
+      then:
+      - delay: 00:00:05
+    - alias: Capture snapshot from the correct camera
+      action: camera.snapshot
+      data:
+        entity_id: '{{ camera_entity }}'
+        filename: '{{ snapshot_file }}'
+    - alias: House Armed or Empty House, Send Critical Notification
+      if:
+      - alias: House Armed or Empty House, Send Critical Notification
+        condition: or
+        conditions:
+        - condition: not
+          conditions:
+          - condition: state
+            entity_id: alarm_control_panel.alarmo
+            state: disarmed
+        - condition: state
+          entity_id: input_boolean.house_empty
+          state: 'on'
+        - condition: and
+          conditions:
+          - condition: state
+            entity_id: input_boolean.kid_mode
+            state: 'on'
+          - condition: not
+            conditions:
+            - condition: state
+              entity_id: timer.swim_mode
+              state: 'on'
+      then:
+      - action: script.notify_residents_critical
+        data:
+          title: '{{ title_text }}'
+          message: '{{ message_text }}'
+          attachment:
+            content-type: jpeg
+            url: '{{ snapshot_file | replace(''/config/www'', ''/local'') }}'
+          actions:
+          - action: URI
+            title: See Camera
+            uri: '/dashboard-home/cameras?frigate-card-action.camera_select={{ camera_entity
+              }}
+
+              '
+            icon: sfsymbols:video.fill
+          - action: MUTEALERTS
+            title: Mute Alerts
+            icon: sfsymbols:bell.slash
+          - action: SOUNDALARM
+            title: Sound Alarm
+            icon: sfsymbols:bell
+            destructive: true
+      else:
+      - alias: Send Critical Notification if Not Empty and Very Late
+        if:
+        - condition: and
+          conditions:
+          - condition: state
+            entity_id: input_boolean.house_empty
+            state: 'off'
+          - condition: state
+            entity_id: binary_sensor.house_alarm_hours
+            state: 'on'
+        then:
+        - action: script.notify_residents_critical
+          data:
+            title: '{{ title_text }}'
+            message: '{{ message_text }}'
+            attachment:
+              content-type: jpeg
+              url: '{{ snapshot_file | replace(''/config/www'', ''/local'') }}'
+            actions:
+            - action: URI
+              title: See Camera
+              uri: '/dashboard-home/cameras?frigate-card-action.camera_select={{ camera_entity
+                }}
+
+                '
+              icon: sfsymbols:video.fill
+            - action: MUTEALERTS
+              title: Mute Alerts
+              icon: sfsymbols:bell.slash
+            - action: SOUNDALARM
+              title: Sound Alarm
+              icon: sfsymbols:bell
+              destructive: true
+    - action: timer.start
+      target:
+        entity_id: timer.gate_notifications_throttle
+      data: {}
+  - alias: Announce in Kitchen if notifications are active right now
+    if:
+    - condition: state
+      entity_id: timer.gate_notifications_break
+      state: idle
+    then:
+    - action: script.announce_to_google_speaker
+      data:
+        speaker: kitchen
+        message: '{{ message_text }}'
+  - alias: Alarm if Kid Mode on
+    if:
+    - condition: state
+      entity_id: input_boolean.kid_mode
+      state: 'on'
+    then:
+    - action: siren.turn_on
+      target:
+        entity_id: siren.pool_alarm_siren_alarm
+      data: {}
+  - alias: Turn on spotlights for 2 min if dark
+    if:
+    - condition: state
+      entity_id: sun.sun
+      state: below_horizon
+    then:
+    - action: light.turn_on
+      target:
+        entity_id: light.backyard_spotlights
+      data: {}
+    - action: timer.start
+      target:
+        entity_id: timer.spotlights_autooff
+      data: {}
+  mode: single
+  variables:
+    gate_entity: '{{ trigger.entity_id }}'
+    gate_name: '{{ trigger.to_state.name }}'
+    camera_entity: "{% set cam_map = {\n  'binary_sensor.east_pool_gate_contact':
+      \ 'camera.pool',\n  'binary_sensor.south_pool_gate_contact': 'camera.backdoor',\n
+      \ 'binary_sensor.north_pool_gate_contact': 'camera.north'\n} %} {{ cam_map.get(trigger.entity_id,
+      'camera.pool') }}"
+    snapshot_file: /config/www/tmp/{{ trigger.entity_id.split('.')[-1] }}_snapshot.jpg
+    message_text: '{{ gate_name }}'
+    title_text: Pool gate opened
+- id: '1755994907171'
+  alias: At really dark, turn on pool lights
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunset
+    offset: 00:30:00
+  conditions:
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: input_boolean.house_empty
+      state: ''
+    alias: If house not empty
+  actions:
+  - action: scene.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - scene.actually_dark
+  mode: single

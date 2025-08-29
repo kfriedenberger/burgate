@@ -1,0 +1,57 @@
+actions:
+  - name: RefreshWatch
+    background_color: "#6B71C3"
+    label:
+      text: "Refresh"
+      color: "#ffffff"
+    icon:
+      icon: refresh
+      color: "#ffffff"
+  - name: OpenGarageKarri
+    background_color: "#6C8764"
+    label:
+      text: "Open - Karri"
+      color: "#ffffff"
+    icon:
+      icon: garage_open
+      color: "#ffffff"
+  - name: CloseGarageKarri
+    background_color: "#DB332F"
+    label:
+      text: "Close - Karri"
+      color: "#ffffff"
+    icon:
+      icon: garage_lock
+      color: "#ffffff"
+  - name: OpenGarageKirk
+    background_color: "#6C8764"
+    label:
+      text: "Open - Kirk"
+      color: "#ffffff"
+    icon:
+      icon: garage_open
+      color: "#ffffff"
+  - name: CloseGarageKirk
+    background_color: "#DB332F"
+    label:
+      text: "Close - Kirk"
+      color: "#ffffff"
+    icon:
+      icon: garage_lock
+      color: "#ffffff"
+  - name: DisarmHouse
+    background_color: "#6C8764"
+    label:
+      text: "Disarm"
+      color: "#ffffff"
+    icon:
+      icon: shield_lock_open
+      color: "#ffffff"
+  - name: ArmHouse
+    background_color: "#DB332F"
+    label:
+      text: "Arm"
+      color: "#ffffff"
+    icon:
+      icon: shield_lock
+      color: "#ffffff"

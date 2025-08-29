@@ -1,0 +1,54 @@
+# HOMEASSISTANT - standard setups
+# Loads default set of integrations. Do not remove.
+default_config:
+# Authentication providers
+homeassistant:
+  # Authentication providers (default)
+  auth_providers:
+    - type: homeassistant
+  # Custom Packages I wrote
+  packages: !include_dir_named packages
+
+    
+# Load frontend themes from the themes folder
+frontend:
+  themes: !include_dir_merge_named themes
+
+# Activate stream service for camera streaming
+stream:
+  ll_hls: false
+
+# Network settings
+http:
+  #NGINX settings
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 192.168.4.3
+    - 172.30.33.0/24
+    - 172.16.0.0/12
+  cors_allowed_origins:
+    - http://localhost:8123
+    - http://homeassistant.lan:8123
+
+# HOMEASSISTANT - custom entity integrations (not available through standard integrations)
+
+# Custom sensors
+#sensor: !include sensors.yaml
+
+# Template sensors for irrigation sampling
+#template: !include templates.yaml
+
+# CHANNEL - GOOGLE INTEGRATIONS
+# Google Assistant / Home integration
+google_assistant: !include google_assistant.yaml
+# Sleepnumber bed cover (used to show unsupported entity type in Google Home)
+cover: !include cover_sleepnumber.yaml
+
+# CHANNEL - IOS INTEGRATIONS
+# Apple Watch Actions - Garages and House Alarm
+#ios: !include ios_actions.yaml
+
+# Standard homeassistant includes
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml

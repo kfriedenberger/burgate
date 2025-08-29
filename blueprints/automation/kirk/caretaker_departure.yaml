@@ -1,0 +1,77 @@
+blueprint:
+  name: Caretaker – Departure (Person, kfried_guest)
+  description: >
+    When a caretaker (person entity) has been away for a buffer period,
+    re-enable pool/backyard notify automations, close garage(s),
+    arm Alarmo (away), and notify all residents.
+  domain: automation
+  input:
+    caretaker_person:
+      name: Caretaker (person entity)
+      selector:
+        entity:
+          domain: person
+    away_buffer:
+      name: Away buffer (minutes)
+      default: 10
+      selector:
+        number:
+          min: 0
+          max: 120
+          unit_of_measurement: min
+          mode: slider
+    garages:
+      name: Garage cover(s) to close
+      default: []
+      selector:
+        target:
+          entity:
+            domain: cover
+    alarmo_code:
+      name: Alarmo code
+      description: Enter the arm code for Alarmo
+      selector:
+        text:
+          type: password
+
+mode: single
+
+triggers:
+  - platform: state
+    entity_id: !input caretaker_person
+    to: 'not_home'
+    for:
+      minutes: !input away_buffer
+
+variables:
+  person_name: >
+    {{ state_attr((!input caretaker_person), 'friendly_name')
+       or states((!input caretaker_person)) }}
+
+actions:
+  - alias: Enable pool/backyard notify automations
+    action: automation.turn_on
+    target:
+      entity_id:
+        - automation.person_in_backyard_notify
+        - automation.person_in_pool_notify_if_seen
+
+  - alias: Close garages
+    action: cover.close_cover
+    target: !input garages
+
+  - alias: Arm Alarmo (away)
+    action: alarmo.arm
+    target:
+      entity_id: alarm_control_panel.alarmo
+    data:
+      mode: away
+      code: !input alarmo_code
+
+  - alias: Notify all residents ("Caretaker departed")
+    action: script.notify_all_residents_new
+    data:
+      title: "Caretaker departed"
+      message: "{{ person_name }} has left. House re-armed. Notifications re-enabled. Garages closed."
+      attachment: ""
+      actions: ""

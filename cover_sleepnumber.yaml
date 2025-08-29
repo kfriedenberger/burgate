@@ -1,0 +1,76 @@
+- platform: template
+  covers:
+    karri_bed:
+      friendly_name: "Karri's Bed"
+      unique_id: cover.karri_bed
+      position_template: >-
+        {{ states('number.sleepnumber_master_karri_firmness') | float  }}
+      open_cover:
+        - condition: not
+          conditions:
+            - condition: state
+              entity_id: number.sleepnumber_master_karri_firmness
+              state: "100.0"
+        - service: number.set_value
+          target:
+            entity_id: number.sleepnumber_master_karri_firmness
+          data:
+            value: "{{ ( 100 | float) }}"
+      close_cover:
+        - condition: not
+          conditions:
+            - condition: state
+              entity_id: number.sleepnumber_master_karri_firmness
+              state: "{{ states('input_number.sleepnumber_karri') }}"
+        - service: number.set_value
+          target:
+            entity_id: number.sleepnumber_master_karri_firmness
+          data:
+            value: "{{ states('input_number.sleepnumber_karri') }}"
+      stop_cover:
+        - service: button.press
+          target:
+            entity_id: button.sleepnumber_master_stop_pump
+      icon_template: >-
+        {% if is_state('binary_sensor.sleepnumber_master_karri_is_in_bed', 'off') %}
+          mdi:bed-empty
+        {% else %}
+          mdi:bed
+        {% endif %}
+    kirk_bed:
+      friendly_name: "Kirk's Bed"
+      unique_id: cover.kirk_bed
+      position_template: >-
+        {{ states('number.sleepnumber_master_kirk_firmness') | float  }}
+      open_cover:
+        - condition: not
+          conditions:
+            - condition: state
+              entity_id: number.sleepnumber_master_kirk_firmness
+              state: "100.0"
+        - service: number.set_value
+          target:
+            entity_id: number.sleepnumber_master_kirk_firmness
+          data:
+            value: "{{ ( 100 | float) }}"
+      close_cover:
+        - condition: not
+          conditions:
+            - condition: state
+              entity_id: number.sleepnumber_master_kirk_firmness
+              state: "{{ states('input_number.sleepnumber_kirk') }}"
+        - service: number.set_value
+          target:
+            entity_id: number.sleepnumber_master_kirk_firmness
+          data:
+            value: "{{ states('input_number.sleepnumber_kirk') | float }}"
+      stop_cover:
+        - service: button.press
+          target:
+            entity_id: button.sleepnumber_master_stop_pump
+      icon_template: >-
+        {% if is_state('binary_sensor.sleepnumber_master_kirk_is_in_bed', 'off') %}
+          mdi:bed-empty
+        {% else %}
+          mdi:bed
+        {% endif %}

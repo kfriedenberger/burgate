@@ -1,0 +1,73 @@
+blueprint:
+  name: Caretaker – Arrival (Person, kfried_guest)
+  description: >
+    When a caretaker (person entity) arrives home on kfried_guest Wi-Fi,
+    disarm Alarmo, open garage(s), disable pool/backyard notify automations,
+    and notify all residents ("Caretaker arrived" / "<PERSON> has arrived").
+  domain: automation
+  input:
+    caretaker_person:
+      name: Caretaker (person entity)
+      selector:
+        entity:
+          domain: person
+    garages:
+      name: Garage cover(s) to open
+      default: []
+      selector:
+        target:
+          entity:
+            domain: cover
+    alarmo_code:
+      name: Alarmo code
+      description: Enter the disarm code for Alarmo
+      selector:
+        text:
+          type: password
+
+mode: single
+
+triggers:
+  - platform: state
+    entity_id: !input caretaker_person
+    to: 'home'
+
+conditions:
+  # Must be connected to kfried_guest SSID
+  - condition: template
+    value_template: >
+      {% set tracker = expand(!input caretaker_person) | map(attribute='entity_id') | list | first %}
+      {% set actual = state_attr(tracker, 'ssid') | default('', true) | lower %}
+      {{ actual == 'kfried_guest' }}
+
+variables:
+  person_name: >
+    {{ state_attr((!input caretaker_person), 'friendly_name')
+       or states((!input caretaker_person)) }}
+
+actions:
+  - alias: Disarm Alarmo
+    action: alarmo.disarm
+    target:
+      entity_id: alarm_control_panel.alarmo
+    data:
+      code: !input alarmo_code
+
+  - alias: Open garages
+    action: cover.open_cover
+    target: !input garages
+
+  - alias: Disable pool/backyard notify automations
+    action: automation.turn_off
+    target:
+      entity_id:
+        - automation.person_in_backyard_notify
+        - automation.person_in_pool_notify_if_seen
+
+  - alias: Notify all residents ("Caretaker arrived")
+    action: script.notify_all_residents_new   # change if yours is ..._new
+    data:
+      title: "Caretaker arrived"
+      message: "{{ person_name }} has arrived"
+      attachment: ""
+      actions: ""

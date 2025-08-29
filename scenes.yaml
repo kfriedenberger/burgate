@@ -1,0 +1,803 @@
+- id: '1737984582117'
+  name: Bedtime
+  entities:
+    fan.back_porch_fan:
+      preset_modes:
+      direction: forward
+      percentage: 10
+      percentage_step: 10
+      preset_mode:
+      friendly_name: Back Porch Fan
+      supported_features: 53
+      state: 'off'
+    light.back_porch_can_lights:
+      supported_color_modes:
+      - onoff
+      color_mode:
+      icon: mdi:light-recessed
+      friendly_name: Back Porch Can Lights
+      supported_features: 0
+      state: 'off'
+    light.family_light_1:
+      supported_color_modes:
+      - onoff
+      color_mode:
+      icon: mdi:lamp
+      friendly_name: Family Light
+      supported_features: 0
+      state: 'off'
+    light.foyer_light:
+      supported_color_modes:
+      - onoff
+      color_mode:
+      icon: mdi:lamp
+      friendly_name: Foyer Light
+      supported_features: 0
+      state: 'off'
+    light.parlor_light:
+      supported_color_modes:
+      - onoff
+      color_mode:
+      icon: mdi:lamp
+      friendly_name: Parlor Light
+      supported_features: 0
+      state: 'off'
+    light.christmas_lights:
+      supported_color_modes:
+      - onoff
+      icon: mdi:string-lights
+      friendly_name: Christmas Lights
+      supported_features: 0
+      state: unavailable
+    light.christmas_tree:
+      supported_color_modes:
+      - onoff
+      icon: mdi:pine-tree
+      friendly_name: Christmas Tree
+      supported_features: 0
+      state: unavailable
+    light.parlor_tree:
+      supported_color_modes:
+      - onoff
+      icon: mdi:pine-tree
+      friendly_name: Parlor Tree
+      supported_features: 0
+      state: unavailable
+    light.kitchen_led:
+      supported_color_modes:
+      - onoff
+      color_mode:
+      friendly_name: Kitchen LEDs
+      supported_features: 0
+      state: 'off'
+    light.light_backyard_fan_yellow:
+      effect_list:
+      supported_color_modes:
+      - onoff
+      effect:
+      color_mode:
+      raw_state: false
+      icon: mdi:ceiling-fan-light
+      friendly_name: Back Porch Fan Light (Yellow)
+      supported_features: 4
+      state: 'off'
+    light.backyard_spotlights:
+      supported_color_modes:
+      - onoff
+      color_mode:
+      icon: mdi:spotlight-beam
+      friendly_name: Backyard Spotlights
+      supported_features: 0
+      state: 'off'
+    light.front_porch_light:
+      supported_color_modes:
+      - onoff
+      color_mode:
+      icon: mdi:coach-lamp
+      friendly_name: Front Porch Light
+      supported_features: 0
+      state: 'off'
+    light.ratgdo_karri_light:
+      supported_color_modes:
+      - onoff
+      color_mode:
+      friendly_name: Garage Light - Karri
+      supported_features: 0
+      state: 'off'
+    light.ratgdo_kirk_light:
+      supported_color_modes:
+      - onoff
+      color_mode:
+      friendly_name: Garage Light - Kirk
+      supported_features: 0
+      state: 'off'
+    light.garage_lights:
+      supported_color_modes:
+      - onoff
+      color_mode:
+      friendly_name: Garage Lights
+      supported_features: 0
+      state: 'off'
+    light.light_backyard_fan_white:
+      effect_list:
+      supported_color_modes:
+      - brightness
+      effect:
+      color_mode:
+      brightness:
+      raw_state: false
+      icon: mdi:ceiling-fan-light
+      friendly_name: Light - Backyard Fan (White)
+      supported_features: 4
+      state: 'off'
+    light.omnilogic_pool_color_lights:
+      effect_list:
+      - VOODOO_LOUNGE
+      - DEEP_BLUE_SEA
+      - ROYAL_BLUE
+      - AFTERNOON_SKY
+      - AQUA_GREEN
+      - EMERALD
+      - CLOUD_WHITE
+      - WARM_RED
+      - FLAMINGO
+      - VIVID_VIOLET
+      - SANGRIA
+      - TWILIGHT
+      - TRANQUILITY
+      - GEMSTONE
+      - USA
+      - MARDI_GRAS
+      - COOL_CABARET
+      - YELLOW
+      - ORANGE
+      - GOLD
+      - MINT
+      - TEAL
+      - BURNT_ORANGE
+      - PURE_WHITE
+      - CRISP_WHITE
+      - WARM_WHITE
+      - BRIGHT_YELLOW
+      supported_color_modes:
+      - brightness
+      effect:
+      color_mode:
+      brightness:
+      omni_system_id: 7
+      omni_bow_id: 1
+      omnilogic_state: 'Off'
+      speed: One Times
+      icon: mdi:bulkhead-light
+      friendly_name: Pool Lights
+      supported_features: 4
+      state: 'off'
+    climate.first_floor_thermostat:
+      hvac_modes:
+      - 'off'
+      - heat
+      - cool
+      - heat_cool
+      min_temp: 32
+      max_temp: 122
+      fan_modes:
+      - Auto low
+      - Low
+      - Circulation
+      preset_modes:
+      - none
+      - Energy heat
+      - Energy cool
+      current_temperature: 75
+      temperature:
+      target_temp_high: 71
+      target_temp_low: 68
+      current_humidity: 47
+      fan_mode: Auto low
+      hvac_action: idle
+      preset_mode: none
+      fan_state: Idle / off
+      friendly_name: 'First Floor Thermostat '
+      supported_features: 411
+      state: heat_cool
+    climate.second_floor_thermostat:
+      hvac_modes:
+      - 'off'
+      - heat
+      - cool
+      - heat_cool
+      min_temp: 32
+      max_temp: 122
+      fan_modes:
+      - Auto low
+      - Low
+      - Circulation
+      preset_modes:
+      - none
+      - Energy heat
+      - Energy cool
+      current_temperature: 70
+      temperature:
+      target_temp_high: 71
+      target_temp_low: 68
+      current_humidity: 55
+      fan_mode: Auto low
+      hvac_action: idle
+      preset_mode: none
+      fan_state: Idle / off
+      friendly_name: 'Second Floor Thermostat '
+      supported_features: 411
+      state: heat_cool
+  icon: mdi:bed
+  metadata:
+    light.back_porch_can_lights:
+      entity_only: true
+    light.family_light_1:
+      entity_only: true
+    light.foyer_light:
+      entity_only: true
+    light.parlor_light:
+      entity_only: true
+    light.christmas_lights:
+      entity_only: true
+    light.christmas_tree:
+      entity_only: true
+    light.parlor_tree:
+      entity_only: true
+    light.kitchen_led:
+      entity_only: true
+    light.light_backyard_fan_yellow:
+      entity_only: true
+    light.backyard_spotlights:
+      entity_only: true
+    light.front_porch_light:
+      entity_only: true
+    light.ratgdo_karri_light:
+      entity_only: true
+    light.ratgdo_kirk_light:
+      entity_only: true
+    light.garage_lights:
+      entity_only: true
+    light.light_backyard_fan_white:
+      entity_only: true
+    light.omnilogic_pool_color_lights:
+      entity_only: true
+- id: '1737985241718'
+  name: Dusk
+  entities:
+    light.foyer_light:
+      supported_color_modes:
+      - onoff
+      color_mode: onoff
+      icon: mdi:lamp
+      friendly_name: Foyer Light
+      supported_features: 0
+      state: 'on'
+    light.family_light_1:
+      supported_color_modes:
+      - onoff
+      color_mode: onoff
+      icon: mdi:lamp
+      friendly_name: Family Light
+      supported_features: 0
+      state: 'on'
+    light.karri_s_driveway_light:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6493
+      min_mireds: 154
+      max_mireds: 500
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode: color_temp
+      brightness: 255
+      color_temp_kelvin: 4000
+      color_temp: 250
+      hs_color:
+      - 26.812
+      - 34.87
+      rgb_color:
+      - 255
+      - 206
+      - 166
+      xy_color:
+      - 0.42
+      - 0.365
+      icon: mdi:outdoor-lamp
+      friendly_name: Karri's Driveway Light
+      supported_features: 40
+      state: 'on'
+    light.kirk_s_driveway_light:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6493
+      min_mireds: 154
+      max_mireds: 500
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode: color_temp
+      brightness: 255
+      color_temp_kelvin: 4000
+      color_temp: 250
+      hs_color:
+      - 26.812
+      - 34.87
+      rgb_color:
+      - 255
+      - 206
+      - 166
+      xy_color:
+      - 0.42
+      - 0.365
+      icon: mdi:outdoor-lamp
+      friendly_name: Kirk's Driveway Light
+      supported_features: 40
+      state: 'on'
+  icon: mdi:weather-sunset-down
+  metadata:
+    light.foyer_light:
+      entity_only: true
+    light.family_light_1:
+      entity_only: true
+    light.karri_s_driveway_light:
+      entity_only: true
+    light.kirk_s_driveway_light:
+      entity_only: true
+- id: '1737985477761'
+  name: Dawn
+  entities:
+    light.kirk_s_driveway_light:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6493
+      min_mireds: 154
+      max_mireds: 500
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      icon: mdi:outdoor-lamp
+      friendly_name: Kirk's Driveway Light
+      supported_features: 40
+      state: 'off'
+    light.karri_s_driveway_light:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6493
+      min_mireds: 154
+      max_mireds: 500
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      icon: mdi:outdoor-lamp
+      friendly_name: Karri's Driveway Light
+      supported_features: 40
+      state: 'off'
+    climate.first_floor_thermostat:
+      hvac_modes:
+      - 'off'
+      - heat
+      - cool
+      - heat_cool
+      min_temp: 32
+      max_temp: 122
+      fan_modes:
+      - Auto low
+      - Low
+      - Circulation
+      preset_modes:
+      - none
+      - Energy heat
+      - Energy cool
+      current_temperature: 75
+      temperature:
+      target_temp_high: 75
+      target_temp_low: 68
+      current_humidity: 47
+      fan_mode: Auto low
+      hvac_action: idle
+      preset_mode: none
+      fan_state: Idle / off
+      friendly_name: 'First Floor Thermostat '
+      supported_features: 411
+      state: heat_cool
+    climate.second_floor_thermostat:
+      hvac_modes:
+      - 'off'
+      - heat
+      - cool
+      - heat_cool
+      min_temp: 32
+      max_temp: 122
+      fan_modes:
+      - Auto low
+      - Low
+      - Circulation
+      preset_modes:
+      - none
+      - Energy heat
+      - Energy cool
+      current_temperature: 70
+      temperature:
+      target_temp_high: 73
+      target_temp_low: 68
+      current_humidity: 55
+      fan_mode: Auto low
+      hvac_action: idle
+      preset_mode: none
+      fan_state: Idle / off
+      friendly_name: 'Second Floor Thermostat '
+      supported_features: 411
+      state: heat_cool
+  icon: mdi:weather-sunset-up
+  metadata:
+    light.kirk_s_driveway_light:
+      entity_only: true
+    light.karri_s_driveway_light:
+      entity_only: true
+- id: '1737985985341'
+  name: Swimming
+  entities:
+    timer.swim_mode:
+      duration: '1:30:00'
+      editable: true
+      restore: true
+      icon: mdi:swim
+      friendly_name: Swim Mode
+      state: active
+    switch.omnilogic_pool_filter_pump:
+      omni_system_id: 3
+      omni_bow_id: 1
+      filter_state: 'On'
+      why_on: Manual On
+      icon: mdi:pump
+      friendly_name: Pool Pump
+      state: 'on'
+    number.omnilogic_pool_filter_pump_speed:
+      min: 50
+      max: 100
+      step: 1
+      mode: auto
+      omni_system_id: 3
+      omni_bow_id: 1
+      max_rpm: 3450
+      min_rpm: 600
+      max_percent: 100
+      min_percent: 50
+      current_rpm: 100
+      current_percent: 100
+      unit_of_measurement: Percent
+      icon: mdi:gauge
+      friendly_name: Pool Pump Speed
+      state: '100'
+    switch.omnilogic_pool_bubbler:
+      omni_system_id: 6
+      omni_bow_id: 1
+      why_on: 5
+      icon: mdi:fountain
+      friendly_name: Bubbler
+      state: 'on'
+    switch.omnilogic_spa_spillover:
+      omni_system_id: 12
+      omni_bow_id: 2
+      why_on: 5
+      icon: mdi:fountain
+      friendly_name: Spillover
+      state: 'on'
+  icon: mdi:swim
+  metadata:
+    timer.swim_mode:
+      entity_only: true
+    switch.omnilogic_pool_filter_pump:
+      entity_only: true
+    number.omnilogic_pool_filter_pump_speed:
+      entity_only: true
+    switch.omnilogic_pool_bubbler:
+      entity_only: true
+    switch.omnilogic_spa_spillover:
+      entity_only: true
+- id: '1737995916325'
+  name: Hot Tubbing
+  entities:
+    timer.swim_mode:
+      duration: '1:30:00'
+      editable: true
+      restore: true
+      icon: mdi:swim
+      friendly_name: Swim Mode
+      state: active
+    number.omnilogic_spa_filter_pump_speed:
+      min: 50
+      max: 100
+      step: 1
+      mode: auto
+      omni_system_id: 9
+      omni_bow_id: 2
+      max_rpm: 3450
+      min_rpm: 600
+      max_percent: 100
+      min_percent: 50
+      current_rpm: 0
+      current_percent: 0
+      unit_of_measurement: Percent
+      icon: mdi:gauge
+      friendly_name: Hot Tub Filter Pump Speed
+      state: '100'
+    switch.omnilogic_spa_filter_pump:
+      omni_system_id: 9
+      omni_bow_id: 2
+      filter_state: 'On'
+      why_on: 'On'
+      icon: mdi:pump-off
+      friendly_name: Hot Tub Filter Pump
+      state: 'on'
+    switch.omnilogic_spa_spillover:
+      omni_system_id: 12
+      omni_bow_id: 2
+      why_on: 7
+      icon: mdi:fountain
+      friendly_name: Hot Tub Spillover
+      state: 'off'
+    switch.omnilogic_spa_blower:
+      omni_system_id: 13
+      omni_bow_id: 2
+      icon: mdi:hot-tub
+      friendly_name: Hot Tub Jets
+      state: 'off'
+    water_heater.omnilogic_spa_heater:
+      min_temp: 55
+      max_temp: 104
+      operation_list:
+      - 'on'
+      - 'off'
+      current_temperature:
+      temperature: 96
+      target_temp_high:
+      target_temp_low:
+      operation_mode: 'on'
+      omni_system_id: 10
+      omni_bow_id: 2
+      solar_set_point: 103
+      omni_heater_gas_enabled: 'yes'
+      omni_heater_gas_system_id: 11
+      omni_heater_gas_bow_id: 2
+      omni_heater_gas_state: 'On'
+      omni_heater_gas_sensor_temp: 65535
+      friendly_name: Hot Tub Heater
+      supported_features: 11
+      state: 'on'
+  icon: mdi:hot-tub
+  metadata: {}
+- id: '1744208924095'
+  name: Pool Shutdown
+  entities:
+    light.back_porch_can_lights:
+      supported_color_modes:
+      - onoff
+      color_mode:
+      icon: mdi:light-recessed
+      friendly_name: Back Porch Can Lights
+      supported_features: 0
+      state: 'off'
+    light.light_backyard_fan_yellow:
+      effect_list:
+      supported_color_modes:
+      - onoff
+      effect:
+      color_mode:
+      raw_state: false
+      icon: mdi:ceiling-fan-light
+      friendly_name: Back Porch Fan Light (Yellow)
+      supported_features: 4
+      state: 'off'
+    light.backyard_spotlights:
+      supported_color_modes:
+      - onoff
+      color_mode:
+      icon: mdi:spotlight-beam
+      friendly_name: Backyard Spotlights
+      supported_features: 0
+      state: 'off'
+    light.light_backyard_fan_white:
+      effect_list:
+      supported_color_modes:
+      - brightness
+      effect:
+      color_mode:
+      brightness:
+      raw_state: false
+      friendly_name: Light - Backyard Fan (White)
+      supported_features: 4
+      state: 'off'
+    light.omnilogic_pool_color_lights:
+      effect_list:
+      - VOODOO_LOUNGE
+      - DEEP_BLUE_SEA
+      - ROYAL_BLUE
+      - AFTERNOON_SKY
+      - AQUA_GREEN
+      - EMERALD
+      - CLOUD_WHITE
+      - WARM_RED
+      - FLAMINGO
+      - VIVID_VIOLET
+      - SANGRIA
+      - TWILIGHT
+      - TRANQUILITY
+      - GEMSTONE
+      - USA
+      - MARDI_GRAS
+      - COOL_CABARET
+      - YELLOW
+      - ORANGE
+      - GOLD
+      - MINT
+      - TEAL
+      - BURNT_ORANGE
+      - PURE_WHITE
+      - CRISP_WHITE
+      - WARM_WHITE
+      - BRIGHT_YELLOW
+      supported_color_modes:
+      - brightness
+      effect:
+      color_mode:
+      brightness:
+      omni_system_id: 7
+      omni_bow_id: 1
+      omnilogic_state: 'Off'
+      speed: One Times
+      icon: mdi:bulkhead-light
+      friendly_name: Pool Lights
+      supported_features: 4
+      state: 'off'
+    switch.omnilogic_spa_filter_pump:
+      omni_system_id: 9
+      omni_bow_id: 2
+      filter_state: 'Off'
+      why_on: 'Off'
+      icon: mdi:pump-off
+      friendly_name: Hot Tub Pump
+      state: 'off'
+    switch.omnilogic_pool_filter_pump:
+      omni_system_id: 3
+      omni_bow_id: 1
+      filter_state: 'Off'
+      why_on: 'Off'
+      icon: mdi:pump-off
+      friendly_name: Pool Pump
+      state: 'off'
+    water_heater.omnilogic_spa_heater:
+      min_temp: 55
+      max_temp: 104
+      operation_list:
+      - 'on'
+      - 'off'
+      current_temperature:
+      temperature: 97
+      target_temp_high:
+      target_temp_low:
+      operation_mode: 'off'
+      omni_system_id: 10
+      omni_bow_id: 2
+      solar_set_point:
+      omni_heater_gas_enabled: 'yes'
+      omni_heater_gas_system_id: 11
+      omni_heater_gas_bow_id: 2
+      omni_heater_gas_state: 'Off'
+      omni_heater_gas_sensor_temp: 65535
+      friendly_name: Hot Tub Heater
+      supported_features: 11
+      state: 'off'
+    water_heater.omnilogic_pool_heater:
+      min_temp: 55
+      max_temp: 104
+      operation_list:
+      - 'on'
+      - 'off'
+      current_temperature:
+      temperature: 80
+      target_temp_high:
+      target_temp_low:
+      operation_mode: 'off'
+      omni_system_id: 4
+      omni_bow_id: 1
+      solar_set_point: 81
+      omni_heater_gas_enabled: 'yes'
+      omni_heater_gas_system_id: 11
+      omni_heater_gas_bow_id: 2
+      omni_heater_gas_state: 'Off'
+      omni_heater_gas_sensor_temp: 65535
+      friendly_name: Pool Heater
+      supported_features: 11
+      state: 'off'
+    timer.swim_mode:
+      duration: 0:15:00
+      editable: true
+      restore: true
+      icon: mdi:swim
+      friendly_name: Swim Mode
+      state: idle
+  icon: mdi:pool
+  metadata:
+    light.back_porch_can_lights:
+      entity_only: true
+    light.light_backyard_fan_yellow:
+      entity_only: true
+    light.backyard_spotlights:
+      entity_only: true
+    light.light_backyard_fan_white:
+      entity_only: true
+    light.omnilogic_pool_color_lights:
+      entity_only: true
+    switch.omnilogic_spa_filter_pump:
+      entity_only: true
+    switch.omnilogic_pool_filter_pump:
+      entity_only: true
+    water_heater.omnilogic_spa_heater:
+      entity_only: true
+    water_heater.omnilogic_pool_heater:
+      entity_only: true
+    media_player.back_porch_google_tv_2:
+      entity_only: true
+    timer.swim_mode:
+      entity_only: true
+- id: '1755994696135'
+  name: Actually Dark
+  entities:
+    light.omnilogic_pool_color_lights:
+      effect_list:
+      - VOODOO_LOUNGE
+      - DEEP_BLUE_SEA
+      - ROYAL_BLUE
+      - AFTERNOON_SKY
+      - AQUA_GREEN
+      - EMERALD
+      - CLOUD_WHITE
+      - WARM_RED
+      - FLAMINGO
+      - VIVID_VIOLET
+      - SANGRIA
+      - TWILIGHT
+      - TRANQUILITY
+      - GEMSTONE
+      - USA
+      - MARDI_GRAS
+      - COOL_CABARET
+      - YELLOW
+      - ORANGE
+      - GOLD
+      - MINT
+      - TEAL
+      - BURNT_ORANGE
+      - PURE_WHITE
+      - CRISP_WHITE
+      - WARM_WHITE
+      - BRIGHT_YELLOW
+      supported_color_modes:
+      - brightness
+      color_mode: brightness
+      brightness: 255
+      omni_system_id: 7
+      omni_bow_id: 1
+      omnilogic_state: Active
+      speed: One Times
+      icon: mdi:bulkhead-light
+      friendly_name: Pool Lights
+      supported_features: 4
+      state: 'on'
+  icon: mdi:theme-light-dark
+  metadata:
+    light.omnilogic_pool_color_lights:
+      entity_only: true
